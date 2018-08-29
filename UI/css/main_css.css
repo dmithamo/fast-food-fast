@@ -7,19 +7,26 @@ html {
     font-size: 16px;
 }
 
-header {
+header, footer {
     font-size: 1.2rem;
     text-align: center;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.5);
+    padding: 1.5rem;
 }
 header>h1 {
     margin-top: 0;
-    padding: 1.5rem;
 }
+
+section {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+}
+
 
 #food-items {
     list-style-type: none;
 }
+
 
 .food-item{
     float: left;
@@ -29,4 +36,28 @@ header>h1 {
 figure>img {
     width: 200px;
     height: 200px;
+}
+
+#banner {
+    margin-top: 20%;
+    padding: 1.5rem;
+}
+
+#links {
+    padding: 1.5rem 0;
+}
+
+#login-link, #register-link {
+    font-size: 1.3rem;
+    color: white;
+    border-radius: 5px;
+    background-color: rgb(102, 255, 0);
+    padding: 0.5rem 0.9rem;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.8);
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+#register-link {
+    background-color: rgb(0, 147, 233);
 }
