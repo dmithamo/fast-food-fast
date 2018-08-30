@@ -8,7 +8,7 @@ const numberDisplay = document.getElementById('number-items');
 document.addEventListener('DOMContentLoaded', () => {
     // Add click listeners to all order btns
     addOrderBtnClickListeners();
-
+    addConfirmOrderClickListener();
 });
 
 
@@ -24,12 +24,17 @@ function addOrderBtnClickListeners() {
     }
 };
 
-function testSelections(list) {
-    // Remember to remove. 
-    for (const item of list) {
-        alert(item.innerHTML);
-    };
-};
+function addConfirmOrderClickListener() {
+    confirmOrderBtn.addEventListener('click', () => {
+        const number = listOfOrdersInCart.querySelectorAll('li').length;
+        if (number > 0) {
+            confirmOrder();
+        }
+        else {
+            alert('You have not placed any orders yet.');
+        }
+    });
+}
 
 function appendOrderToCart(order) {
     // Extract order information
@@ -48,47 +53,28 @@ function appendOrderToCart(order) {
     // Append li to ol of orders made
     listOfOrdersInCart.appendChild(orderToAppend);
 
-    // Determine number of orders so far made and update display
-    determineNumberInCart();
+    // Update number in cart
+    updateNumberInCart();
 };
 
-function determineNumberInCart() {
+function updateNumberInCart() {
     const numberInCart = listOfOrdersInCart.querySelectorAll('li').length;
     // Update number in cart display
-    updateNumberInCart(numberInCart);
-    return numberInCart;
-}
-
-function updateNumberInCart(number) {
-    // Update number in cart display
-    numberDisplay.innerHTML = number;
+    numberDisplay.innerHTML = numberInCart;
 
     // If number > 0, activate confirm btn
-    if (number > 0) {
-        // Select confirm-order btn
+    if (numberInCart > 0) {
+        // Activate confirm-order btn
         confirmOrderBtn.classList.remove('confirm-btn-empty');
-        // React to a click on confirm-order btn
-        confirmOrderBtn.addEventListener('click', () => {
-            confirmOrder();
-        });
     }
 };
 
 function confirmOrder() {
-    const number = determineNumberInCart();
-    if (number > 0 ){
-        alert('Your order has been recieved!');
+    alert('Your order has been recieved!');
     // Clear list of orders
-    while (listOfOrdersInCart.firstChild) {
-        listOfOrdersInCart.removeChild(listOfOrdersInCart.firstChild);
-    };
+    listOfOrdersInCart.innerHTML = '';
     // Update number in cart display
     numberDisplay.innerHTML = 0;
-
     // Deactivate confirm-order btn
-    confirmOrderBtn.classList.add('confirm-btn-empty')
-    }
-    else {
-        alert('You have not added anything to your cart');
-    }
-}
+    confirmOrderBtn.classList.add('confirm-btn-empty');
+};
