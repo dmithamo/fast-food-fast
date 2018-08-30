@@ -59,7 +59,7 @@ a:hover, a:active {
     transition: all .3s;
 }
 
-#register-link {
+#register-link, #history-link {
     color: white;
     background-color: rgb(16, 135, 247);
 }   

@@ -48,6 +48,7 @@ button {
 #shopping-cart>ol {
     text-align: start;
     padding: 0.6rem;
+    margin: 10px;
 }
 
 ol>li>span>input {
@@ -58,11 +59,19 @@ ol>li>span>input {
     color: rgb(83, 83, 83);
 }
 
+
 ol>li{
     padding: .3rem;
+    border-bottom: 1px dashed rgb(114, 114, 114);
 }
+
+ol>li>.li-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+}
+
 ol>li:last-child {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid rgb(114, 114, 114);
  }
 
 .order-btn, .confirm-btn-full {
