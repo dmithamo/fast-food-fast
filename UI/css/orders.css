@@ -74,9 +74,7 @@ ol>li:last-child {
  }
 
 .order-btn, 
-.confirm-btn-full, 
-.edit-btn, 
-.delete-btn {
+.confirm-btn-full{
     background-color: rgb(255, 217, 0);
     width: 80%;
     color: rgb(43, 43, 43);
