@@ -1,32 +1,15 @@
-figure {
-    padding: 0.1rem;
-    width: 150px;
-    height: 170px;
-}
-
-figure>img {
-    width: 50px;
-    height: 50px;
-}
-
-figcaption {
-
-}
-
-.item-price, figcaption {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: rgb(2, 5, 1);
+.admin-portal-title {
+    color: rgb(211, 211, 211);
 }
 
 .edit-btn,
 .delete-btn {
     width: 40%;
     border-radius: 5px;
-    background-color: rgb(116, 116, 116);
+    background-color: rgb(68, 233, 27);
     color: rgb(250, 250, 250);
     font-weight: 400;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     outline: none;
     margin: 3px;
 }
@@ -34,8 +17,63 @@ figcaption {
 .edit-btn:hover,
 .delete-btn:hover {
     border: 1px solid rgb(14, 14, 0);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.7);
+    
 }
 
 .delete-btn {
     background-color: red;
+}
+
+
+.metadata {
+    color: grey;
+    font-weight: bolder;
+    font-size: 0.7rem;
+}
+
+ol>li {
+    transition: all .5s;
+}
+
+ol>li:hover {
+    color: black;
+    padding: 1.3rem;
+}
+
+ol>li:hover ol>li>p>button {
+    display: inline;
+}
+
+ol>li>p>button {
+    color: rgb(36, 36, 36);
+    border: none;
+    outline: none;
+    padding: .5rem;
+    font: inherit;
+    border-radius: 5px;
+}
+
+#confirm-order-btn {
+    display: none;
+}
+
+.accepted-order {
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(68, 233, 27);
+    background-color: rgb(68, 233, 27);
+    font-weight: bold;
+}
+
+.completed-order {
+    background-color: rgb(255, 208, 0);
+    border: 2px solid rgb(255, 208, 0);
+}
+
+.rejected-order {
+    text-decoration: line-through;
+    color: rgb(190, 190, 190);
+    border: none;
+    background-color: rgb(253, 0, 0);
+    font-weight: 400;
 }

@@ -18,7 +18,7 @@
             <a href="#">Fast Food. Fast.</a>
             <nav>
                 <a id="logout-link" href="../index.html">Logout</a>
-                <p>[ Admin Portal ]</p>
+                <p class="admin-portal-title">[ Admin Portal ]</p>
             </nav>
         </div>
     </header>
@@ -108,12 +108,55 @@
                 </figure>
             </li>
         </ul>
-        <div id="shopping-cart">
+        <div id="admin-list">
             <h1>All Orders</h1>
-            <p>There are <span id="number-items"> 0 </span> orders in the list</p>
             <ol id="in-cart">
+                <li class="ordered-item">
+                    <div class="li-container"><span>Burger</span><span class="order-quantity">x 2</span><spanclass="order-price">Ksh. 200</span></div>
+                    <p class="metadata">By <span class="order-by">Mr. Dmithamo</span>
+                        | From <span class="order-locale">Gardens, Kikuyu</span>
+                        | Timestamp <span class="order-timestamp">30.08.018 1533h</span>
+                    </p>
+                    <p>
+                        <button class="order-reactions accept-order">Accept Order</button>
+                        <button class="order-reactions reject-order">Reject Order</button>
+                    </p>
+                </li>
+                <li class="ordered-item">
+                    <div class="li-container"><span>Hot Dog</span><span class="order-quantity">x 3</span><spanclass="order-price">Ksh. 450</span></div>
+                    <p class="metadata">By <span class="order-by">Mr. Dmithamo</span>
+                        | From <span class="order-locale">Gardens, Kikuyu</span>
+                        | Timestamp <span class="order-timestamp">30.08.018 1533h</span>
+                    </p>
+                    <p>
+                        <button class="order-reactions accept-order">Accept Order</button>
+                        <button class="order-reactions reject-order">Reject Order</button>
+                    </p>
+                </li>
+                <li class="ordered-item">
+                    <div class="li-container"><span>Pizza</span><span class="order-quantity">x 2</span><spanclass="order-price">Ksh. 200</span></div>
+                    <p class="metadata">By <span class="order-by">Mr. Dmithamo</span>
+                        | From <span class="order-locale">Gardens, Kikuyu</span>
+                        | Timestamp <span class="order-timestamp">30.08.018 1533h</span>
+                    </p>
+                    <p>
+                        <button class="order-reactions accept-order">Accept Order</button>
+                        <button class="order-reactions reject-order">Reject Order</button>
+                    </p>
+                </li>
+                <li class="ordered-item">
+                    <div class="li-container"><span>Fries</span><span class="order-quantity">x 2</span><spanclass="order-price">Ksh. 200</span></div>
+                    <p class="metadata">By <span class="order-by">Mr. Dmithamo</span>
+                        | From <span class="order-locale">Gardens, Kikuyu</span>
+                        | Timestamp <span class="order-timestamp">30.08.018 1533h</span>
+                    </p>
+                    <p>
+                        <button class="order-reactions accept-order">Accept Order</button>
+                        <button class="order-reactions reject-order">Reject Order</button>
+                    </p>
+                </li>
             </ol>
-            <button class="confirm-btn confirm-btn-full confirm-btn-empty" id="confirm-order-btn">Clear All</button>
+            <button class="confirm-btn confirm-btn-full confirm-btn-empty" id="confirm-order-btn">Confirm Order</button>
         </div>
     </section>
     <footer>

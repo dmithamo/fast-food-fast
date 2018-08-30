@@ -29,23 +29,22 @@ button {
     outline: none;
 }
 
-#shopping-cart {
+#shopping-cart, #admin-list {
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
     font-size: 0.8rem;
     color: rgb(83, 83, 83);
     margin: 50px 10px;
     transition: all .3s;
-    height: 500px;
     border: 1px dotted rgb(167, 163, 163);
 }
 
 #shopping-cart:hover {
-    border: NONE;
+    border: none;
     box-shadow: 0 0 5px 2px rgb(0, 0, 0);
 }
 
-#shopping-cart>ol {
+ol {
     text-align: start;
     padding: 0.6rem;
     margin: 10px;
@@ -61,7 +60,7 @@ ol>li>span>input {
 
 
 ol>li{
-    padding: .3rem;
+    padding: 1rem;
     border-bottom: 1px dashed rgb(114, 114, 114);
 }
 

@@ -80,7 +80,8 @@ function confirmOrder() {
 };
 
 // Admin functions
-addClickListenersToAdminBtns()
+addClickListenersToAdminBtns();
+reactToOrder();
 
 function addClickListenersToAdminBtns() {
     // Respond to a click on Delete btn by admin
@@ -116,7 +117,7 @@ function adminModifyItem(item) {
 
     // Edit price
     const priceOfItem = item.querySelector('figcaption').querySelector('.item-price').innerHTML;
-    const newPrice = prompt('Update item name to?', priceOfItem);
+    const newPrice = prompt('Update item price to?', priceOfItem);
     if (newName && newPrice !== priceOfItem) {
         item.querySelector('figcaption').querySelector('.item-price').innerHTML = newPrice;
     }
@@ -126,4 +127,32 @@ function adminModifyItem(item) {
 function adminDeleteItem(item) {
     // Delete item from list
     item.parentElement.removeChild(item);
+};
+
+function reactToOrder() {
+    // Select reaction btns
+    const reactionBtns = document.querySelectorAll('.order-reactions');
+    for (const button of reactionBtns) {
+        button.addEventListener('click', () => {
+            const parentOrder = button.parentElement.parentElement;
+            if (button.innerHTML === 'Accept Order') {
+                parentOrder.classList.add('accepted-order');
+                button.innerHTML = 'Mark Completed';
+                button.nextElementSibling.style.display = 'none';
+            }
+            else if (button.innerHTML === 'Reject Order') {
+                parentOrder.classList.add('rejected-order');
+                button.innerHTML = 'Delete';
+                button.previousElementSibling.style.display = 'none';
+            }
+            else if (button.innerHTML === 'Mark Completed') {
+                parentOrder.classList.add('completed-order');
+                button.innerHTML = 'Delete';
+            }
+            else if (button.innerHTML === 'Delete') {
+                parentOrder.parentElement.removeChild(parentOrder);
+            }
+        });
+    }
+
 }
