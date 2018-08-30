@@ -1,13 +1,13 @@
 section {
+    width: 99%;
+    margin: auto;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr;
 }
 
-section>ul {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr 1fr;
+.container {
+    width: 100%;
+    margin: auto 0;
 }
 
 figure {
@@ -28,16 +28,13 @@ figcaption>button {
     width: 90%;
 }
 
-
 button {
     outline: none;
 }
 
 #shopping-cart {
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
-    padding: 3rem;
     font-size: 0.8rem;
-    margin: 15px 5px;
     color: rgb(83, 83, 83);
     border: 1px dashed rgba(109, 109, 109, 0.63);
 }
