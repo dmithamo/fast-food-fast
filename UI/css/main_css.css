@@ -95,7 +95,7 @@ a:hover, a:active {
 figure {
     width: 220px;
     height: 320px;
-    border-radius: 2px;
+    border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
     text-align: center;
     transition: all .3s;
