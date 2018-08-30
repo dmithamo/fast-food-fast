@@ -1,0 +1,111 @@
+<!-- This is the web app's homepage -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/main_css.css">
+    <link rel="stylesheet" href="./css/orders.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <title>FFF : Orders</title>
+</head>
+<body>
+    <header>
+        <a href="#">Fast Food. Fast.</a>
+        <p></p>
+        <a id="history-link" href="#">Order History</a>
+        <a id="logout-link" href="../index.html">Logout</a>
+    </header>
+    <section>
+        <ul id="food-items">
+            <li class="food-item">
+                <figure>
+                    <img src="https://thumbs.dreamstime.com/b/american-style-hot-dog-lettuce-onion-tomato-close-up-white-background-fast-food-71465611.jpg" alt="hotdog">
+                    <figcaption>
+                        <p>Hot dogs</p>
+                        <p class="item-price">Ksh. 150.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+            <li class="food-item">
+                <figure>
+                    <img src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX1947517.jpg" alt="burger">
+                    <figcaption>
+                        <p>Burgers</p>
+                        <p class="item-price">Ksh. 100.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+            <li class="food-item">
+                <figure>
+                    <img src="http://s1.1zoom.me/b4248/957/Fast_food_Pizza_Pepper_Tomatoes_Olive_White_515874_3840x2160.jpg" alt="pizza">
+                    <figcaption>
+                        <p>Pizzas</p>
+                        <p class="item-price">Ksh. 100.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+            <li class="food-item">
+                <figure>
+                    <img src="https://media.istockphoto.com/photos/homemade-fast-food-portion-of-french-fries-isolated-on-white-top-picture-id640921294" alt="fries">
+                    <figcaption>
+                        <p>Fries</p>
+                        <p class="item-price">Ksh. 100.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+            <li class="food-item">
+                <figure>
+                    <img src="https://thumbs.dreamstime.com/b/american-style-hot-dog-lettuce-onion-tomato-close-up-white-background-fast-food-71465611.jpg" alt="hotdog">
+                    <figcaption>
+                        <p>Hot dogs</p>
+                        <p class="item-price">Ksh. 150.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+            <li class="food-item">
+                <figure>
+                    <img src="http://s1.1zoom.me/b4248/957/Fast_food_Pizza_Pepper_Tomatoes_Olive_White_515874_3840x2160.jpg" alt="pizza">
+                    <figcaption>
+                        <p>Pizzas</p>
+                        <p class="item-price">Ksh. 100.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+            <li class="food-item">
+                <figure>
+                    <img src="https://thumbs.dreamstime.com/b/american-style-hot-dog-lettuce-onion-tomato-close-up-white-background-fast-food-71465611.jpg" alt="hotdog">
+                    <figcaption>
+                        <p>Hot dogs</p>
+                        <p class="item-price">Ksh. 150.00</p>
+                        <button class="order-btn">Add to <i class="fas fa-shopping-basket"></i></button>
+                    </figcaption>
+                </figure>
+            </li>
+        </ul>
+        <div id="shopping-cart">
+            <h1><i class="fas fa-shopping-basket"></i>Your Cart </h1>
+            <p>You have <span id="number-items"> 0 </span> items in your cart</p>
+            <ol id="in-cart">
+                <!-- <li>Burgers - Quantity : <span><input value="1" type="number" id="number-items"></span> Price: Ksh. <span id="item-price">300</span></li> -->
+            </ol>
+            <button class="confirm-btn confirm-btn-full confirm-btn-empty" id="confirm-order-btn">Confirm Order</button>
+        </div>
+    </section>
+    <footer>
+        <p class="social-media"></p>
+        <p class="designer-link">
+            Designed and Developed by <a href="https://github.com/dmithamo">  dmithamo </a>
+        </p>
+        <p class="copyright">&copy2018 </p>
+    </footer>
+</body>
+</html>
