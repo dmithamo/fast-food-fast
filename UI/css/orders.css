@@ -1,13 +1,13 @@
 section {
-    width: 99%;
+    width: 90%;
     margin: auto;
     display: grid;
     grid-template-columns: 2fr 1fr;
 }
 
 .container {
-    width: 100%;
-    margin: auto 0;
+    width: 90%;
+    margin: auto;
 }
 
 figure {
@@ -33,16 +33,21 @@ button {
 }
 
 #shopping-cart {
+    border-radius: 10px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
     font-size: 0.8rem;
     color: rgb(83, 83, 83);
-    border: 1px dashed rgba(109, 109, 109, 0.63);
+    margin: 50px 10px;
+    transition: all .3s;
+}
+
+#shopping-cart:hover {
+    box-shadow: 0 0 5px 2px rgb(0, 0, 0);
 }
 
 #shopping-cart>ol {
     text-align: start;
     padding: 0.6rem;
-    margin: 0 2px;
 }
 
 ol>li>span>input {
@@ -72,7 +77,7 @@ ol>li:last-child {
     transition: all .3s;
 }
 
-.order-btn:hover, .confirm-btn-full:hover {
+.order-btn:hover, .confirm-btn-full:hover, #history-link:hover, #logout-link:hover {
     color: white;
     box-shadow: none;
     background-color: rgb(119, 255, 8);

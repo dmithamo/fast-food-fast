@@ -27,7 +27,14 @@ header, footer {
 
 header>.container {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
+    text-align: start;
+}
+
+nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
 }
 
 footer>.container {
@@ -46,7 +53,8 @@ a:hover, a:active {
     color: rgb(51, 255, 0);
 }
 
-#login-link, #register-link {
+#login-link, 
+#register-link {
     color: rgb(0, 68, 255);
     transition: all .3s;
 }
@@ -56,7 +64,10 @@ a:hover, a:active {
     background-color: rgb(16, 135, 247);
 }   
 
-#login-link:hover, #login-link:active,  #register-link:hover, #register-link:active {
+#login-link:hover, 
+#login-link:active,  
+#register-link:hover,
+#register-link:active {
     color: white;
     background-color: rgb(43, 255, 0);
     border: 2px solid black;
@@ -85,8 +96,9 @@ figure {
     width: 220px;
     height: 320px;
     border-radius: 2px;
-    box-shadow: 4px 3px 20px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
     text-align: center;
+    transition: all .3s;
 }
 
 figure>img {
@@ -96,10 +108,6 @@ figure>img {
 
 figure:hover {
     box-shadow: 0 0 5px 2px rgb(0, 0, 0);
-}
-
-figure {
-    transition: all .3s;
 }
 
 footer {
