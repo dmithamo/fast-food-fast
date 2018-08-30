@@ -78,3 +78,52 @@ function confirmOrder() {
     // Deactivate confirm-order btn
     confirmOrderBtn.classList.add('confirm-btn-empty');
 };
+
+// Admin functions
+addClickListenersToAdminBtns()
+
+function addClickListenersToAdminBtns() {
+    // Respond to a click on Delete btn by admin
+    const adminBtns = document.querySelectorAll('.admin-btn');
+    for (const adminBtn of adminBtns) {
+        adminBtn.addEventListener('click', () => {
+            const parentItem = adminBtn.parentElement.parentElement.parentElement;
+            if (adminBtn.innerHTML === 'Delete') {
+                adminDeleteItem(parentItem);
+            }
+            else if (adminBtn.innerHTML === 'Modify') {
+                adminModifyItem(parentItem);
+            }
+        });
+    }
+};
+
+function adminModifyItem(item) {
+    // Modify an item on the list
+    // Edit image src attribute
+    const imgSrc = item.querySelector('img').getAttribute('src');
+    const newImgSrc = prompt('Update image url to?', imgSrc);
+    if (newImgSrc && newImgSrc !== imgSrc) {
+        item.querySelector('img').setAttribute('src', newImgSrc);
+    };
+
+    // Edit Name
+    const nameOfItem = item.querySelector('figcaption').querySelector('.item-name').innerHTML;
+    const newName = prompt('Update item name to?', nameOfItem);
+    if (newName && newName !== nameOfItem) {
+        item.querySelector('figcaption').querySelector('.item-name').innerHTML = newName;
+    }
+
+    // Edit price
+    const priceOfItem = item.querySelector('figcaption').querySelector('.item-price').innerHTML;
+    const newPrice = prompt('Update item name to?', priceOfItem);
+    if (newName && newPrice !== priceOfItem) {
+        item.querySelector('figcaption').querySelector('.item-price').innerHTML = newPrice;
+    }
+
+}
+
+function adminDeleteItem(item) {
+    // Delete item from list
+    item.parentElement.removeChild(item);
+}
