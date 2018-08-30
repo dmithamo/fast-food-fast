@@ -3,23 +3,55 @@ html {
     width: 100%;
     height: 100%;
     margin: 0;
-    font-family: 'Simonetta', cursive;
-    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: rgb(34, 34, 34);
 }
 
 header, footer {
-    font-size: 1.2rem;
+    font-weight: 700;
     text-align: center;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.5);
-    padding: 1.5rem;
+    padding: 1.3rem;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr;
 }
-header>h1 {
-    margin-top: 0;
+  
+a {
+    text-decoration: none;
+    color: rgb(73, 72, 72);
+    padding: 0.6rem 0;
+    transition: all .3s;
 }
+
+a:hover, a:active {
+    color: rgb(51, 255, 0);
+}
+
+#login-link, #register-link {
+    color: rgb(0, 68, 255);
+    transition: all .3s;
+}
+
+#register-link {
+    color: white;
+    background-color: rgb(0, 0, 0);
+}   
+
+#login-link:hover, #login-link:active,  #register-link:hover, #register-link:active {
+    color: white;
+    background-color: rgb(43, 255, 0);
+}
+
 
 section {
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr 3fr;
+}
+
+#banner {
+    text-align: center;
+    padding: 1.5rem;
 }
 
 
@@ -30,34 +62,56 @@ section {
 
 .food-item{
     float: left;
-    width: 300px;
+}
+
+.item-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: rgb(51, 207, 3);
+}
+
+figure {
+    width: 220px;
+    height: 320px;
+    border-radius: 2px;
+    box-shadow: 4px 3px 20px 1px rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
 figure>img {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
 }
 
-#banner {
-    margin-top: 20%;
-    padding: 1.5rem;
+.order-btn {
+    display: none;
+    border: 1px solid rgba(99, 99, 99, 0.671);
+    background-color: rgb(255, 217, 0);
+    width: 50%;
+    color: rgb(0, 0, 0);
+    padding: 0.6rem;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-#links {
-    padding: 1.5rem 0;
+figure, .order-btn {
+    transition: all .3s;
 }
 
-#login-link, #register-link {
-    font-size: 1.3rem;
+figure:hover {
+    padding: 0.9rem;
+}
+
+.order-btn:hover {
+    background-color: rgb(119, 255, 8);
     color: white;
-    border-radius: 5px;
-    background-color: rgb(102, 255, 0);
-    padding: 0.5rem 0.9rem;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.8);
-    margin-right: 10px;
-    text-decoration: none;
 }
 
-#register-link {
-    background-color: rgb(0, 147, 233);
+footer {
+    color: rgb(179, 179, 179);
+    background-color: rgb(238, 238, 238);
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.5);
 }
+
+
