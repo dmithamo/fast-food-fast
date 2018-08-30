@@ -74,7 +74,10 @@ ol>li:last-child {
     border-bottom: 2px solid rgb(114, 114, 114);
  }
 
-.order-btn, .confirm-btn-full {
+.order-btn, 
+.confirm-btn-full, 
+.edit-btn, 
+.delete-btn {
     background-color: rgb(255, 217, 0);
     width: 80%;
     color: rgb(43, 43, 43);
@@ -86,14 +89,18 @@ ol>li:last-child {
     transition: all .3s;
 }
 
-.order-btn:hover, .confirm-btn-full:hover, #history-link:hover, #logout-link:hover {
+.order-btn:hover, 
+.confirm-btn-full:hover, 
+#history-link:hover, 
+#logout-link:hover {
     color: white;
     box-shadow: none;
     background-color: rgb(119, 255, 8);
     border: 2px solid black;
 }
 
-.confirm-btn-empty, .confirm-btn-empty:hover {
+.confirm-btn-empty, 
+.confirm-btn-empty:hover {
     /* When no items in shopping cart */
     box-shadow: none;
     background-color: rgb(184, 183, 183);

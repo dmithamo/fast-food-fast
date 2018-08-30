@@ -1,0 +1,41 @@
+figure {
+    padding: 0.1rem;
+    width: 150px;
+    height: 170px;
+}
+
+figure>img {
+    width: 50px;
+    height: 50px;
+}
+
+figcaption {
+
+}
+
+.item-price, figcaption {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgb(2, 5, 1);
+}
+
+.edit-btn,
+.delete-btn {
+    width: 40%;
+    border-radius: 5px;
+    background-color: rgb(116, 116, 116);
+    color: rgb(250, 250, 250);
+    font-weight: 400;
+    font-size: 0.7rem;
+    outline: none;
+    margin: 3px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+    border: 1px solid rgb(14, 14, 0);
+}
+
+.delete-btn {
+    background-color: red;
+}

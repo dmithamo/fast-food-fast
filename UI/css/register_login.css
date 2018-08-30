@@ -60,3 +60,17 @@ input#register-btn {
 input[type='submit']:hover {
     border: 2px solid black;
 }
+
+#admin-login>a {
+    border: 2px solid rgb(172, 172, 172);
+    border-radius: 12px;
+    padding: 0.56rem;
+    font-weight: 500;
+    color: rgb(172, 172, 172);
+}
+
+#admin-login>a:hover {
+    border: 2px solid rgb(31, 30, 30);
+    color: rgb(31, 30, 30);
+    font-weight: 700;
+}
