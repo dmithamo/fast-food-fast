@@ -2,6 +2,7 @@
     color: rgb(211, 211, 211);
 }
 
+#add-new-food,
 .accept-order,
 .reject-order,
 .edit-btn,
@@ -9,7 +10,7 @@
     box-shadow: none;
     padding: 0.6rem 0.8rem;
     font: inherit;
-    width: 40%;
+    width: 42%;
     border-radius: 5px;
     background-color: rgb(230, 230, 230);
     color: rgb(37, 37, 37);
@@ -20,11 +21,19 @@
     border: 1px solid rgb(141, 141, 141);
 }
 
+#add-new-food {
+    box-shadow: 0 0 5px 2px rgb(197, 197, 197);
+    width: 85px;
+    height: 40px;
+}
+
+#add-new-food:hover,
 .edit-btn:hover,
 .delete-btn:hover,
 .accept-order:hover,
 .reject-order:hover {
-    border: 1px solid rgb(190, 190, 190);
+    border: 2px solid rgb(48, 48, 48);
+    font-weight: bold;
 }
 
 

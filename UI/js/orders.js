@@ -6,15 +6,16 @@ const listOfOrdersInHistory = document.getElementById('in-history');
 const confirmOrderBtn = document.getElementById('confirm-order-btn');
 const numberDisplay = document.getElementById('number-items');
 const orderHistoryLink = document.querySelector('#history-link');
+const addNewFoodBtn = document.querySelector('#add-new-food');
 
 document.addEventListener('DOMContentLoaded', () => {
     // Add click listeners to all order btns
-    addOrderBtnClickListeners();
+    addBtnClickListeners();
     addConfirmOrderClickListener();
 });
 
 
-function addOrderBtnClickListeners() {
+function addBtnClickListeners() {
     const orderBtns = document.querySelectorAll('.order-btn');
     // Add click listeners
     for (const orderBtn of orderBtns) {
@@ -24,9 +25,17 @@ function addOrderBtnClickListeners() {
             appendOrderToCart(parentOrder);
         });
     }
-    orderHistoryLink.addEventListener('click', () =>{
-        showOrderHistory();
-    });
+    if (orderHistoryLink) {
+        orderHistoryLink.addEventListener('click', () =>{
+            showOrderHistory();
+        });
+    };
+
+    if (addNewFoodBtn) {
+        addNewFoodBtn.addEventListener('click', () => {
+            addNewFoodItem();
+        });
+    };
 };
 
 function addConfirmOrderClickListener() {
@@ -175,4 +184,30 @@ function showOrderHistory() {
     // Hide misbehaving footer
     document.querySelector('footer').style.display = 'none';
     
+};
+
+function addNewFoodItem() {
+    // Respond to click event on add-new-food btn
+    const foodItemsList = document.querySelector('#food-items');
+    const copyOfFoodItem = foodItemsList.lastElementChild.cloneNode(true);
+
+    // Modify copied item, append it to list as though it was a new item
+    // Modify img src
+    const copiedImg = copyOfFoodItem.querySelector('figure').querySelector('img').getAttribute('src');
+    const newFoodImg = prompt('Url of image for new food item', copiedImg);
+    copyOfFoodItem.querySelector('figure').querySelector('img').setAttribute('src', newFoodImg);
+
+    // Modify name
+    const copiedName = copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-name').innerHTML;
+    const newFoodName = prompt('Name of new food item', copiedName);
+    copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-name').innerHTML = newFoodName;
+
+    // Modify price
+    const copiedPrice = copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-price').innerHTML;
+    const newFoodPrice = prompt('Price of new food item', copiedPrice);
+    copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-price').innerHTML = newFoodPrice;
+
+    // Append newFoodItem
+    foodItemsList.appendChild(copyOfFoodItem);
+    addClickListenersToAdminBtns();
 };
