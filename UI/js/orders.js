@@ -2,8 +2,10 @@
 
 // Select reusable elements from document
 const listOfOrdersInCart = document.getElementById('in-cart');
+const listOfOrdersInHistory = document.getElementById('in-history');
 const confirmOrderBtn = document.getElementById('confirm-order-btn');
 const numberDisplay = document.getElementById('number-items');
+const orderHistoryLink = document.querySelector('#history-link');
 
 document.addEventListener('DOMContentLoaded', () => {
     // Add click listeners to all order btns
@@ -22,6 +24,9 @@ function addOrderBtnClickListeners() {
             appendOrderToCart(parentOrder);
         });
     }
+    orderHistoryLink.addEventListener('click', () =>{
+        showOrderHistory();
+    });
 };
 
 function addConfirmOrderClickListener() {
@@ -52,6 +57,10 @@ function appendOrderToCart(order) {
 
     // Append li to ol of orders made
     listOfOrdersInCart.appendChild(orderToAppend);
+    
+    // Append a copy to history
+    const orderCopy = orderToAppend.cloneNode(true);
+    listOfOrdersInHistory.appendChild(orderCopy);
 
     // Update number in cart
     updateNumberInCart();
@@ -156,3 +165,14 @@ function reactToOrder() {
     }
 
 }
+
+function showOrderHistory() {
+    // Hide list of food items and Shopping cart
+    document.querySelector('#food-items').style.display = 'none';
+    document.querySelector('#shopping-cart').style.display = 'none';
+    // Show history cart
+    document.querySelector('#history-cart').style.display = 'inline';
+    // Hide misbehaving footer
+    document.querySelector('footer').style.display = 'none';
+    
+};

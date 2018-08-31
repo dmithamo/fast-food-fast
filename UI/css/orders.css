@@ -104,3 +104,7 @@ ol>li:last-child {
     color: rgb(196, 196, 196);
     border: none;
 }
+
+#history-cart {
+    display: none;
+}
