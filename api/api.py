@@ -39,6 +39,7 @@ def orders():
             'ordered_item_id' : order.item_id,
             'ordered_item_name' : order.item_name,
             'ordered_item_price' : order.item_price,
+            'ordered_on' : order.item_ordered_on,
             'quantity' : order.item_quantity
         })
         response.status_code = 201
