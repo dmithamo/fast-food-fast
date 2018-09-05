@@ -22,7 +22,7 @@ The API contains the endpoints below:
   
 | Endpoint               | What it Does             | Git Branch                          |
 | :--------------------  | :----------------------- | :--------------------------------   |
-| POST /orders          | Place an order             | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)          |
+| `POST /orders`          | Place an order             | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)          |
 
 ## Manual testing of the API
 
