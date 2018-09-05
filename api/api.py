@@ -1,6 +1,6 @@
 """
-   Initialize a Flask instance and configure as appropriate,
-   Define API endpoints as routes
+  Initialize a Flask instance and configure as appropriate,
+  Define API endpoints as routes
 """
 
 
@@ -84,4 +84,32 @@ def get_orders():
         )
 
     response.status_code = 200
+    return response
+
+@API.route('{}/orders/<int:order_id>'.format(BASE_URL), methods=['GET'])
+def get_order(order_id):
+    """
+        Respond to GET requests to
+        /fastfoodfast/api/v1/orders/order_id endpoint
+    """
+    order = MYCART.get_orders(order_id)
+
+    # Configure a response
+    # If the exists in the cart
+    if order:
+        response = jsonify({
+            'item_id' : order.item_id,
+            'item_name' : order.item_name,
+            'item_price' : order.item_price,
+            'ordered_on' : order.item_ordered_on,
+            'quantity' : order.item_quantity
+        })
+        response.status_code = 200
+
+    else:
+        # if no orders yet
+        response = jsonify(
+            message='Error. Order not found'
+        )
+        response.status_code = 404
     return response

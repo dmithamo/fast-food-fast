@@ -24,6 +24,7 @@ The API contains the endpoints below:
 | :--------------------  | :----------------------- | :--------------------------------   |
 | `POST /orders`          | Place an order             | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)          |
 | `GET /orders`          | Fetch all orders             | [ft-api-get-orders-160244330](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-orders-160244330)          |
+| `GET /orders/id`          | Fetch specific order             | [ft-api-get-specific-order-160244412](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-specific-order-160244412)          |
 
 ## Manual testing of the API
 
