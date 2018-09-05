@@ -183,14 +183,30 @@ function reactToOrder() {
 }
 
 function showOrderHistory() {
-    // Hide list of food items and Shopping cart
-    document.querySelector('#food-items').style.display = 'none';
-    document.querySelector('#shopping-cart').style.display = 'none';
-    // Show history cart
-    document.querySelector('#history-cart').style.display = 'inline';
-    // Hide misbehaving footer
-    document.querySelector('footer').style.display = 'none';
-    
+    // On initial click 
+    if (orderHistoryLink.innerHTML === 'Order History') {
+        // Change text of link
+        orderHistoryLink.innerHTML = 'Back';
+        // Hide list of food items and Shopping cart
+        document.querySelector('#food-items').style.display = 'none';
+        document.querySelector('#shopping-cart').style.display = 'none';
+        // Show history cart
+        document.querySelector('#history-cart').style.display = 'inline';
+        // Hide misbehaving footer
+        document.querySelector('footer').style.display = 'none';
+    }
+    // Chnage back everything
+    else if (orderHistoryLink.innerHTML === 'Back') {
+        // Change text of link
+        orderHistoryLink.innerHTML = 'Order History';
+        // Hide list of food items and Shopping cart
+        document.querySelector('#food-items').style.display = 'inline';
+        document.querySelector('#shopping-cart').style.display = 'inline';
+        // Show history cart
+        document.querySelector('#history-cart').style.display = 'none';
+        // Hide misbehaving footer
+        document.querySelector('footer').style.display = 'inline';
+    }
 };
 
 function addNewFoodItem() {
