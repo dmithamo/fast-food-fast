@@ -7,6 +7,7 @@ const confirmOrderBtn = document.getElementById('confirm-order-btn');
 const numberDisplay = document.getElementById('number-items');
 const orderHistoryLink = document.querySelector('#history-link');
 const addNewFoodBtn = document.querySelector('#add-new-food');
+const saveNewFood = document.querySelector('#save-new-btn')
 
 document.addEventListener('DOMContentLoaded', () => {
     // Add click listeners to all order btns
@@ -34,6 +35,12 @@ function addBtnClickListeners() {
     if (addNewFoodBtn) {
         addNewFoodBtn.addEventListener('click', () => {
             addNewFoodItem();
+        });
+    };
+
+    if (saveNewFood) {
+        saveNewFood.addEventListener('click', () => {
+            saveFoodItem();
         });
     };
 };
@@ -188,26 +195,62 @@ function showOrderHistory() {
 
 function addNewFoodItem() {
     // Respond to click event on add-new-food btn
-    const foodItemsList = document.querySelector('#food-items');
-    const copyOfFoodItem = foodItemsList.lastElementChild.cloneNode(true);
+    // Display editing form and hide other items
+    toggleEditingMode();
 
-    // Modify copied item, append it to list as though it was a new item
+    // Create and style new food item as li
+    window.newFoodItem = document.createElement('LI');
+    newFoodItem.classList.add('food-item');
+
+    const foodItemMarkUp = '<figure>' +
+            '<img src="" alt="new-item">' +
+            '<figcaption>' +
+                '<p class="item-name"></p>' +
+                '<p class="item-price"></p>' +
+                '<button class="admin-btn edit-btn">Modify</button>' +
+                '<button class="admin-btn delete-btn">Delete</button>' +
+            '</figcaption>' +
+        '</figure>'
+    
+    newFoodItem.innerHTML = foodItemMarkUp
+};
+
+function saveFoodItem() {
+    // Save on btn click
     // Modify img src
-    const copiedImg = copyOfFoodItem.querySelector('figure').querySelector('img').getAttribute('src');
-    const newFoodImg = prompt('Url of image for new food item', copiedImg);
-    copyOfFoodItem.querySelector('figure').querySelector('img').setAttribute('src', newFoodImg);
-
-    // Modify name
-    const copiedName = copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-name').innerHTML;
-    const newFoodName = prompt('Name of new food item', copiedName);
-    copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-name').innerHTML = newFoodName;
-
-    // Modify price
-    const copiedPrice = copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-price').innerHTML;
-    const newFoodPrice = prompt('Price of new food item', copiedPrice);
-    copyOfFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-price').innerHTML = newFoodPrice;
-
+    // Retrieve value of the img url input
+    const newItemSrc = document.querySelector('#new-img-url').value;
+    // Update food item img
+    newFoodItem.querySelector('figure').querySelector('img').setAttribute('src', newItemSrc);
+    // Modify food name
+    // Retrieve value of the food name from input
+    const newItemName = document.querySelector('#new-item-name').value;
+    // Update food item name
+    newFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-name').innerHTML = newItemName;
+    // Modify food price
+    // Retrieve value of the food price from input
+    const newItemPrice = document.querySelector('#new-item-price').value;
+    // Update food item name
+    newFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-price').innerHTML = `Ksh. ${newItemPrice}.00`;
+    
     // Append newFoodItem
-    foodItemsList.appendChild(copyOfFoodItem);
+    const foodItemsList = document.querySelector('#food-items');
+    foodItemsList.appendChild(newFoodItem);
     addClickListenersToAdminBtns();
+
+    // Hide editing form and reveal rest of page
+    toggleEditingMode();
+}
+
+
+function toggleEditingMode() {
+    const editingForm = document.querySelector('#editing-modal');
+    const section = document.querySelector('section');
+    const footer = document.querySelector('footer');
+
+    const elements = [editingForm, section, footer];
+
+    for (let elem of elements) {
+        elem.classList.toggle('hidden-mode');
+    }
 };

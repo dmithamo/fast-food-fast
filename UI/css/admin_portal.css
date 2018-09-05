@@ -65,6 +65,51 @@ ol>li>p>button {
     border-radius: 5px;
 }
 
+.hidden-mode {
+    display: none;
+}
+
+div#editing-modal {
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px 2px rgb(61, 61, 61);
+    width: 50%;
+    margin: auto;
+    padding: 3rem;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+
+input.new-modal-input {
+    font-family: 'Montserrat', cursive;
+    border: none;
+    padding: 1rem;
+    width: 60%;
+    border-radius: 5px;
+    margin-bottom: 3%;
+    box-shadow: 0 0 1px 1px rgb(204, 204, 204);
+    transition: all .3s;
+}
+
+#save-new-btn {
+    width: 20%;
+    display: block;
+    margin: auto;    
+    background-color: rgb(255, 208, 0);
+    box-shadow: 0 0 1px 1px rgb(0, 0, 0);
+    transition: all .3s;
+}
+
+#save-new-btn:hover {
+    background-color: rgb(21, 255, 0);
+    border: 1px solid rgb(0, 0, 0);
+}
+
 #confirm-order-btn {
     display: none;
 }

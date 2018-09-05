@@ -23,7 +23,7 @@
         </div>
     </header>
     <section class="container">
-        <div class="fd-container">
+        <div  class="fd-container">
             <ul id="food-items">
                 <li class="food-item">
                     <figure>
@@ -164,6 +164,13 @@
             <button class="confirm-btn confirm-btn-full confirm-btn-empty" id="confirm-order-btn">Confirm Order</button>
         </div>
     </section>
+    <div class="hidden-mode" id="editing-modal">
+        <p>Edit food item attributes</p>
+        <input class="new-modal-input" placeholder="url/to/picture/of/food" type="url" id="new-img-url">
+        <input class="new-modal-input" placeholder="Name of food item" maxlength="12" type="text" id="new-item-name">
+        <input class="new-modal-input" placeholder="Set a Price" maxlength="10" type="text" id="new-item-price">
+        <input class="new-modal-input" id="save-new-btn"  type="submit" value="Save">
+    </div>
     <footer>
         <div class="container">
             <p class="social-media"></p>
