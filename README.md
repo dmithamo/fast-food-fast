@@ -23,12 +23,13 @@ The API contains the endpoints below:
 | Endpoint               | What it Does             | Git Branch                          |
 | :--------------------  | :----------------------- | :--------------------------------   |
 | `POST /orders`          | Place an order             | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)          |
+| `GET /orders`          | Fetch all orders             | [ft-api-get-orders-160244330](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-orders-160244330)          |
 
 ## Manual testing of the API
 
-To manually test this endpoint, configure and run the server as below:
+To manually test these endpoints, configure and run the server as below:
 
-1. `git checkout ft-api-post-order-160244252`
+1. `git checkout <branch-with-desired-endpoint>` [or `git checkout api-v1` for all the endpoints]
 
 2. Create and activate a [Virtual Environment](https://virtualenv.pypa.io/en/stable/).
 
@@ -38,6 +39,6 @@ To manually test this endpoint, configure and run the server as below:
 
 5. Run `flask run` to start the server
 
-Test the endpoint at `localhost:5000/fastfoodfast/api/v1/orders`.
+Test the endpoints at `localhost:5000/fastfoodfast/api/v1/`.
 
 Recommended testing tool : [Postman](https://www.getpostman.com/).

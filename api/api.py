@@ -1,6 +1,6 @@
 """
-    Initialize a Flask instance and configure as appropriate,
-    Define API endpoints as routes
+   Initialize a Flask instance and configure as appropriate,
+   Define API endpoints as routes
 """
 
 
@@ -18,7 +18,7 @@ MYCART = ShoppingCart()
 
 
 @API.route('{}/orders'.format(BASE_URL), methods=['POST'])
-def orders():
+def place_orders():
     """
         Respond to POST requests to /fastfoodfast/api/v1/orders endpoint
     """
@@ -36,14 +36,14 @@ def orders():
 
         # Configure a response
         response = jsonify({
-            'ordered_item_id' : order.item_id,
-            'ordered_item_name' : order.item_name,
-            'ordered_item_price' : order.item_price,
+            'item_id' : order.item_id,
+            'item_name' : order.item_name,
+            'item_price' : order.item_price,
             'ordered_on' : order.item_ordered_on,
             'quantity' : order.item_quantity
         })
         response.status_code = 201
-    
+
     else:
         # Handle invalid order_params
         response = jsonify(
@@ -52,3 +52,36 @@ def orders():
         response.status_code = 400
     return response
 
+@API.route('{}/orders'.format(BASE_URL), methods=['GET'])
+def get_orders():
+    """
+        Respond to GET requests to /fastfoodfast/api/v1/orders endpoint
+    """
+    all_orders = MYCART.get_orders()
+
+    all_orders = [
+        {
+            'item_id' : order.item_id,
+            'item_name' : order.item_name,
+            'item_price' : order.item_price,
+            'ordered_on' : order.item_ordered_on,
+            'quantity' : order.item_quantity
+        }
+        for order in all_orders
+    ]
+
+    # Configure a response
+    # If one or more orders exist in the cart
+    if all_orders:
+        response = jsonify({
+            '{} Orders'.format(len(all_orders)) : all_orders
+            })
+
+    else:
+        # if no orders yet
+        response = jsonify(
+            message='No orders as yet exist'
+        )
+
+    response.status_code = 200
+    return response
