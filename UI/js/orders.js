@@ -205,7 +205,7 @@ function showOrderHistory() {
         // Show history cart
         document.querySelector('#history-cart').style.display = 'none';
         // Hide misbehaving footer
-        document.querySelector('footer').style.display = 'inline';
+        document.querySelector('footer').style.display = 'block';
     }
 };
 
