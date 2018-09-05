@@ -10,7 +10,10 @@ class Order:
         Define Order params
     """
 
-    def __init__(self, item_name, item_price, item_id=0, item_quantity=1, item_ordered_on=''):
+    def __init__(self,
+                 item_name, item_price, item_id=0,
+                 item_quantity=1, item_ordered_on=''
+                 ):
         """
             Initialize an order object
         """
@@ -43,7 +46,7 @@ class ShoppingCart:
         """
             Define a means or representing ShoppingCart in Terminal
         """
-        cart_list = [{item.item_name : item.item_price} for item in self.cart]
+        cart_list = [{item.item_name: item.item_price} for item in self.cart]
         return '{}'.format(cart_list)
 
     def place_order(self, order_params):
@@ -67,7 +70,8 @@ class ShoppingCart:
                     break
         else:
             # Create new order
-            order = Order(order_params['item_name'], order_params['item_price'])
+            order = Order(order_params['item_name'],
+                          order_params['item_price'])
 
             # Assign an item_id to newly created order
             # by making reference to the number of items in cart
@@ -78,3 +82,9 @@ class ShoppingCart:
             # Add to shopping cart
             self.cart.append(order)
         return order
+
+    def get_orders(self):
+        """
+            Retrieve list of all orders so far placed
+        """
+        return self.cart
