@@ -1,6 +1,6 @@
 """
-    Model an Order, ShoppingCart
-    Define method for creating an order.
+   Model an Order, ShoppingCart
+   Define method for creating an order.
 """
 from datetime import datetime
 
@@ -13,7 +13,7 @@ class Order:
     def __init__(self,
                  item_name, item_price, item_id=0,
                  item_quantity=1, item_ordered_on=''
-                 ):
+                ):
         """
             Initialize an order object
         """
@@ -71,7 +71,8 @@ class ShoppingCart:
         else:
             # Create new order
             order = Order(order_params['item_name'],
-                          order_params['item_price'])
+                          order_params['item_price']
+                          )
 
             # Assign an item_id to newly created order
             # by making reference to the number of items in cart
@@ -83,8 +84,22 @@ class ShoppingCart:
             self.cart.append(order)
         return order
 
-    def get_orders(self):
+    def get_orders(self, order_id=None):
         """
-            Retrieve list of all orders so far placed
+            Retrieve list of all orders so far placed,
+            Or single order by id
         """
-        return self.cart
+        result = None
+
+        # Respond to request when no order_id is provided
+        # Return all existing orders
+        if not order_id:
+            result = self.cart
+
+        # Search for single item if order_id is provided
+        else:
+            for item in self.cart:
+                if item.item_id == order_id:
+                    result = item
+                    break
+        return result
