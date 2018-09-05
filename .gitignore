@@ -1,2 +1,4 @@
 .vscode/
 apiEnv/
+api/__pycache__/
+*.pyc
