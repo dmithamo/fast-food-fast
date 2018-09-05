@@ -29,18 +29,18 @@ def place_orders():
     if item_name and item_price:
         # Place order if valid order_params
         order_params = {
-            'item_name' : item_name,
-            'item_price' : item_price
+            'item_name': item_name,
+            'item_price': item_price
         }
         order = MYCART.place_order(order_params)
 
         # Configure a response
         response = jsonify({
-            'item_id' : order.item_id,
-            'item_name' : order.item_name,
-            'item_price' : order.item_price,
-            'ordered_on' : order.item_ordered_on,
-            'quantity' : order.item_quantity
+            'item_id': order.item_id,
+            'item_name': order.item_name,
+            'item_price': order.item_price,
+            'ordered_on': order.item_ordered_on,
+            'quantity': order.item_quantity
         })
         response.status_code = 201
 
@@ -52,6 +52,7 @@ def place_orders():
         response.status_code = 400
     return response
 
+
 @API.route('{}/orders'.format(BASE_URL), methods=['GET'])
 def get_orders():
     """
@@ -61,11 +62,11 @@ def get_orders():
 
     all_orders = [
         {
-            'item_id' : order.item_id,
-            'item_name' : order.item_name,
-            'item_price' : order.item_price,
-            'ordered_on' : order.item_ordered_on,
-            'quantity' : order.item_quantity
+            'item_id': order.item_id,
+            'item_name': order.item_name,
+            'item_price': order.item_price,
+            'ordered_on': order.item_ordered_on,
+            'quantity': order.item_quantity
         }
         for order in all_orders
     ]
@@ -74,8 +75,8 @@ def get_orders():
     # If one or more orders exist in the cart
     if all_orders:
         response = jsonify({
-            '{} Orders'.format(len(all_orders)) : all_orders
-            })
+            'orders': all_orders
+        })
 
     else:
         # if no orders yet
@@ -86,6 +87,7 @@ def get_orders():
     response.status_code = 200
     return response
 
+
 @API.route('{}/orders/<int:order_id>'.format(BASE_URL), methods=['GET'])
 def get_order(order_id):
     """
@@ -95,21 +97,61 @@ def get_order(order_id):
     order = MYCART.get_orders(order_id)
 
     # Configure a response
-    # If the exists in the cart
+    # If order the exists in the cart
     if order:
         response = jsonify({
-            'item_id' : order.item_id,
-            'item_name' : order.item_name,
-            'item_price' : order.item_price,
-            'ordered_on' : order.item_ordered_on,
-            'quantity' : order.item_quantity
+            'item_id': order.item_id,
+            'item_name': order.item_name,
+            'item_price': order.item_price,
+            'ordered_on': order.item_ordered_on,
+            'quantity': order.item_quantity
         })
         response.status_code = 200
 
     else:
-        # if no orders yet
+        # if the order does not exist yet
         response = jsonify(
             message='Error. Order not found'
         )
         response.status_code = 404
+    return response
+
+
+@API.route('{}/orders/<int:order_id>'.format(BASE_URL), methods=['PUT'])
+def update_order_status(order_id):
+    """
+        Respond to PUT requests to
+        /fastfoodfast/api/v1/orders/order_id endpoint
+    """
+    status = request.args.get('status')
+    # Check that status provided is valid
+    # If so, update status
+    if status and status in ['confirmed', 'rejected']:
+        order = MYCART.update_order_status(order_id, status)
+        if order:
+            response = jsonify({
+                'item_id': order.item_id,
+                'item_name': order.item_name,
+                'item_price': order.item_price,
+                'ordered_on': order.item_ordered_on,
+                'quantity': order.item_quantity,
+                'status': order.order_status,
+                'status_updated_on': order.status_updated_on
+            })
+            response.status_code = 201
+
+        # if the order does not exist
+        else:
+            response = jsonify(
+                message='Error. Order not found'
+            )
+            response.status_code = 404
+
+    # If no valid status is provided
+    else:
+        response = jsonify(
+            message='Bad request. Provide a valid order status.'
+        )
+        response.status_code = 400
+
     return response

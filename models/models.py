@@ -103,3 +103,16 @@ class ShoppingCart:
                     result = item
                     break
         return result
+
+    def update_order_status(self, order_id, status):
+        """
+            Retrieve list of all orders so far placed,
+            Or single order by id
+        """
+        # Search for single item if order_id is provided
+        order = self.get_orders(order_id)
+        if order:
+            order.order_status = status
+            order.status_updated_on = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        return order
