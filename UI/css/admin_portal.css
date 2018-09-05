@@ -82,10 +82,16 @@ div#editing-modal {
     left: 0;
     right: 0;
     z-index: 2;
+    transition: all 0.3s;
+}
+
+div#editing-modal:hover {
+    box-shadow: 0 0 5px 3px rgb(19, 19, 19);
 }
 
 
 input.new-modal-input {
+    outline: none;
     font-family: 'Montserrat', cursive;
     border: none;
     padding: 1rem;
@@ -94,6 +100,13 @@ input.new-modal-input {
     margin-bottom: 3%;
     box-shadow: 0 0 1px 1px rgb(204, 204, 204);
     transition: all .3s;
+}
+
+input.new-modal-input:hover,
+input.new-modal-input:focus {
+    font-family: 'Montserrat', cursive;
+    border: 1px dotted rgba(0, 0, 0, 0.63);
+    box-shadow: none;
 }
 
 #save-new-btn {
