@@ -183,29 +183,34 @@ function reactToOrder() {
 }
 
 function showOrderHistory() {
+    // Select elements
+    const foodItems = document.querySelector('#food-items')
+    const shoppingCart = document.querySelector('#shopping-cart');
+    const historyCart = document.querySelector('#history-cart');
+    const footer = document.querySelector('footer');
     // On initial click 
     if (orderHistoryLink.innerHTML === 'Order History') {
         // Change text of link
         orderHistoryLink.innerHTML = 'Back';
         // Hide list of food items and Shopping cart
-        document.querySelector('#food-items').style.display = 'none';
-        document.querySelector('#shopping-cart').style.display = 'none';
+        foodItems.style.display = 'none';
+        shoppingCart.style.display = 'none';
         // Show history cart
-        document.querySelector('#history-cart').style.display = 'inline';
-        // Hide misbehaving footer
-        document.querySelector('footer').style.display = 'none';
+        historyCart.style.display = 'inline';
+        // Hide footer
+        footer.style.display = 'none';
     }
-    // Chnage back everything
+    // Change back everything
     else if (orderHistoryLink.innerHTML === 'Back') {
         // Change text of link
         orderHistoryLink.innerHTML = 'Order History';
-        // Hide list of food items and Shopping cart
-        document.querySelector('#food-items').style.display = 'inline';
-        document.querySelector('#shopping-cart').style.display = 'inline';
-        // Show history cart
-        document.querySelector('#history-cart').style.display = 'none';
-        // Hide misbehaving footer
-        document.querySelector('footer').style.display = 'block';
+        // Show list of food items and Shopping cart
+        foodItems.style.display = 'inline';
+        shoppingCart.style.display = 'inline';
+        // Hide history cart
+        historyCart.style.display = 'none';
+        // Show footer
+        footer.style.display = 'block';
     }
 };
 
