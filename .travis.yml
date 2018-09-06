@@ -8,7 +8,7 @@ install:
 
 # Run tests
 script:
-    - py.test --cov=api
+    - pytest
 
 after_success:
     - coveralls

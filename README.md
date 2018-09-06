@@ -6,6 +6,8 @@ This repo is a build out of the UI templates and API backend for an online food 
 
 [![Build Status](https://travis-ci.org/dmithamo/fast-food-fast.svg?branch=api-v1)](https://travis-ci.org/dmithamo/fast-food-fast)
 
+[![Coverage Status](https://coveralls.io/repos/github/dmithamo/fast-food-fast/badge.svg?branch=api-v1)](https://coveralls.io/github/dmithamo/fast-food-fast?branch=api-v1)
+
 ## UI Features
 
 The UI provides elements for :
