@@ -11,6 +11,7 @@ class DefaultConfig:
     DEBUG = False
     CSRF_ENABLED = True
     SECRET_KEY = 'i-will-amend-later-this-8888'
+    TEST = False
 
 
 class DevelopmentConfig(DefaultConfig):
@@ -19,3 +20,11 @@ class DevelopmentConfig(DefaultConfig):
         configs
     """
     DEBUG = True
+
+
+class TestingConfig(DefaultConfig):
+    """
+        Overrides some of the default params for development-specific
+        configs
+    """
+    TEST = True
