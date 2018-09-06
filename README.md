@@ -20,12 +20,12 @@ Code for UI tracked in the [gh-pages](https://github.com/dmithamo/fast-food-fast
 
 The API contains the endpoints below:
   
-| Endpoint               | What it Does             | Git Branch                          |
-| :--------------------  | :----------------------- | :--------------------------------   |
-| `POST /orders`          | Place an order             | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)          |
-| `GET /orders`          | Fetch all orders             | [ft-api-get-orders-160244330](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-orders-160244330)          |
-| `GET /orders/id`          | Fetch specific order             | [ft-api-get-specific-order-160244412](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-specific-order-160244412)          |
-| `PUT /orders/id`          | Update order status             | [ft-api-update-order-status-160244454](https://github.com/dmithamo/fast-food-fast/tree/ft-api-update-order-status-160244454)          |
+| Endpoint                  | What it Does                     | Git Branch                             |
+| :--------------------     | :-----------------------         | :--------------------------------      |
+| `POST /orders`            | Place an order                   | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)                           |
+| `GET /orders`             | Fetch all orders                 | [ft-api-get-orders-160244330](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-orders-160244330)                           |
+| `GET /orders/id`          | Fetch specific order             | [ft-api-get-specific-order-160244412](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-specific-order-160244412)                   |
+| `PUT /orders/id`          | Update order status              | [ft-api-update-order-status-160244454](https://github.com/dmithamo/fast-food-fast/tree/ft-api-update-order-status-160244454)                  |
 
 ## Manual testing of the API
 
@@ -44,3 +44,13 @@ To manually test these endpoints, configure and run the server as below:
 Test the endpoints at `localhost:5000/fastfoodfast/api/v1/`.
 
 Recommended testing tool : [Postman](https://www.getpostman.com/).
+
+## Pytest-ing the API
+
+To run the tests written for the API's endpoints:
+
+1. Proceed as in steps `1 to 4` above.
+
+2. Run `pytest` (or `pytest -v` for verbose output)
+
+[Pytest documentation](http://pytest-flask.readthedocs.io/en/latest/).
