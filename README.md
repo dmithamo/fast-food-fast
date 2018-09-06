@@ -2,6 +2,10 @@
 
 This repo is a build out of the UI templates and API backend for an online food ordering platform.
 
+## Continous Integration Badges
+
+[![Build Status](https://travis-ci.org/dmithamo/fast-food-fast.svg?branch=api-v1)](https://travis-ci.org/dmithamo/fast-food-fast)
+
 ## UI Features
 
 The UI provides elements for :
@@ -49,7 +53,7 @@ Recommended testing tool : [Postman](https://www.getpostman.com/).
 
 To run the tests written for the API's endpoints:
 
-1. Proceed as in steps `1 to 4` above.
+1. Proceed as in steps `1 to 3` above.
 
 2. Run `pytest` (or `pytest -v` for verbose output)
 
