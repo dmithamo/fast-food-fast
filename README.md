@@ -52,6 +52,8 @@ To manually test these endpoints, configure and run the server as below:
 5. Run `flask run` to start the server
 
 Test the endpoints at `localhost:5000/fastfoodfast/api/v1/`.
+The API is also hosted on [Heroku](https://dashboard.heroku.com/apps/dmithamo-fast-food-fast-api).
+To test from the Heroku server, send requests to [https://dmithamo-fast-food-fast-api.herokuapp.com/fastfoodfast/api/v1/orders](https://dmithamo-fast-food-fast-api.herokuapp.com/fastfoodfast/api/v1/orders)
 
 Recommended testing tool : [Postman](https://www.getpostman.com/).
 
