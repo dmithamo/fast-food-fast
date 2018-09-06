@@ -40,9 +40,18 @@ def api_test_client():
     api_test_client = API.test_client()
     yield api_test_client
 
+
+def test_get_orders_endpoint(api_test_client):
+    """
+        1. Test GET /orders - when no orders exist
+    """
+    response = api_test_client.get('{}/orders'.format(BASE_URL))
+    assert response.status_code == 200
+    assert 'No orders as yet exist' in str(response.data)
+
 def test_post_order_endpoint(api_test_client):
     """
-        1. Test POST /orders - with proper data
+        2. Test POST /orders - with proper data
     """
     response = api_test_client.post('{}/orders?name={}&price={}'.format(
         BASE_URL, ORDER['name'], ORDER['price']
@@ -53,7 +62,7 @@ def test_post_order_endpoint(api_test_client):
 
 def test_post_order_endpoint_2(api_test_client):
     """
-        2. Test POST /orders - when similar order already exists
+        3. Test POST /orders - when similar order already exists
     """
     response = api_test_client.post('{}/orders?name={}&price={}'.format(
         BASE_URL, ORDER['name'], ORDER['price']
@@ -65,7 +74,7 @@ def test_post_order_endpoint_2(api_test_client):
 
 def test_post_order_endpoint_3(api_test_client):
     """
-        3. Test POST /orders - 2nd POST with proper data
+        4. Test POST /orders - 2nd POST with proper data
     """
     response = api_test_client.post('{}/orders?name={}&price={}'.format(
         BASE_URL, ORDER_2['name'], ORDER_2['price']
@@ -77,7 +86,7 @@ def test_post_order_endpoint_3(api_test_client):
 
 def test_post_order_endpoint_4(api_test_client):
     """
-        4. Test POST /orders - with some data missing
+        5. Test POST /orders - with some data missing
     """
     response = api_test_client.post('{}/orders?name={}&price='.format(
         BASE_URL, ORDER['name']
@@ -87,22 +96,13 @@ def test_post_order_endpoint_4(api_test_client):
 
 def test_post_order_endpoint_5(api_test_client):
     """
-        5. Test POST /orders - without any data
+        6. Test POST /orders - without any data
     """
     response = api_test_client.post('{}/orders'.format(
         BASE_URL
     ))
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
-
-def test_get_orders_endpoint(api_test_client):
-    """
-        6. Test GET /orders - when no orders exist
-        Achieved by commenting out Tests 1, 2, 3 above
-    """
-    response = api_test_client.get('{}/orders'.format(BASE_URL))
-    assert response.status_code == 200
-    assert 'No orders as yet exist' in str(response.data)
 
 def test_get_orders_endpoint_2(api_test_client):
     """
@@ -131,3 +131,36 @@ def test_get_specific_order_endpoint_2(api_test_client):
     response = api_test_client.get('{}/orders/100'.format(BASE_URL))
     assert response.status_code == 404
     assert response_as_json(response)['message'] == 'Error. Order not found'
+
+def test_update_order_status_endpoint(api_test_client):
+    """
+        10. Test PUT /orders/id - when order with given id exists
+        and status is valid
+    """
+    response = api_test_client.put('{}/orders/1?status=confirmed'.format(
+        BASE_URL
+        ))
+    assert response.status_code == 201
+    assert response_as_json(response)['status'] == 'confirmed'
+    assert 'status_updated_on' in str(response.data)
+
+def test_update_order_status_endpoint_2(api_test_client):
+    """
+        11. Test PUT /orders/id - when order with given id exists
+        but status is not valid
+    """
+    response = api_test_client.put('{}/orders/1?status=kenya'.format(
+        BASE_URL
+        ))
+    assert response.status_code == 400
+    assert 'Bad request. Provide a valid order status.' in str(response.data)
+
+def test_update_order_status_endpoint_3(api_test_client):
+    """
+        12. Test PUT /orders/id - when order with given id does not exist
+    """
+    response = api_test_client.put('{}/orders/100?status=rejected'.format(
+        BASE_URL
+        ))
+    assert response.status_code == 404
+    assert 'Order not found' in str(response.data)
