@@ -94,3 +94,24 @@ def test_post_endpoint_5(api_test_client):
     ))
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
+
+def test_get_endpoint(api_test_client):
+    """
+        6. Test GET /orders - when no orders exist
+        Achieved by commenting out Tests 1, 2, 3 above
+    """
+    response = api_test_client.get('{}/orders'.format(BASE_URL))
+    assert response.status_code == 200
+    assert 'No orders as yet exist' in str(response.data)
+
+def test_get_endpoint_2(api_test_client):
+    """
+        7. Test GET /orders - when one or several orders exist
+        Achieved after successful POSTs in Tests 1, 2, 3 above
+    """
+    response = api_test_client.get('{}/orders'.format(BASE_URL))
+    assert response.status_code == 200
+    assert 'orders' in str(response.data)
+    assert 'Big Samosa' and 'Pork Ribs' in str(response.data)
+    assert len(response_as_json(response)['orders']) == 2
+    assert isinstance(response_as_json(response)['orders'], list)
