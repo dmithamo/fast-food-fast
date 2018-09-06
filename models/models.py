@@ -11,8 +11,7 @@ class Order:
     """
 
     def __init__(self,
-                 item_name, item_price, item_id=0,
-                 item_quantity=1, item_ordered_on=''
+                 item_name, item_price, item_id=0
                 ):
         """
             Initialize an order object
@@ -20,8 +19,8 @@ class Order:
         self.item_id = item_id
         self.item_name = item_name
         self.item_price = item_price
-        self.item_quantity = item_quantity
-        self.item_ordered_on = item_ordered_on
+        self.item_quantity = 1
+        self.item_ordered_on = ''
 
     def __repr__(self):
         """

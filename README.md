@@ -8,7 +8,9 @@ This repo is a build out of the UI templates and API backend for an online food 
 
 [![Coverage Status](https://coveralls.io/repos/github/dmithamo/fast-food-fast/badge.svg?branch=api-v1)](https://coveralls.io/github/dmithamo/fast-food-fast?branch=api-v1)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/maintainability)](https://codeclimate.com/github/dmithamo/fast-food-fast/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/test_coverage)](https://codeclimate.com/github/dmithamo/fast-food-fast/test_coverage)
 
 ## UI Features
 

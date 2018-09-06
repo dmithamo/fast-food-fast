@@ -139,19 +139,16 @@ def update_order_status(order_id):
                 'status_updated_on': order.status_updated_on
             })
             response.status_code = 201
-
         # if the order does not exist
         else:
             response = jsonify(
                 message='Error. Order not found'
             )
             response.status_code = 404
-
     # If no valid status is provided
     else:
         response = jsonify(
             message='Bad request. Provide a valid order status.'
         )
         response.status_code = 400
-
     return response
