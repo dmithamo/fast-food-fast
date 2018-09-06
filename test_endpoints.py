@@ -95,7 +95,7 @@ def test_post_endpoint_5(api_test_client):
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
 
-def test_get_endpoint(api_test_client):
+def test_get_orders_endpoint(api_test_client):
     """
         6. Test GET /orders - when no orders exist
         Achieved by commenting out Tests 1, 2, 3 above
@@ -104,7 +104,7 @@ def test_get_endpoint(api_test_client):
     assert response.status_code == 200
     assert 'No orders as yet exist' in str(response.data)
 
-def test_get_endpoint_2(api_test_client):
+def test_get_orders_endpoint_2(api_test_client):
     """
         7. Test GET /orders - when one or several orders exist
         Achieved after successful POSTs in Tests 1, 2, 3 above
@@ -115,3 +115,19 @@ def test_get_endpoint_2(api_test_client):
     assert 'Big Samosa' and 'Pork Ribs' in str(response.data)
     assert len(response_as_json(response)['orders']) == 2
     assert isinstance(response_as_json(response)['orders'], list)
+
+def test_get_specific_order_endpoint(api_test_client):
+    """
+        8. Test GET /orders/id - when order with given id exists
+    """
+    response = api_test_client.get('{}/orders/1'.format(BASE_URL))
+    assert response.status_code == 200
+    assert response_as_json(response)['item_name'] == 'Big Samosa'
+
+def test_get_specific_order_endpoint_2(api_test_client):
+    """
+        9. Test GET /orders/id - when order with given id does not exist
+    """
+    response = api_test_client.get('{}/orders/100'.format(BASE_URL))
+    assert response.status_code == 404
+    assert response_as_json(response)['message'] == 'Error. Order not found'
