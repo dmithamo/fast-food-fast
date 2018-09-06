@@ -5,7 +5,7 @@
 import json
 import pytest
 import config
-from api.api import API
+from api.api_v1 import API
 
 # Base url common to all endpoints
 BASE_URL = '/fastfoodfast/api/v1'
