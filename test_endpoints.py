@@ -40,7 +40,7 @@ def api_test_client():
     api_test_client = API.test_client()
     yield api_test_client
 
-def test_post_endpoint(api_test_client):
+def test_post_order_endpoint(api_test_client):
     """
         1. Test POST /orders - with proper data
     """
@@ -51,7 +51,7 @@ def test_post_endpoint(api_test_client):
     assert 'Big Samosa' in str(response.data)
     assert 'ordered_on' in str(response.data)
 
-def test_post_endpoint_2(api_test_client):
+def test_post_order_endpoint_2(api_test_client):
     """
         2. Test POST /orders - when similar order already exists
     """
@@ -63,7 +63,7 @@ def test_post_endpoint_2(api_test_client):
     assert response_as_json(response)['quantity'] == 2
     assert response_as_json(response)['item_id'] == 1
 
-def test_post_endpoint_3(api_test_client):
+def test_post_order_endpoint_3(api_test_client):
     """
         3. Test POST /orders - 2nd POST with proper data
     """
@@ -75,7 +75,7 @@ def test_post_endpoint_3(api_test_client):
     assert response_as_json(response)['item_price'] == 'Ksh. 1080'
     assert response_as_json(response)['item_id'] == 2
 
-def test_post_endpoint_4(api_test_client):
+def test_post_order_endpoint_4(api_test_client):
     """
         4. Test POST /orders - with some data missing
     """
@@ -85,7 +85,7 @@ def test_post_endpoint_4(api_test_client):
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
 
-def test_post_endpoint_5(api_test_client):
+def test_post_order_endpoint_5(api_test_client):
     """
         5. Test POST /orders - without any data
     """
