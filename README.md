@@ -10,8 +10,6 @@ This repo is a build out of the UI templates and API backend for an online food 
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/maintainability)](https://codeclimate.com/github/dmithamo/fast-food-fast/maintainability)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/test_coverage)](https://codeclimate.com/github/dmithamo/fast-food-fast/test_coverage)
-
 ## UI Features
 
 The UI provides elements for :
