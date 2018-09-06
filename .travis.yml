@@ -8,4 +8,7 @@ install:
 
 # Run tests
 script:
-    - py.test --cov
+    - py.test --cov=api
+
+after success:
+    - coveralls
