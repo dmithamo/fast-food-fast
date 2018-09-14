@@ -1,5 +1,3 @@
-# fast-food-fast
-Repo for a web app where users can order food online
 # Fast-Food-Fast
 
 This repo is a build out of the UI templates and API backend for an online food ordering platform.
