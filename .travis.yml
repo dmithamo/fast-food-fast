@@ -10,19 +10,10 @@ python:
 install:
     - pip install -r requirements.txt
 
-# Set up for code climate test coverage
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
 # Run tests
 script:
     - pytest
     - coverage run --source=api -m pytest && coverage report
-
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 after_success:
     - coveralls
