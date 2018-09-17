@@ -1,1 +1,1 @@
-web: gunicorn -w 2 run:API
+web: gunicorn run:API
