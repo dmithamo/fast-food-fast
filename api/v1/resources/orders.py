@@ -1,7 +1,7 @@
 """
    Models Order and defines methods callable on an Order
 """
-from flask import request, jsonify
+from flask import request, jsonify, json
 from flask_restful import Resource
 from datetime import datetime
 
@@ -17,11 +17,16 @@ class Order(Resource):
             Make order using order params from request object
             and save to all_orders dict
         """
-        order_params = request.get_json()
-        item_name = order_params['item_name']
-        item_price = order_params['item_price']
+        item_name = request.args.get('item_name')
+        item_price = request.args.get('item_price')
 
-        if item_name and item_price:
+        if not item_name or not item_price:
+            # If request is missing required data
+            response = jsonify(
+                message='Bad request. Missing item_name or item_price. {}'.format(request.get_json().get('item_name'))
+            )
+            response.status_code = 400
+        else:
             # Respond to a valid POST/orders request
             new_order = {
                 'item_id' : len(all_orders) + 1,
@@ -31,10 +36,7 @@ class Order(Resource):
             }
             # Append new_order to dict of orders
             all_orders[new_order['item_id']] = new_order
-            response = jsonify(new_order), 201
-        else:
-            # If request is missing required data
-            response = jsonify({
-                'message' : 'Bad request. Missing item_name or Item_price'
-            }), 400
+            response = jsonify(new_order)
+            response.status_code = 201
         return response
+
