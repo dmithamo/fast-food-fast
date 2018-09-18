@@ -23,8 +23,6 @@ class Order(Resource):
 
         if item_name and item_price:
             # Respond to a valid POST/orders request
-
-            # Create the order
             new_order = {
                 'item_id' : len(all_orders) + 1,
                 'item_name' : item_name,
@@ -33,14 +31,10 @@ class Order(Resource):
             }
             # Append new_order to dict of orders
             all_orders[new_order['item_id']] = new_order
-
-            # Make response
             response = jsonify(new_order), 201
-
         else:
             # If request is missing required data
             response = jsonify({
                 'message' : 'Bad request. Missing item_name or Item_price'
             }), 400
-
         return response
