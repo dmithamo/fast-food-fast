@@ -6,8 +6,8 @@ import json
 import pytest
 
 # local imports
-from api.v1.routes import APP
-from api.v1.config import TestingConfig
+from api.v1.views import APP
+from instance.config import TestingConfig
 
 # Base url common to all endpoints
 BASE_URL = '/fastfoodfast/api/v1'
