@@ -57,17 +57,17 @@ class Order(Resource):
         order = retrieve_order_from_list_by_id(order_id)
         order_status = request.args.get('order_status')
 
-        if order_status and order_status in ['confirmed', 'rejected']:
-            # If order status is valid
-            order['order_status'] = order_status
-            order['status_updated_on'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if not order_status or order_status not in ['confirmed', 'rejected']:
+            abort(make_response(
+                jsonify(message="Bad request. Invalid order status"), 400))
 
-            # Configure response
-            response = jsonify(order)
-            response.status_code = 201
-        else:
-            response = jsonify(message="Bad request. Invalid order status")
-            response.status_code = 400
+        # If order status is valid
+        order['order_status'] = order_status
+        order['status_updated_on'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # Configure response
+        response = jsonify(order)
+        response.status_code = 201
         return response
 
 
@@ -85,10 +85,9 @@ class ShoppingCart(Resource):
             # If no orders as yet exist
             abort(make_response(
                 jsonify(message="No orders exist as yet"), 404))
-        else:
-            # if at least one order exists
-            response = jsonify({'orders' : CART})
-            response.status_code = 200
+        # if at least one order exists
+        response = jsonify({'orders' : CART})
+        response.status_code = 200
         return response
 
     def post(self):
@@ -98,9 +97,7 @@ class ShoppingCart(Resource):
         """
         item_name = request.args.get('item_name')
         item_price = request.args.get('item_price')
-
         item_names_in_cart = [order['item_name'] for order in CART]
-
 
         if not item_name or not item_price:
             # If order is missing required item_name or item_price
