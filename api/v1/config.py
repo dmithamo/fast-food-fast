@@ -1,6 +1,7 @@
 """
     Define the configuration params for various environments
 """
+import os
 
 
 class DefaultConfig:
@@ -10,7 +11,7 @@ class DefaultConfig:
     """
     DEBUG = False
     CSRF_ENABLED = True
-    SECRET_KEY = 'i-will-amend-later-this-8888'
+    SECRET_KEY = os.getenv('SECRET_KEY')
     TEST = False
 
 

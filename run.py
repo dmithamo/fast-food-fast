@@ -1,7 +1,7 @@
 """
     Serve the api locally
 """
-from api.v1.routes import app
+from api.v1.routes import APP
 
 if __name__ == '__main__':
-  app.run(debug=True)
+    APP.run(debug=True)
