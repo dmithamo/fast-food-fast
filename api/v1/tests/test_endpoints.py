@@ -4,8 +4,11 @@
 
 import json
 import pytest
-import config
-from api.api_v1 import API
+# import config
+
+
+# local imports
+from api.v1.routes import app
 
 # Base url common to all endpoints
 BASE_URL = '/fastfoodfast/api/v1'
@@ -35,9 +38,9 @@ def api_test_client():
         will be executed
     """
     # Configure api instance for testing
-    API.config.from_object(config.TestingConfig)
+    # API.config.from_object(config.TestingConfig)
     # Yield test_client
-    api_test_client = API.test_client()
+    api_test_client = app.test_client()
     yield api_test_client
 
 
