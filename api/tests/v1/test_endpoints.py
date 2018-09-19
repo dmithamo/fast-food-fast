@@ -55,9 +55,9 @@ def test_post_order_endpoint(api_test_client):
     """
         2. Test POST /orders - with proper data
     """
-    response = api_test_client.post('{}/orders?item_name={}&item_price={}'.format(
-        BASE_URL, ORDER['item_name'], ORDER['item_price']
-    ))
+    response = api_test_client.post('{}/orders'.format(
+        BASE_URL), json=ORDER, headers={'Content-Type':'application/json'})
+
     assert response.status_code == 201
     assert response_as_json(response)['item_name'] == 'Big Samosa'
     assert response_as_json(response)['item_price'] == 'Ksh. 200'
@@ -66,9 +66,9 @@ def test_post_order_endpoint_2(api_test_client):
     """
         3. Test POST /orders - when similar order already exists
     """
-    response = api_test_client.post('{}/orders?item_name={}&item_price={}'.format(
-        BASE_URL, ORDER['item_name'], ORDER['item_price']
-    ))
+    response = api_test_client.post('{}/orders'.format(
+        BASE_URL), json=ORDER, headers={'Content-Type':'application/json'})
+
     assert response.status_code == 201
     assert 'Big Samosa' in str(response.data)
     assert response_as_json(response)['quantity'] == 2
@@ -78,9 +78,9 @@ def test_post_order_endpoint_3(api_test_client):
     """
         4. Test POST /orders - 2nd POST with proper data
     """
-    response = api_test_client.post('{}/orders?item_name={}&item_price={}'.format(
-        BASE_URL, ORDER_2['item_name'], ORDER_2['item_price']
-    ))
+    response = api_test_client.post('{}/orders'.format(
+        BASE_URL), json=ORDER_2, headers={'Content-Type':'application/json'})
+
     assert response.status_code == 201
     assert 'Pork Ribs' in str(response.data)
     assert response_as_json(response)['item_price'] == 'Ksh. 1080'
@@ -90,9 +90,9 @@ def test_post_order_endpoint_4(api_test_client):
     """
         5. Test POST /orders - with some data missing
     """
-    response = api_test_client.post('{}/orders?item_name={}&item_price='.format(
-        BASE_URL, ORDER['item_name']
-    ))
+    response = api_test_client.post('{}/orders'.format(
+        BASE_URL), json={'item_name':'Watermelon'}, headers={'Content-Type':'application/json'})
+
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
 
@@ -101,8 +101,8 @@ def test_post_order_endpoint_5(api_test_client):
         6. Test POST /orders - without any data
     """
     response = api_test_client.post('{}/orders'.format(
-        BASE_URL
-    ))
+        BASE_URL), json={}, headers={'Content-Type':'application/json'})
+
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
 
@@ -137,9 +137,9 @@ def test_update_order_status_endpoint(api_test_client):
         10. Test PUT /orders/id - when order with given id exists
         and status is valid
     """
-    response = api_test_client.put('{}/orders/1?order_status=confirmed'.format(
-        BASE_URL
-        ))
+    response = api_test_client.put('{}/orders/1'.format(
+        BASE_URL), json={'order_status':'confirmed'})
+
     assert response.status_code == 201
     assert response_as_json(response)['order_status'] == 'confirmed'
     assert 'status_updated_on' in str(response.data)
@@ -149,9 +149,9 @@ def test_update_order_status_endpoint_2(api_test_client):
         11. Test PUT /orders/id - when order with given id exists
         but status is not valid
     """
-    response = api_test_client.put('{}/orders/1?status=kenya'.format(
-        BASE_URL
-        ))
+    response = api_test_client.put('{}/orders/1'.format(
+        BASE_URL), json={'order_status':'kenya'})
+
     assert response.status_code == 400
     assert response_as_json(response)['message'] == 'Bad request. Invalid order status'
 
@@ -159,8 +159,8 @@ def test_update_order_status_endpoint_3(api_test_client):
     """
         12. Test PUT /orders/id - when order with given id does not exist
     """
-    response = api_test_client.put('{}/orders/100?status=rejected'.format(
-        BASE_URL
-        ))
+    response = api_test_client.put('{}/orders/1000'.format(
+        BASE_URL), json={'order_status':'confirmed'})
+
     assert response.status_code == 404
-    assert response_as_json(response)['message'] == 'Order with id 100 not found'
+    assert response_as_json(response)['message'] == 'Order with id 1000 not found'

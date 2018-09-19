@@ -55,20 +55,26 @@ class Order(Resource):
             Update the status of order with given order_id
         """
         order = retrieve_order_from_list_by_id(order_id)
-        order_status = request.args.get('order_status')
+        data = request.get_json()
+        try:
+            order_status = data['order_status']
+            if order_status not in ['confirmed', 'rejected']:
+                abort(make_response(
+                    jsonify(message="Bad request. Invalid order status"), 400))
+            else:
+                # If order status is valid
+                order['order_status'] = order_status
+                order['status_updated_on'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        if not order_status or order_status not in ['confirmed', 'rejected']:
+                # Configure response
+                response = jsonify(order)
+                response.status_code = 201
+                return response
+
+        except KeyError:
             abort(make_response(
                 jsonify(message="Bad request. Invalid order status"), 400))
 
-        # If order status is valid
-        order['order_status'] = order_status
-        order['status_updated_on'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-        # Configure response
-        response = jsonify(order)
-        response.status_code = 201
-        return response
 
 
 class ShoppingCart(Resource):
@@ -95,14 +101,17 @@ class ShoppingCart(Resource):
             POST /orders endpoint
             Return created order
         """
-        item_name = request.args.get('item_name')
-        item_price = request.args.get('item_price')
-        item_names_in_cart = [order['item_name'] for order in CART]
+        data = request.get_json()
 
-        if not item_name or not item_price:
+        try:
+            item_name = data['item_name']
+            item_price = data['item_price']
+        except KeyError:
             # If order is missing required item_name or item_price
             abort(make_response(
                 jsonify(message="Bad request. Missing item_name or item_price"), 400))
+
+        item_names_in_cart = [order['item_name'] for order in CART]
 
         if item_name and item_price and item_name not in item_names_in_cart:
             # if order is a valid, and is not already in CART

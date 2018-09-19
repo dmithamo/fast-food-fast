@@ -1,9 +1,6 @@
 """
     Define the configuration params for various environments
 """
-import os
-
-
 class DefaultConfig:
     """
         Base config class with all the common and default config
