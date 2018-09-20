@@ -14,12 +14,12 @@ BASE_URL = '/v1'
 # Sample data for POST requests
 ORDER = {
     'item_name' : 'Big Samosa',
-    'item_price' : 'Ksh. 200'
+    'item_price' : 200
 }
 
 ORDER_2 = {
     'item_name' : 'Pork Ribs',
-    'item_price' : 'Ksh. 1080'
+    'item_price' : 1080
 }
 
 def response_as_json(resp):
