@@ -14,5 +14,5 @@ APP = Flask(__name__)
 APP.config.from_object(DevelopmentConfig)
 API = Api(APP)
 
-API.add_resource(Order, '/fastfoodfast/api/v1/orders/<int:order_id>')
-API.add_resource(ShoppingCart, '/fastfoodfast/api/v1/orders')
+API.add_resource(Order, '/v1/orders/<int:order_id>')
+API.add_resource(ShoppingCart, '/v1/orders')

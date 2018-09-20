@@ -10,7 +10,7 @@ from api.v1.views import APP
 from api.v1.config import TestingConfig
 
 # Base url common to all endpoints
-BASE_URL = '/fastfoodfast/api/v1'
+BASE_URL = '/v1'
 # Sample data for POST requests
 ORDER = {
     'item_name' : 'Big Samosa',
