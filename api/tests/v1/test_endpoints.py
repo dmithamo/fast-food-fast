@@ -72,6 +72,7 @@ def test_post_order_endpoint_2(api_test_client):
     assert response.status_code == 201
     assert 'Big Samosa' in str(response.data)
     assert response_as_json(response)['quantity'] == 2
+    assert response_as_json(response)['total_order_cost'] == 'Ksh. 400'
     assert response_as_json(response)['order_id'] == 1
 
 def test_post_order_endpoint_3(api_test_client):
@@ -94,7 +95,7 @@ def test_post_order_endpoint_4(api_test_client):
         BASE_URL), json={'item_name':'Watermelon'}, headers={'Content-Type':'application/json'})
 
     assert response.status_code == 400
-    assert 'Bad request' in str(response.data)
+    assert 'Bad request. Missing' in str(response.data)
 
 def test_post_order_endpoint_5(api_test_client):
     """
@@ -106,9 +107,19 @@ def test_post_order_endpoint_5(api_test_client):
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
 
+def test_post_order_endpoint_6(api_test_client):
+    """
+        7. Test POST /orders - with non-json data in request
+    """
+    response = api_test_client.post('{}/orders'.format(
+        BASE_URL), data='item_name=Guacamole&item_price=Ksh.200')
+
+    assert response.status_code == 400
+    assert 'Bad request. Request data must be in json' in str(response.data)
+
 def test_get_orders_endpoint_2(api_test_client):
     """
-        7. Test GET /orders - when one or several orders exist
+        8. Test GET /orders - when one or several orders exist
         Achieved after successful POSTs in Tests 1, 2, 3 above
     """
     response = api_test_client.get('{}/orders'.format(BASE_URL))
@@ -118,7 +129,7 @@ def test_get_orders_endpoint_2(api_test_client):
 
 def test_get_specific_order_endpoint(api_test_client):
     """
-        8. Test GET /orders/id - when order with given id exists
+        9. Test GET /orders/id - when order with given id exists
     """
     response = api_test_client.get('{}/orders/1'.format(BASE_URL))
     assert response.status_code == 200
@@ -126,7 +137,7 @@ def test_get_specific_order_endpoint(api_test_client):
 
 def test_get_specific_order_endpoint_2(api_test_client):
     """
-        9. Test GET /orders/id - when order with given id does not exist
+        10. Test GET /orders/id - when order with given id does not exist
     """
     response = api_test_client.get('{}/orders/100'.format(BASE_URL))
     assert response.status_code == 404
@@ -134,7 +145,7 @@ def test_get_specific_order_endpoint_2(api_test_client):
 
 def test_update_order_status_endpoint(api_test_client):
     """
-        10. Test PUT /orders/id - when order with given id exists
+        11. Test PUT /orders/id - when order with given id exists
         and status is valid
     """
     response = api_test_client.put('{}/orders/1'.format(
@@ -146,7 +157,7 @@ def test_update_order_status_endpoint(api_test_client):
 
 def test_update_order_status_endpoint_2(api_test_client):
     """
-        11. Test PUT /orders/id - when order with given id exists
+        12. Test PUT /orders/id - when order with given id exists
         but status is not valid
     """
     response = api_test_client.put('{}/orders/1'.format(
@@ -157,10 +168,32 @@ def test_update_order_status_endpoint_2(api_test_client):
 
 def test_update_order_status_endpoint_3(api_test_client):
     """
-        12. Test PUT /orders/id - when order with given id does not exist
+        13. Test PUT /orders/id - when order with given id does not exist
     """
     response = api_test_client.put('{}/orders/1000'.format(
         BASE_URL), json={'order_status':'confirmed'})
 
     assert response.status_code == 404
     assert response_as_json(response)['message'] == 'Order with id 1000 not found'
+
+def test_update_order_status_endpoint_4(api_test_client):
+    """
+        14. Test PUT /orders/id - when order with given id exists
+        but status has not been provided
+    """
+    response = api_test_client.put('{}/orders/1'.format(
+        BASE_URL), json={})
+
+    assert response.status_code == 400
+    assert 'Bad request. Missing required param' in str(response.data)
+
+def test_update_order_status_endpoint_5(api_test_client):
+    """
+        15. Test PUT /orders/id - when order with given id exists
+        but status is provided in non-json format
+    """
+    response = api_test_client.put('{}/orders/1'.format(
+        BASE_URL), data='order_status=confirmed')
+
+    assert response.status_code == 400
+    assert 'Bad request. Request data must be in json' in str(response.data)
