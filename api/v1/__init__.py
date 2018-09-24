@@ -6,7 +6,7 @@
 from flask import Flask
 
 # local imports
-from instance.config import CONFIGS
+from api.v1.config import CONFIGS
 
 APP = Flask(__name__)
 APP.config.from_object(CONFIGS['development_config'])

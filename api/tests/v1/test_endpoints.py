@@ -7,7 +7,7 @@ import pytest
 
 # local imports
 from api.v1.views import APP
-from instance.config import CONFIGS
+from api.v1.config import CONFIGS
 
 # Base url common to all endpoints
 BASE_URL = '/v1'
