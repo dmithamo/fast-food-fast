@@ -77,7 +77,7 @@ def make_new_order(name, price, quantity):
         # Calcute order cost
         calculate_order_cost(order)
         CART.append(order)
-        response = jsonify(order)
+        response = jsonify(CART[-1])
         response.status_code = 201
     else:
         abort_if_missing_required_param()
