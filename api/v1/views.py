@@ -8,10 +8,10 @@ from flask_restful import Api
 
 # local imports
 from api.v1.resources.orders import Order, ShoppingCart
-from api.v1.config import DevelopmentConfig
+from instance.config import CONFIGS
 
 APP = Flask(__name__)
-APP.config.from_object(DevelopmentConfig)
+APP.config.from_object(CONFIGS['development_config'])
 API = Api(APP)
 
 API.add_resource(Order, '/v1/orders/<int:order_id>')
