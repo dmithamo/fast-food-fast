@@ -55,8 +55,7 @@ def calculate_order_cost(order):
         Helper function.
         Calculates the total cost of an order
     """
-    order['total_order_cost'] = 'Ksh. {}'.format(
-        int(order['item_price'].split()[-1]) * order['quantity'])
+    order['total_order_cost'] = order['item_price'] * order['quantity']
 
 class Order(Resource):
     """
@@ -139,7 +138,7 @@ class ShoppingCart(Resource):
             order = {
                 'order_id' : order_id,
                 'item_name' : item_name,
-                'item_price' : 'Ksh. {}'.format(item_price),
+                'item_price' : item_price,
                 'quantity' : 1,
                 'ordered_on' : datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             }

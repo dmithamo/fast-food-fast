@@ -60,7 +60,7 @@ def test_post_order_endpoint(api_test_client):
 
     assert response.status_code == 201
     assert response_as_json(response)['item_name'] == 'Big Samosa'
-    assert response_as_json(response)['item_price'] == 'Ksh. 200'
+    assert response_as_json(response)['item_price'] == 200
 
 def test_post_order_endpoint_2(api_test_client):
     """
@@ -72,7 +72,7 @@ def test_post_order_endpoint_2(api_test_client):
     assert response.status_code == 201
     assert 'Big Samosa' in str(response.data)
     assert response_as_json(response)['quantity'] == 2
-    assert response_as_json(response)['total_order_cost'] == 'Ksh. 400'
+    assert response_as_json(response)['total_order_cost'] == 400
     assert response_as_json(response)['order_id'] == 1
 
 def test_post_order_endpoint_3(api_test_client):
@@ -84,7 +84,7 @@ def test_post_order_endpoint_3(api_test_client):
 
     assert response.status_code == 201
     assert 'Pork Ribs' in str(response.data)
-    assert response_as_json(response)['item_price'] == 'Ksh. 1080'
+    assert response_as_json(response)['item_price'] == 1080
     assert response_as_json(response)['order_id'] == 2
 
 def test_post_order_endpoint_4(api_test_client):
