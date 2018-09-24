@@ -45,7 +45,7 @@ def api_test_client():
     yield api_test_client
 
 
-def test_get_orders_endpoint(api_test_client):
+def test_get_orders_when_no_orders_exist(api_test_client):
     """
         1. Test GET /orders - when no orders exist
     """
@@ -53,7 +53,7 @@ def test_get_orders_endpoint(api_test_client):
     assert response.status_code == 404
     assert response_as_json(response)['message'] == 'No orders exist as yet'
 
-def test_post_order_endpoint(api_test_client):
+def test_post_order(api_test_client):
     """
         2. Test POST /orders - with proper data
     """
@@ -64,7 +64,7 @@ def test_post_order_endpoint(api_test_client):
     assert response_as_json(response)['item_name'] == 'Big Samosa'
     assert response_as_json(response)['item_price'] == 200
 
-def test_post_order_endpoint_2(api_test_client):
+def test_post_order_when_similar_order_exists(api_test_client):
     """
         3. Test POST /orders - when similar order already exists
     """
@@ -77,7 +77,7 @@ def test_post_order_endpoint_2(api_test_client):
     assert response_as_json(response)['total_order_cost'] == 400
     assert response_as_json(response)['order_id'] == 1
 
-def test_post_order_endpoint_3(api_test_client):
+def test_post_order_another_order(api_test_client):
     """
         4. Test POST /orders - 2nd POST with proper data
     """
@@ -89,7 +89,7 @@ def test_post_order_endpoint_3(api_test_client):
     assert response_as_json(response)['item_price'] == 1080
     assert response_as_json(response)['order_id'] == 2
 
-def test_post_order_endpoint_4(api_test_client):
+def test_post_order_with_some_data_missing(api_test_client):
     """
         5. Test POST /orders - with some data missing
     """
@@ -99,7 +99,7 @@ def test_post_order_endpoint_4(api_test_client):
     assert response.status_code == 400
     assert 'Bad request. Missing' in str(response.data)
 
-def test_post_order_endpoint_5(api_test_client):
+def test_post_order_without_any_data(api_test_client):
     """
         6. Test POST /orders - without any data
     """
@@ -109,7 +109,7 @@ def test_post_order_endpoint_5(api_test_client):
     assert response.status_code == 400
     assert 'Bad request' in str(response.data)
 
-def test_post_order_endpoint_6(api_test_client):
+def test_post_order_with_non_json_data(api_test_client):
     """
         7. Test POST /orders - with non-json data in request
     """
@@ -119,7 +119,7 @@ def test_post_order_endpoint_6(api_test_client):
     assert response.status_code == 400
     assert 'Bad request. Request data must be in json' in str(response.data)
 
-def test_get_orders_endpoint_2(api_test_client):
+def test_get_orders(api_test_client):
     """
         8. Test GET /orders - when one or several orders exist
         Achieved after successful POSTs in Tests 1, 2, 3 above
@@ -129,7 +129,7 @@ def test_get_orders_endpoint_2(api_test_client):
     assert 'Big Samosa' and 'Pork Ribs' in str(response.data)
     assert response_as_json(response)['orders'] is not None
 
-def test_get_specific_order_endpoint(api_test_client):
+def test_get_order_by_id(api_test_client):
     """
         9. Test GET /orders/id - when order with given id exists
     """
@@ -137,7 +137,7 @@ def test_get_specific_order_endpoint(api_test_client):
     assert response.status_code == 200
     assert response_as_json(response)['item_name'] == 'Big Samosa'
 
-def test_get_specific_order_endpoint_2(api_test_client):
+def test_get_by_id_when_order_does_not_exist(api_test_client):
     """
         10. Test GET /orders/id - when order with given id does not exist
     """
@@ -145,7 +145,7 @@ def test_get_specific_order_endpoint_2(api_test_client):
     assert response.status_code == 404
     assert response_as_json(response)['message'] == 'Order with id 100 not found'
 
-def test_update_order_status_endpoint(api_test_client):
+def test_put_order(api_test_client):
     """
         11. Test PUT /orders/id - when order with given id exists
         and status is valid
@@ -157,7 +157,7 @@ def test_update_order_status_endpoint(api_test_client):
     assert response_as_json(response)['order_status'] == 'accepted'
     assert 'status_updated_on' in str(response.data)
 
-def test_update_order_status_endpoint_2(api_test_client):
+def test_put_order_with_invalid_status(api_test_client):
     """
         12. Test PUT /orders/id - when order with given id exists
         but status is not valid
@@ -168,17 +168,17 @@ def test_update_order_status_endpoint_2(api_test_client):
     assert response.status_code == 400
     assert response_as_json(response)['message'] == 'Bad request. Invalid order status'
 
-def test_update_order_status_endpoint_3(api_test_client):
+def test_put_order_when_order_does_not_exist(api_test_client):
     """
         13. Test PUT /orders/id - when order with given id does not exist
     """
     response = api_test_client.put('{}/orders/1000'.format(
-        BASE_URL), json={'order_status':'confirmed'})
+        BASE_URL), json={'order_status':'accepted'})
 
     assert response.status_code == 404
     assert response_as_json(response)['message'] == 'Order with id 1000 not found'
 
-def test_update_order_status_endpoint_4(api_test_client):
+def test_put_order_with_no_status(api_test_client):
     """
         14. Test PUT /orders/id - when order with given id exists
         but status has not been provided
@@ -189,13 +189,13 @@ def test_update_order_status_endpoint_4(api_test_client):
     assert response.status_code == 400
     assert 'Bad request. Missing required param' in str(response.data)
 
-def test_update_order_status_endpoint_5(api_test_client):
+def test_put_order_with_non_json_data(api_test_client):
     """
         15. Test PUT /orders/id - when order with given id exists
         but status is provided in non-json format
     """
     response = api_test_client.put('{}/orders/1'.format(
-        BASE_URL), data='order_status=confirmed')
+        BASE_URL), data='order_status=rejected')
 
     assert response.status_code == 400
     assert 'Bad request. Request data must be in json' in str(response.data)
