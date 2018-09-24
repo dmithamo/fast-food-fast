@@ -14,12 +14,14 @@ BASE_URL = '/api/v1'
 # Sample data for POST requests
 ORDER = {
     'item_name' : 'Big Samosa',
-    'item_price' : 200
+    'item_price' : 200,
+    'quantity' : 1
 }
 
 ORDER_2 = {
     'item_name' : 'Pork Ribs',
-    'item_price' : 1080
+    'item_price' : 1080,
+    'quantity' : 1
 }
 
 def response_as_json(resp):
@@ -149,10 +151,10 @@ def test_update_order_status_endpoint(api_test_client):
         and status is valid
     """
     response = api_test_client.put('{}/orders/1'.format(
-        BASE_URL), json={'order_status':'confirmed'})
+        BASE_URL), json={'order_status':'accepted'})
 
     assert response.status_code == 201
-    assert response_as_json(response)['order_status'] == 'confirmed'
+    assert response_as_json(response)['order_status'] == 'accepted'
     assert 'status_updated_on' in str(response.data)
 
 def test_update_order_status_endpoint_2(api_test_client):

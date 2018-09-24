@@ -57,6 +57,32 @@ def calculate_order_cost(order):
     """
     order['total_order_cost'] = order['item_price'] * order['quantity']
 
+def make_new_order(name, price, quantity):
+    """
+        Helper function
+        Makes a new order, and prepares the response as a json
+
+    """
+    if name and price and quantity:
+        # If all the required params are not None
+        order_id = len(CART) + 1
+        order = {
+            'order_id' : order_id,
+            'item_name' : name,
+            'item_price' : price,
+            'quantity' : quantity,
+            'order_status' : 'pending',
+            'ordered_on' : datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        # Calcute order cost
+        calculate_order_cost(order)
+        CART.append(order)
+        response = jsonify(order)
+        response.status_code = 201
+    else:
+        abort_if_missing_required_param()
+    return response
+
 class Order(Resource):
     """
         Model and Order and define methods callable on an Order
@@ -81,7 +107,7 @@ class Order(Resource):
         abort_if_no_json_from_request(data)
         try:
             order_status = data['order_status']
-            if order_status not in ['confirmed', 'rejected']:
+            if order_status not in ['accepted', 'rejected', 'completed']:
                 # If order status is not valid
                 abort(make_response(
                     jsonify(message="Bad request. Invalid order status"), 400))
@@ -126,36 +152,33 @@ class ShoppingCart(Resource):
         try:
             item_name = data['item_name']
             item_price = data['item_price']
+            quantity = data['quantity']
         except KeyError:
             # If order is missing required item_name or item_price
             abort_if_missing_required_param()
 
-        item_names_in_cart = [order['item_name'] for order in CART]
+        if CART:
+            # If any orders have already been added to CART
+            try:
+                # See if an order with similar name is already in CART,
+                # and has not been serviced yet
+                unserviced_order = [
+                    order for order in CART if order['item_name'] == item_name and
+                    order['order_status'] == 'pending'][0]
 
-        if item_name and item_price and item_name not in item_names_in_cart:
-            # if order is a valid, and is not already in CART
-            order_id = len(CART) + 1
-            order = {
-                'order_id' : order_id,
-                'item_name' : item_name,
-                'item_price' : item_price,
-                'quantity' : 1,
-                'ordered_on' : datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            }
-            # Calcute order cost
-            calculate_order_cost(order)
-            # Save order
-            CART.append(order)
-            response = jsonify(order)
-            response.status_code = 201
+                unserviced_order['quantity'] += quantity
+                # Update order cost
+                calculate_order_cost(unserviced_order)
+                response = jsonify(unserviced_order)
+                response.status_code = 201
 
-        elif item_name in item_names_in_cart:
-            # if item has already been added to CART
-            order = [order for order in CART if order['item_name'] == item_name][0]
-            order['quantity'] += 1
-            # Update order cost
-            calculate_order_cost(order)
-            response = jsonify(order)
-            response.status_code = 201
+            except IndexError:
+                # if a similar order has not been added to CART, or
+                # any that have been added have been marked
+                # 'accepted', 'rejected' or 'completed'
+                response = make_new_order(item_name, item_price, quantity)
+        else:
+            # if the CART is empty
+            response = make_new_order(item_name, item_price, quantity)
 
         return response
