@@ -10,7 +10,7 @@ from api.v1.views import APP
 from api.v1.config import CONFIGS
 
 # Base url common to all endpoints
-BASE_URL = '/v1'
+BASE_URL = '/api/v1'
 # Sample data for POST requests
 ORDER = {
     'item_name' : 'Big Samosa',
