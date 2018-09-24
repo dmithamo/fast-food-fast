@@ -7,7 +7,7 @@ import pytest
 
 # local imports
 from api.v1.views import APP
-from api.v1.config import TestingConfig
+from instance.config import CONFIGS
 
 # Base url common to all endpoints
 BASE_URL = '/v1'
@@ -37,7 +37,7 @@ def api_test_client():
         will be executed
     """
     # Configure api instance for testing
-    APP.config.from_object(TestingConfig)
+    APP.config.from_object(CONFIGS['testing_config'])
     # Yield test_client
     api_test_client = APP.test_client()
     yield api_test_client
