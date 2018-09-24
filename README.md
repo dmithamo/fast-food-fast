@@ -65,3 +65,7 @@ To run the tests written for the API's endpoints:
 2. Run `pytest` (or `pytest -v` for verbose output)
 
 [Pytest documentation](http://pytest-flask.readthedocs.io/en/latest/).
+
+## Languages
+
+1. `Python 3.6.5`
