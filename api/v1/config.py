@@ -3,6 +3,7 @@
 """
 import os
 
+
 class DefaultConfig:
     """
         Base config class with all the common and default config
@@ -31,6 +32,6 @@ class TestingConfig(DefaultConfig):
 
 
 CONFIGS = {
-    'development_config' : DevelopmentConfig,
-    'testing_config' : TestingConfig
+    'development_config': DevelopmentConfig,
+    'testing_config': TestingConfig
 }

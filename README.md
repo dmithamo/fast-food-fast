@@ -4,11 +4,7 @@ This repo is a build out of the UI templates and API backend for an online food 
 
 ## Continous Integration Badges
 
-[![Build Status](https://travis-ci.org/dmithamo/fast-food-fast.svg?branch=api-v1)](https://travis-ci.org/dmithamo/fast-food-fast)
-
-[![Coverage Status](https://coveralls.io/repos/github/dmithamo/fast-food-fast/badge.svg?branch=api-v1)](https://coveralls.io/github/dmithamo/fast-food-fast?branch=api-v1)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/maintainability)](https://codeclimate.com/github/dmithamo/fast-food-fast/maintainability)
+[![Build Status](https://travis-ci.org/dmithamo/fast-food-fast.svg?branch=develop)](https://travis-ci.org/dmithamo/fast-food-fast) [![Coverage Status](https://coveralls.io/repos/github/dmithamo/fast-food-fast/badge.svg?branch=api-v1)](https://coveralls.io/github/dmithamo/fast-food-fast?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/maintainability)](https://codeclimate.com/github/dmithamo/fast-food-fast/maintainability)
 
 ## UI Features
 
@@ -39,7 +35,7 @@ The API contains the endpoints below:
 
 To manually test these endpoints, configure and run the server as below:
 
-1. `git checkout <branch-with-desired-endpoint>` [or `git checkout api-v1` for all the endpoints]
+1. `git checkout develop` for all the endpoints
 
 2. Create and activate a [Virtual Environment](https://virtualenv.pypa.io/en/stable/).
 
@@ -49,7 +45,7 @@ To manually test these endpoints, configure and run the server as below:
 
 5. Run `flask run` to start the server
 
-Test the endpoints at `localhost:5000/v1/orders`.
+Test the endpoints at `localhost:5000/api/v1/orders`.
 
 The API is hosted on Heroku at [Heroku/dmithamo/fastfood/fast](https://dashboard.heroku.com/apps/dmithamo-fast-food-fast-api).
 To test from the Heroku server, send requests to [https://dmithamo-fast-food-fast-api.herokuapp.com/v1/orders](https://dmithamo-fast-food-fast-api.herokuapp.com/v1/orders)
@@ -60,7 +56,7 @@ Recommended testing tool : [Postman](https://www.getpostman.com/).
 
 To run the tests written for the API's endpoints:
 
-1. Proceed as in steps `1 to 3` above, checking out the `api-v1` branch.
+1. Proceed as in steps `1 to 3` above, checking out the `develop` branch.
 
 2. Run `pytest` (or `pytest -v` for verbose output)
 

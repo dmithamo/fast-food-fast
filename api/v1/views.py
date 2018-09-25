@@ -10,5 +10,5 @@ from api.v1.resources.orders import Order, ShoppingCart
 
 
 API = Api(APP)
-API.add_resource(Order, '/v1/orders/<int:order_id>')
-API.add_resource(ShoppingCart, '/v1/orders')
+API.add_resource(Order, '/api/v1/orders/<int:order_id>')
+API.add_resource(ShoppingCart, '/api/v1/orders')
