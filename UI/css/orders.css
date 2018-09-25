@@ -87,8 +87,8 @@ ol>li:last-child {
     transition: all .3s;
 }
 
-.q-input-btn#save-q-btn {
-    background-color: rgb(15, 216, 15);
+.q-input-btn#cancel-q-btn {
+    background-color: rgb(209, 209, 209);
 }
 
 .order-btn:hover, 
@@ -100,11 +100,6 @@ ol>li:last-child {
     box-shadow: none;
     background-color: rgb(119, 255, 8);
     border: 2px solid black;
-}
-
-.q-input-btn:hover,
-.q-input-btn#save-q-btn:hover {
-    background-color: rgb(8, 74, 255);
 }
 
 .confirm-btn-empty, 
@@ -156,5 +151,6 @@ ol>li:last-child {
 .q-input-btn {
     width: 20%;
     padding: 1em;
+    font-family: 'Montserrat', cursive;
     margin: 1em .5em;
 }
