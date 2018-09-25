@@ -8,7 +8,7 @@ This repo is a build out of the UI templates and API backend for an online food 
 
 ## UI Features
 
-The UI [--> dmithamo/fast-food-fast](https://dmithamo.github.io/fast-food-fast/index.html) provides elements for :
+The UI [(See dmithamo/fast-food-fast)](https://dmithamo.github.io/fast-food-fast/index.html) provides elements for :
 
 1. User registration and login.
 
