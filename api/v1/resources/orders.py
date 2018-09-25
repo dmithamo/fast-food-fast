@@ -81,7 +81,9 @@ def make_new_order(name, price, quantity):
         # Calcute order cost
         calculate_order_cost(order)
         CART.append(order)
-        response = jsonify(CART[-1])
+        response = jsonify({
+            "message": "Order posted successfully",
+            "order": CART[-1]})
         response.status_code = 201
     else:
         # if any of the required params is None
@@ -123,7 +125,9 @@ class Order(Resource):
                 '%Y-%m-%d %H:%M:%S')
 
             # Configure response
-            response = jsonify(order)
+            response = jsonify({
+                "message": "Order status updated",
+                "order": order})
             response.status_code = 201
             return response
 
@@ -176,7 +180,9 @@ class ShoppingCart(Resource):
                 unserviced_order['quantity'] += quantity
                 # Update order cost
                 calculate_order_cost(unserviced_order)
-                response = jsonify(unserviced_order)
+                response = jsonify({
+                    "message": "Order quantity updated",
+                    "order": unserviced_order})
                 response.status_code = 201
 
             except IndexError:
