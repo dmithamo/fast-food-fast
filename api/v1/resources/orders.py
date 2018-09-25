@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import request, jsonify, abort, make_response
 from flask_restful import Resource
 
-CART = [] # Container for orders. List of dicts
+CART = []  # Container for orders. List of dicts
 
 
 def retrieve_order_from_list_by_id(order_id):
@@ -29,8 +29,9 @@ def abort_if_order_not_in_cart(order_id):
         Helper method to search for Order
         Abort if order not found and throw error
     """
-    abort(make_response(
-        jsonify(message="Order with id {} not found".format(order_id)), 404))
+    abort(make_response(jsonify(
+        message="Order with id {} not found".format(order_id)), 404))
+
 
 def abort_if_no_json_from_request(req_data):
     """
@@ -39,16 +40,18 @@ def abort_if_no_json_from_request(req_data):
     """
     if req_data is None:
         # If a json was not obtained from the request
-        abort(make_response(
-            jsonify(message="Bad request. Request data must be in json format"), 400))
+        abort(make_response(jsonify(
+            message="Bad request. Request data must be in json format"), 400))
+
 
 def abort_if_missing_required_param():
     """
         Helper function.
         Aborts if request data is missing a required argument
     """
-    abort(make_response(
-        jsonify(message="Bad request. Missing required param"), 400))
+    abort(make_response(jsonify(
+        message="Bad request. Missing required param"), 400))
+
 
 def calculate_order_cost(order):
     """
@@ -56,6 +59,7 @@ def calculate_order_cost(order):
         Calculates the total cost of an order
     """
     order['total_order_cost'] = order['item_price'] * order['quantity']
+
 
 def make_new_order(name, price, quantity):
     """
@@ -67,12 +71,12 @@ def make_new_order(name, price, quantity):
         # If all the required params are not None
         order_id = len(CART) + 1
         order = {
-            'order_id' : order_id,
-            'item_name' : name,
-            'item_price' : price,
-            'quantity' : quantity,
-            'order_status' : 'pending',
-            'ordered_on' : datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            'order_id': order_id,
+            'item_name': name,
+            'item_price': price,
+            'quantity': quantity,
+            'order_status': 'pending',
+            'ordered_on': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         # Calcute order cost
         calculate_order_cost(order)
@@ -83,6 +87,7 @@ def make_new_order(name, price, quantity):
         # if any of the required params is None
         abort_if_missing_required_param()
     return response
+
 
 class Order(Resource):
     """
@@ -110,11 +115,12 @@ class Order(Resource):
             order_status = data['order_status']
             if order_status not in ['accepted', 'rejected', 'completed']:
                 # If order status is not valid
-                abort(make_response(
-                    jsonify(message="Bad request. Invalid order status"), 400))
+                abort(make_response(jsonify(
+                    message="Bad request. Invalid order status"), 400))
             # Valid order status
             order['order_status'] = order_status
-            order['status_updated_on'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            order['status_updated_on'] = datetime.now().strftime(
+                '%Y-%m-%d %H:%M:%S')
 
             # Configure response
             response = jsonify(order)
@@ -140,7 +146,7 @@ class ShoppingCart(Resource):
             abort(make_response(
                 jsonify(message="No orders exist as yet"), 404))
         # if at least one order exists
-        response = jsonify({'orders' : CART})
+        response = jsonify({'orders': CART})
         response.status_code = 200
         return response
 
@@ -164,8 +170,8 @@ class ShoppingCart(Resource):
                 # See if an order with similar name is already in CART,
                 # and has not been serviced yet
                 unserviced_order = [
-                    order for order in CART if order['item_name'] == item_name and
-                    order['order_status'] == 'pending'][0]
+                    order for order in CART if order['item_name'] == item_name
+                    and order['order_status'] == 'pending'][0]
 
                 unserviced_order['quantity'] += quantity
                 # Update order cost

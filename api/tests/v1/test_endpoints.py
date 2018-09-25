@@ -13,16 +13,17 @@ from api.v1.config import CONFIGS
 BASE_URL = '/api/v1'
 # Sample data for POST requests
 ORDER = {
-    'item_name' : 'Big Samosa',
-    'item_price' : 200,
-    'quantity' : 1
+    'item_name': 'Big Samosa',
+    'item_price': 200,
+    'quantity': 1
 }
 
 ORDER_2 = {
-    'item_name' : 'Pork Ribs',
-    'item_price' : 1080,
-    'quantity' : 1
+    'item_name': 'Pork Ribs',
+    'item_price': 1080,
+    'quantity': 1
 }
+
 
 def response_as_json(resp):
     """
@@ -31,6 +32,7 @@ def response_as_json(resp):
     """
     resp_json = json.loads(resp.data.decode('utf-8'))
     return resp_json
+
 
 class TestEndpoints(unittest.TestCase):
     """
@@ -68,7 +70,8 @@ class TestEndpoints(unittest.TestCase):
             2. Test POST /orders - with proper data
         """
         response = self.api_test_client.post('{}/orders'.format(
-            BASE_URL), json=ORDER, headers={'Content-Type':'application/json'})
+            BASE_URL), json=ORDER, headers={
+                'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 201)
         self.assertIn('Big Samosa', str(response.data))
@@ -81,7 +84,8 @@ class TestEndpoints(unittest.TestCase):
             3. Test POST /orders - when similar order already exists
         """
         response = self.api_test_client.post('{}/orders'.format(
-            BASE_URL), json=ORDER, headers={'Content-Type':'application/json'})
+            BASE_URL), json=ORDER, headers={
+                'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 201)
         self.assertIn('Big Samosa', str(response.data))
@@ -94,7 +98,8 @@ class TestEndpoints(unittest.TestCase):
             4. Test POST /orders - 2nd POST with proper data
         """
         response = self.api_test_client.post('{}/orders'.format(
-            BASE_URL), json=ORDER_2, headers={'Content-Type':'application/json'})
+            BASE_URL), json=ORDER_2, headers={
+                'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 201)
         self.assertIn('Pork Ribs', str(response.data))
@@ -107,7 +112,8 @@ class TestEndpoints(unittest.TestCase):
             5. Test POST /orders - with some data missing
         """
         response = self.api_test_client.post('{}/orders'.format(
-            BASE_URL), json={'item_name':'Watermelon'}, headers={'Content-Type':'application/json'})
+            BASE_URL), json={'item_name': 'Watermelon'}, headers={
+                'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 400)
         self.assertIn('Bad request. Missing', str(response.data))
@@ -118,8 +124,8 @@ class TestEndpoints(unittest.TestCase):
         """
         response = self.api_test_client.post('{}/orders'.format(
             BASE_URL), json={
-                'item_name':'Watermelon', 'item_price':200, 'quantity':''}, headers={
-                    'Content-Type':'application/json'})
+                'item_name': 'Watermelon', 'item_price': 200, 'quantity': ''
+                }, headers={'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 400)
         self.assertIn('Bad request. Missing', str(response.data))
@@ -129,7 +135,7 @@ class TestEndpoints(unittest.TestCase):
             7. Test POST /orders - without any data
         """
         response = self.api_test_client.post('{}/orders'.format(
-            BASE_URL), json={}, headers={'Content-Type':'application/json'})
+            BASE_URL), json={}, headers={'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 400)
         self.assertIn('Bad request. Missing', str(response.data))
@@ -174,7 +180,8 @@ class TestEndpoints(unittest.TestCase):
         response = self.api_test_client.get('{}/orders/100'.format(BASE_URL))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
-            'Order with id 100 not found', response_as_json(response)['message'])
+            'Order with id 100 not found', response_as_json(
+                response)['message'])
 
     def test_l_put_order(self):
         """
@@ -182,7 +189,7 @@ class TestEndpoints(unittest.TestCase):
             and status is valid
         """
         response = self.api_test_client.put('{}/orders/1'.format(
-            BASE_URL), json={'order_status':'accepted'})
+            BASE_URL), json={'order_status': 'accepted'})
 
         self.assertEqual(response.status_code, 201)
         self.assertIn(
@@ -196,7 +203,7 @@ class TestEndpoints(unittest.TestCase):
             but status is not valid
         """
         response = self.api_test_client.put('{}/orders/1'.format(
-            BASE_URL), json={'order_status':'kenya'})
+            BASE_URL), json={'order_status': 'kenya'})
 
         self.assertEqual(response.status_code, 400)
         self.assertIn(
@@ -207,7 +214,7 @@ class TestEndpoints(unittest.TestCase):
             14. Test PUT /orders/id - when order with given id does not exist
         """
         response = self.api_test_client.put('{}/orders/1000'.format(
-            BASE_URL), json={'order_status':'accepted'})
+            BASE_URL), json={'order_status': 'accepted'})
 
         self.assertEqual(response.status_code, 404)
         self.assertIn(
@@ -236,6 +243,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             'Bad request. Request data must be in json', str(response.data))
+
 
 if __name__ == '__main__':
     unittest.main()
