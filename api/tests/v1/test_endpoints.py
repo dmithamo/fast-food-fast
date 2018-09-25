@@ -56,7 +56,7 @@ class TestEndpoints(unittest.TestCase):
         self.api_context.pop()
         self.api_test_client = None
 
-    def test_a_get_orders_with_no_orders(self):
+    def test_fetch_all_orders_when_none_exist(self):
         """
             1. Test GET /orders - when no orders exist
         """
@@ -65,7 +65,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['message'], 'No orders exist as yet')
 
-    def test_b_post_order(self):
+    def test_make_new_order(self):
         """
             2. Test POST /orders - with proper data
         """
@@ -83,7 +83,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['order']['total_order_cost'], 200)
 
-    def test_c_post_when_similar_order_exists(self):
+    def test_make_similar_order(self):
         """
             3. Test POST /orders - when similar order already exists
         """
@@ -103,7 +103,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['order']['total_order_cost'], 400)
 
-    def test_d_post_another_order(self):
+    def test_make_second_order(self):
         """
             4. Test POST /orders - 2nd POST with proper data
         """
@@ -121,7 +121,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['order']['item_price'], 1080)
 
-    def test_e_post_with_some_data_missing(self):
+    def test_make_order_with_some_data_missing(self):
         """
             5. Test POST /orders - with some data missing
         """
@@ -133,7 +133,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['message'], 'Bad request. Missing required param')
 
-    def test_f_post_with_some_data_as_none(self):
+    def test_make_order_with_some_data_as_empty_str(self):
         """
             6. Test POST /orders - with some data as None
         """
@@ -146,7 +146,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['message'], 'Bad request. Missing required param')
 
-    def test_g_post_order_without_any_data(self):
+    def test_make_order_without_any_request_data(self):
         """
             7. Test POST /orders - without any data
         """
@@ -158,7 +158,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['message'], 'Bad request. Missing required param')
 
-    def test_h_post_with_non_json_data(self):
+    def test_make_order_with_non_json_data(self):
         """
             8. Test POST /orders - with non-json data in request
         """
@@ -170,7 +170,7 @@ class TestEndpoints(unittest.TestCase):
             response)['message'],
                          'Bad request. Request data must be in json format')
 
-    def test_i_get_orders(self):
+    def test_retrieve_all_orders(self):
         """
             9. Test GET /orders - when one or several orders exist
             After successful POSTs in Tests 1, 2, 3 above
@@ -184,7 +184,7 @@ class TestEndpoints(unittest.TestCase):
             response)['orders'][1]['item_name'], self.ORDER_2['item_name'])
         self.assertEqual(len(response_as_json(response)['orders']), 2)
 
-    def test_j_get_by_id_when_order_exists(self):
+    def test_retrieve_by_id(self):
         """
             10. Test GET /orders/id - when order with given id exists
         """
@@ -194,7 +194,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['item_name'], self.ORDER['item_name'])
 
-    def test_k_get_by_id_when_order_does_not_exist(self):
+    def test_fetch_specific_order_when_does_not_exist(self):
         """
             11. Test GET /orders/id - when order with given id does not exist
         """
@@ -205,7 +205,7 @@ class TestEndpoints(unittest.TestCase):
             'Order with id 100 not found', response_as_json(
                 response)['message'])
 
-    def test_l_put_order(self):
+    def test_update_order(self):
         """
             12. Test PUT /orders/id - when order with given id exists
             and status is valid
@@ -219,7 +219,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(
             response_as_json(response)['order']['order_status'], 'accepted')
 
-    def test_m_put_order_with_invalid_status(self):
+    def test_update_order_with_invalid_status(self):
         """
             13. Test PUT /orders/id - when order with given id exists
             but status is not valid
@@ -232,7 +232,7 @@ class TestEndpoints(unittest.TestCase):
             response)['message'],
                          'Bad request. Invalid order status')
 
-    def test_n_put_order_when_order_does_not_exist(self):
+    def test_change_order_status_when_order_does_not_exist(self):
         """
             14. Test PUT /orders/id - when order with given id does not exist
         """
@@ -244,7 +244,7 @@ class TestEndpoints(unittest.TestCase):
             response)['message'],
                          'Order with id 1000 not found')
 
-    def test_o_put_order_with_no_status(self):
+    def test_update_order_with_no_status(self):
         """
             15. Test PUT /orders/id - when order with given id exists
             but status has not been provided
@@ -256,7 +256,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response_as_json(
             response)['message'], 'Bad request. Missing required param')
 
-    def test_p_put_order_with_non_json_data(self):
+    def test_update_order_with_non_json_data(self):
         """
             16. Test PUT /orders/id - when order with given id exists
             but status is provided in non-json format
