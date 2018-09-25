@@ -80,6 +80,7 @@ def make_new_order(name, price, quantity):
         response = jsonify(CART[-1])
         response.status_code = 201
     else:
+        # if any of the required params is None
         abort_if_missing_required_param()
     return response
 
