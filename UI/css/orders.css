@@ -116,6 +116,7 @@ ol>li:last-child {
 }
 
 #q-modal{
+    display: none;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 0 5px 2px rgb(61, 61, 61);
