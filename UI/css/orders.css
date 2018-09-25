@@ -108,3 +108,25 @@ ol>li:last-child {
 #history-cart {
     display: none;
 }
+
+#q-modal{
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px 2px rgb(61, 61, 61);
+    width: 50%;
+    margin: auto;
+    padding: 3rem;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    transition: all 0.3s;
+}
+
+#q-modal:hover{
+    box-shadow: 0 0 5px 3px rgb(19, 19, 19);
+}
+
+
