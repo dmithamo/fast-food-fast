@@ -48,7 +48,7 @@ To manually test these endpoints, configure and run the server as below:
 Test the endpoints at `localhost:5000/api/v1/orders`.
 
 The API is hosted on Heroku at [Heroku/dmithamo/fastfood/fast](https://dashboard.heroku.com/apps/dmithamo-fast-food-fast-api).
-To test from the Heroku server, send requests to [https://dmithamo-fast-food-fast-api.herokuapp.com/v1/orders](https://dmithamo-fast-food-fast-api.herokuapp.com/v1/orders)
+To test from the Heroku server, send requests to [https://dmithamo-fast-food-fast-api.herokuapp.com/api/v1/orders](https://dmithamo-fast-food-fast-api.herokuapp.com/api/v1/orders)
 
 Recommended testing tool : [Postman](https://www.getpostman.com/).
 
