@@ -52,6 +52,7 @@ class TestEndpoints(unittest.TestCase):
             Remove the app context after testing
         """
         self.api_context.pop()
+        self.api_test_client = None
 
     def test_a_get_orders_with_no_orders(self):
         """
@@ -151,7 +152,7 @@ class TestEndpoints(unittest.TestCase):
         """
         response = self.api_test_client.get('{}/orders'.format(BASE_URL))
 
-        # self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn(
             'Big Samosa', str(response.data))
         self.assertIn(
