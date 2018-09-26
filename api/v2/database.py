@@ -27,12 +27,17 @@ def init_db():
             cursor.execute(query)
 
         # Commit changes and close the connection to db
+        cursor.close()
         conn.commit()
-        conn.close()
 
-    except Exception as error:
+    except (Exception, psycopg2.DatabaseError) as error:
         # Print error for ease of debugging
         print(error)
+
+    finally:
+        # Close connection after commiting
+        if conn:
+            conn.close()
 
 def set_up_tables():
     """
@@ -80,4 +85,5 @@ def drop_table_at_set_up(table_name):
 
     return drop_table_query
 
-init_db()
+if __name__ == '__main__':
+    init_db()
