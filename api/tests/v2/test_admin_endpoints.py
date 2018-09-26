@@ -104,6 +104,17 @@ class TestEndpoints(unittest.TestCase):
         auth_token = helper_functions.response_as_json(resp)['Authorization']
         return auth_token
 
+    def logged_in_admin_post_to_menu(self, food_params, token):
+        """
+            Helper function
+            Posts a new food item to menu with admin logged in
+        """
+        # Make POST request
+        self.client.post("{}/menu".format(
+            self.base_url), json=food_params, headers={
+                "Content-Type": "application/json", "Authorization": token
+            })
+
     # GET /orders
 
     def test_unauthorized_admin_get_all(self):
@@ -129,7 +140,7 @@ class TestEndpoints(unittest.TestCase):
         # Login admin
         token = self.login_test_admin()
 
-        response = self.client.get("{}/users/orders".format(
+        response = self.client.get("{}/orders".format(
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
@@ -312,6 +323,124 @@ class TestEndpoints(unittest.TestCase):
             response_json["message"], "Error. Invalid order status")
 
     # GET /menu
+
+    def test_get_menu_when_no_items(self):
+        """
+            10. Test that authorised (logged in) admin can access
+            the menu when menu is empty
+        """
+        # Login admin
+        token = self.login_test_admin()
+
+        response = self.client.get("{}/menu".format(
+            self.base_url), headers={
+                "Content-Type": "application/json", "Authorization": token})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response_json["message"], "No items on the menu")
+
+    def test_get_menu(self):
+        """
+            11. Test that authorised (logged in) admin can get
+            all items on the menu
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Make POST /menu request
+        self.logged_in_admin_post_to_menu(self.new_food, adm_token)
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+
+        response = self.client.get("{}/menu".format(
+            self.base_url), headers={
+                "Content-Type": "application/json", "Authorization": adm_token})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response_json["message"], "Request successful")
+        self.assertEqual(len(response_json["menu"]), 2)
+        self.assertEqual(
+            response_json["menu"][0]["food_item_id"], 1)
+        self.assertEqual(
+            response_json["menu"][1]["food_item_name"],
+            self.food["food_item_name"])
+
+    def test_post_menu(self):
+        """
+            11. Test that authorised (logged in) admin can add
+            items to the menu
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+
+        response = self.client.post("{}/menu".format(
+            self.base_url), json=self.food, headers={
+                "Content-Type": "application/json", "Authorization": adm_token})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            response_json["message"], "Request successful")
+        self.assertEqual(
+            response_json["food_item"]["food_item_id"], 1)
+        self.assertEqual(
+            response_json["food_item"]["food_item_name"],
+            self.food["food_item_name"])
+
+    def test_post_menu_cannot_duplicate(self):
+        """
+            12. Test that authorised (logged in) admin cannot
+            add duplicate items on the menu
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Make first POST
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+
+        # POST with same food item
+        response = self.client.post("{}/menu".format(
+            self.base_url), json=self.food, headers={
+                "Content-Type": "application/json", "Authorization": adm_token})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response_json["message"], "Bad request. Food item already exists")
+
+    def test_put_menu(self):
+        """
+            13. Test that authorised (logged in) admin can modify
+            params of items on the menu
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # POST food item
+        self.logged_in_admin_post_to_menu(self.new_food, adm_token)
+
+        response = self.client.put("{}/menu/1".format(
+            self.base_url), json={
+                "food_item_price": 10000
+            }, headers={
+                "Content-Type": "application/json", "Authorization": adm_token})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            response_json["message"], "Request successful")
+        self.assertEqual(
+            response_json["food_item"]["food_item_id"], 1)
+        self.assertEqual(
+            response_json["food_item"]["food_item_price"], 10000)
+        self.assertNotEqual(
+            response_json["food_item"]["food_item_price"],
+            self.new_food["food_itme_price"])
 
 
 if __name__ == '__main__':
