@@ -47,7 +47,7 @@ def set_up_sample_params():
         "user_logins": user_logins,
         "food": food,
         "food_2": food_2,
-        "fake_food": food_fake
+        "food_fake": food_fake
     }
 
 def response_as_json(resp):

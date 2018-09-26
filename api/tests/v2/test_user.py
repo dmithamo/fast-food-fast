@@ -8,7 +8,7 @@ import json
 from api.v2 import APP
 from api.v2.config import CONFIGS
 from api.v2.database import init_db
-import helper_functions
+from api.tests.v2 import helper_functions
 
 
 class TestUserRegistrationAndLogin(unittest.TestCase):
