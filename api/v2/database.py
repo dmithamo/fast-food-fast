@@ -18,12 +18,16 @@ def init_db():
         conn = psycopg2.connect(db_url)
         cursor = conn.cursor()
 
-        for query in set_up_tables():
-            # Drop all tables on app restart
-            table_name = query.split()[2]
-            cursor.execute(drop_table_at_set_up(table_name))
+        # Reset db on restart : drop all tables
+        cursor.execute(select_all_tables_to_reset())
+        rows = cursor.fetchall()
 
-            # Create the tables afresh
+        for row in rows:
+            cursor.execute(
+                "DROP TABLE {} CASCADE".format(row[0]))
+
+        # Create the tables afresh
+        for query in set_up_tables():
             cursor.execute(query)
 
         # Commit changes and close the connection to db
@@ -75,15 +79,20 @@ def set_up_tables():
 
     return [users_table_query, menu_table_query, orders_table_query]
 
-def drop_table_at_set_up(table_name):
+def select_all_tables_to_reset():
     """
-        Removes a given table if app needs restarting
+        Removes all tables if app needs restarting
     """
-    drop_table_query = """
-    DROP TABLE IF EXISTS {} CASCADE
-    """.format(table_name)
+    # drop_table_query = """
+    # DROP TABLE IF EXISTS {} CASCADE
+    # """.format(table_name)
 
-    return drop_table_query
+    select_all_tables_query = """
+    SELECT table_name FROM information_schema.tables WHERE
+        table_schema = 'public'"""
+
+    return select_all_tables_query
+
 
 if __name__ == '__main__':
     init_db()
