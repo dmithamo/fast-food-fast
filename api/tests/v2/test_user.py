@@ -2,7 +2,6 @@
     Module contains tests for user registration and login
 """
 import unittest
-import json
 
 # local imports
 from api.v2 import APP
@@ -25,10 +24,10 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         self.client = self.app.test_client()
 
         # Sample data for registration
-        self.user = helper_functions.set_up_sample_params()["user"]
+        self.user = helper_functions.sample_params()["user"]
 
         # Sample data for login in
-        self.user_logins = helper_functions.set_up_sample_params()["user_logins"]
+        self.user_logins = helper_functions.sample_params()["user_logins"]
 
         # Define a base url, common to all endpoints
         self.base_url = "/api/v2/auth"
@@ -200,6 +199,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
             response_json['message'], "Unsuccessful. Invalid credentials.")
+
 
 if __name__ == '__main__':
     unittest.main()

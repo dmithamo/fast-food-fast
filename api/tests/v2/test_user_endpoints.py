@@ -2,8 +2,6 @@
     Module contains tests for other user specific endpoints
 """
 import unittest
-import json
-
 
 # local imports
 from api.v2 import APP
@@ -29,7 +27,7 @@ class TestEndpoints(unittest.TestCase):
         self.base_url = "/api/v2"
 
         # Set up sample params, extract for use within tests
-        sample_params = helper_functions.set_up_sample_params()
+        sample_params = helper_functions.sample_params()
 
         self.user = sample_params["user"]
         self.user_logins = sample_params["user_logins"]
@@ -75,7 +73,6 @@ class TestEndpoints(unittest.TestCase):
         auth_token = helper_functions.response_as_json(resp)['Authorization']
         return auth_token
 
-
     # POST users/orders
 
     def test_unauthorized_user_post(self):
@@ -91,7 +88,6 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
             response_json["message"], "Forbidden. You must be logged in")
-
 
     def test_post_an_order(self):
         """
@@ -284,6 +280,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(
             response_json["order"]["food_item_name"],
             self.food["food_item_name"])
+
 
 if __name__ == '__main__':
     unittest.main()

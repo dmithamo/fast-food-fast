@@ -6,7 +6,7 @@
 import json
 
 
-def set_up_sample_params():
+def sample_params():
     """
         Helper method.
         Sets up sample params
