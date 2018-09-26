@@ -25,6 +25,11 @@ def sample_params():
         "password": "dmit-password"
     }
 
+    admin_logins = {
+        "user_email": "admin@andela.com",
+        "password": "admininstr8"
+    }
+
     # Sample order data for POST request
     food = {
         "food_item_name": "Guacamole and Marshmallows",
@@ -41,13 +46,19 @@ def sample_params():
         "food_item_price": 50,
         "quantity": 1,
     }
+    new_food = {
+        "food_item_name": "Chicken Curry",
+        "food_item_price": 500
+    }
 
     return {
         "user": user,
         "user_logins": user_logins,
+        "admin_logins": admin_logins,
         "food": food,
         "food_2": food_2,
-        "food_fake": food_fake
+        "food_fake": food_fake,
+        "new_food": new_food
     }
 
 def response_as_json(resp):
