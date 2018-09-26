@@ -1,5 +1,5 @@
 """
-    Module contains tests for other endpoints
+    Module contains tests for other user specific endpoints
 """
 import unittest
 import json
@@ -43,7 +43,6 @@ class TestEndpoints(unittest.TestCase):
         self.food = sample_params["food"]
         self.food_2 = sample_params["food_2"]
         self.food_fake = sample_params["food_fake"]
-
 
         with self.app.app_context():
             # initialize db, create tables
@@ -127,7 +126,7 @@ class TestEndpoints(unittest.TestCase):
         auth_token = response_as_json(resp)['Authorization']
         return auth_token
 
-############################## POST users/orders ########################
+    # POST users/orders
 
     def test_unauthorized_user_post(self):
         """
@@ -204,7 +203,7 @@ class TestEndpoints(unittest.TestCase):
             response_json["message"],
             "Bad request. Missing required order param")
 
-############################## GET users/orders ########################
+    # GET users/orders
 
     def test_unauthorized_user_get_all(self):
         """
@@ -270,7 +269,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(
             response_json["orders"][1]["order_id"], 2)
 
-############################## GET users/orders/order_id ########################
+    # GET users/orders/order_id
 
     def test_unauthorized_user_get_specific_order(self):
         """
@@ -310,7 +309,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_get_specific_order_when_order_exists(self):
         """
-            10. Test that authorised (logged in) user can get 
+            10. Test that authorised (logged in) user can get
             specific order when the order exists
         """
         # Register and login user
@@ -336,4 +335,5 @@ class TestEndpoints(unittest.TestCase):
             response_json["order"]["food_item_name"],
             self.food["food_item_name"])
 
-############################## UNAUTHORIZED ROUTES FOR non-admin users ########################
+if __name__ == '__main__':
+    unittest.main()
