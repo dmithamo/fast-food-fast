@@ -8,15 +8,7 @@ import json
 from api.v2 import APP
 from api.v2.config import CONFIGS
 from api.v2.database import init_db
-
-
-def response_as_json(resp):
-    """
-        Helper function
-        Loads response as json for easier inspection
-    """
-    resp_json = json.loads(resp.data.decode('utf-8'))
-    return resp_json
+import helper_functions
 
 
 class TestUserRegistrationAndLogin(unittest.TestCase):
@@ -33,17 +25,10 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         self.client = self.app.test_client()
 
         # Sample data for registration
-        self.user = {
-            "username": "dmithamo",
-            "user_email": "dmithamo@andela.com",
-            "password": "dmit-password"
-        }
+        self.user = helper_functions.set_up_sample_params()["user"]
 
         # Sample data for login in
-        self.user_logins = {
-            "user_email": "dmithamo@andela.com",
-            "password": "dmit-password"
-        }
+        self.user_logins = helper_functions.set_up_sample_params()["user_logins"]
 
         # Define a base url, common to all endpoints
         self.base_url = "/api/v2/auth"
@@ -68,9 +53,9 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(
-            response_as_json(response)['message'], "Registration succesful")
+        self.assertEqual(response_json['message'], "Registration successful")
 
     def test_user_registration_missing_some_data(self):
         """
@@ -80,9 +65,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccesful. Missing required param")
+        self.assertEqual(
+            response_json['message'], "Unsuccesful. Missing required param")
 
     def test_user_registration_without_any_data(self):
         """
@@ -92,9 +79,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json={}, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccesful. Missing required param")
+        self.assertEqual(
+            response_json['message'], "Unsuccesful. Missing required param")
 
     def test_duplicate_user_email_registration(self):
         """
@@ -112,13 +101,15 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccesful. Email already in use")
+        self.assertEqual(
+            response_json['message'], "Unsuccesful. Email already in use")
 
     def test_duplicate_user_name_registration(self):
         """
-           5. Test that registration with email already in use fails
+           5. Test that registration with username already in use fails
         """
         # Register a user
         self.client.post("{}/signup".format(
@@ -133,13 +124,15 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccesful. Username already in use")
+        self.assertEqual(
+            response_json['message'], "Unsuccesful. Username already in use")
 
     def test_invalid_user_email_registration(self):
         """
-           6. Test that registration with email already in use fails
+           6. Test that registration with invalid email fails
         """
         response = self.client.post("{}/signup".format(
             self.base_url), json={
@@ -149,9 +142,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccesful. Username already in use")
+        self.assertEqual(
+            response_json['message'], "Unsuccesful. Invalid credentials")
 
     def test_registered_user_login(self):
         """
@@ -162,13 +157,14 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
+        # Attempt login
         response = self.client.post("{}/login".format(
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
-        # Attempt login
+
+        response_json = helper_functions.response_as_json(response)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response_as_json(
-            response)['message'], "Login successful.")
+        self.assertEqual(response_json['message'], "Login successful.")
 
     def test_unregistered_user_login(self):
         """
@@ -179,9 +175,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccessful. User unknown.")
+        self.assertEqual(
+            response_json['message'], "Unsuccessful. User unknown.")
 
     def test_user_login_with_wrong_password(self):
         """
@@ -197,6 +195,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
                 "password": "not-correct"}, headers={
                     'Content-Type': 'application/json'})
 
+        response_json = helper_functions.response_as_json(response)
+
         self.assertEqual(response.status_code, 403)
-        self.assertEqual(response_as_json(
-            response)['message'], "Unsuccessful. Invalid credentials.")
+        self.assertEqual(
+            response_json['message'], "Unsuccessful. Invalid credentials.")
+
+if __name__ == '__main__':
+    unittest.main()

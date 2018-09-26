@@ -4,24 +4,17 @@
 import unittest
 import json
 
+
 # local imports
 from api.v2 import APP
 from api.v2.config import CONFIGS
 from api.v2.database import init_db
-
-
-def response_as_json(resp):
-    """
-        Helper function
-        Loads response as json for easier inspection
-    """
-    resp_json = json.loads(resp.data.decode('utf-8'))
-    return resp_json
+import helper_functions
 
 
 class TestEndpoints(unittest.TestCase):
     """
-        Tests for user registration and Login
+        Tests for user specific endpoints
     """
 
     def setUp(self):
@@ -36,7 +29,7 @@ class TestEndpoints(unittest.TestCase):
         self.base_url = "/api/v2"
 
         # Set up sample params, extract for use within tests
-        sample_params = self.set_up_sample_params()
+        sample_params = helper_functions.set_up_sample_params()
 
         self.user = sample_params["user"]
         self.user_logins = sample_params["user_logins"]
@@ -55,50 +48,6 @@ class TestEndpoints(unittest.TestCase):
         """
         with self.app.app_context():
             init_db()
-
-    def set_up_sample_params(self):
-        """
-            Helper method.
-            Sets up sample params
-        """
-
-        # Sample data for registration
-        user = {
-            "username": "dmithamo",
-            "user_email": "dmithamo@andela.com",
-            "password": "dmit-password"
-        }
-
-        # Sample data for login in
-        user_logins = {
-            "user_email": "dmithamo@andela.com",
-            "password": "dmit-password"
-        }
-
-        # Sample order data for POST request
-        food = {
-            "food_item_name": "Guacamole and Marshmallows",
-            "food_item_price": 200,
-            "quantity": 2
-        }
-        food_2 = {
-            "food_item_name": "Roast Meat",
-            "food_item_price": 1000,
-            "quantity": 2,
-        }
-        food_fake = {
-            "food_item_name": "Njugu Karanga",
-            "food_item_price": 50,
-            "quantity": 1,
-        }
-
-        return {
-            "user": user,
-            "user_logins": user_logins,
-            "food": food,
-            "food_2": food_2,
-            "fake_food": food_fake
-        }
 
     def register_test_user(self):
         """
@@ -123,8 +72,9 @@ class TestEndpoints(unittest.TestCase):
                 "Content-Type": "application/json"
             })
 
-        auth_token = response_as_json(resp)['Authorization']
+        auth_token = helper_functions.response_as_json(resp)['Authorization']
         return auth_token
+
 
     # POST users/orders
 
@@ -136,7 +86,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json"})
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -154,7 +104,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json", "Authorization": token
             })
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
@@ -176,7 +126,7 @@ class TestEndpoints(unittest.TestCase):
                 "Content-Type": "application/json", "Authorization": token
             })
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -196,7 +146,7 @@ class TestEndpoints(unittest.TestCase):
                 "Content-Type": "application/json", "Authorization": token
             })
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -212,7 +162,7 @@ class TestEndpoints(unittest.TestCase):
         response = self.client.get("{}/users/orders".format(
             self.base_url))
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -230,7 +180,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -258,7 +208,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -283,7 +233,7 @@ class TestEndpoints(unittest.TestCase):
         response = self.client.get("{}/users/orders/1".format(
             self.base_url))
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -301,7 +251,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -324,7 +274,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = response_as_json(response)
+        response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
