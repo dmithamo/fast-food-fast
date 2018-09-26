@@ -32,28 +32,18 @@ class TestEndpoints(unittest.TestCase):
         self.app.config.from_object(CONFIGS['testing_config'])
         self.client = self.app.test_client()
 
-        # Sample data for registration
-        self.user = {
-            "username": "dmithamo",
-            "user_email": "dmithamo@andela.com",
-            "password": "dmit-password"
-        }
-
-        # Sample data for login in
-        self.user_logins = {
-            "user_email": "dmithamo@andela.com",
-            "password": "dmit-password"
-        }
-
-        # Sample order data for POST request
-        self.food = {
-            "food_item_name": "Guacamole and Marshmallows",
-            "food_item_price": 200,
-            "quantity": 2
-        }
-
         # Define a base url, common to all endpoints
         self.base_url = "/api/v2"
+
+        # Set up sample params, extract for use within tests
+        sample_params = self.set_up_sample_params()
+
+        self.user = sample_params["user"]
+        self.user_logins = sample_params["user_logins"]
+        self.food = sample_params["food"]
+        self.food_2 = sample_params["food_2"]
+        self.food_fake = sample_params["food_fake"]
+
 
         with self.app.app_context():
             # initialize db, create tables
@@ -66,6 +56,50 @@ class TestEndpoints(unittest.TestCase):
         """
         with self.app.app_context():
             init_db()
+
+    def set_up_sample_params(self):
+        """
+            Helper method.
+            Sets up sample params
+        """
+
+        # Sample data for registration
+        user = {
+            "username": "dmithamo",
+            "user_email": "dmithamo@andela.com",
+            "password": "dmit-password"
+        }
+
+        # Sample data for login in
+        user_logins = {
+            "user_email": "dmithamo@andela.com",
+            "password": "dmit-password"
+        }
+
+        # Sample order data for POST request
+        food = {
+            "food_item_name": "Guacamole and Marshmallows",
+            "food_item_price": 200,
+            "quantity": 2
+        }
+        food_2 = {
+            "food_item_name": "Roast Meat",
+            "food_item_price": 1000,
+            "quantity": 2,
+        }
+        food_fake = {
+            "food_item_name": "Njugu Karanga",
+            "food_item_price": 50,
+            "quantity": 1,
+        }
+
+        return {
+            "user": user,
+            "user_logins": user_logins,
+            "food": food,
+            "food_2": food_2,
+            "fake_food": food_fake
+        }
 
     def register_test_user(self):
         """
@@ -82,7 +116,8 @@ class TestEndpoints(unittest.TestCase):
             Helper function
             Logs in the user registered above for use during testing
         """
-        self.register_test_user()  # Register user
+        # Register user
+        self.register_test_user()
         # Login the user
         resp = self.client.post("{}/auth/login".format(
             self.base_url), json=self.user_logins, headers={
@@ -92,10 +127,26 @@ class TestEndpoints(unittest.TestCase):
         auth_token = response_as_json(resp)['Authorization']
         return auth_token
 
+############################## POST users/orders ########################
+
+    def test_unauthorized_user_post(self):
+        """
+            1. Test that unauthorised user cannot place order
+        """
+        response = self.client.post("{}/users/orders".format(
+            self.base_url), json=self.food, headers={
+                "Content-Type": "application/json"})
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response_json["message"], "Forbidden. You must be logged in")
+
 
     def test_post_an_order(self):
         """
-            1. Test that authorised (logged in) user place an order
+            2. Test that authorised (logged in) user can place an order
         """
         # Register and login user
         token = self.login_test_user()
@@ -115,28 +166,14 @@ class TestEndpoints(unittest.TestCase):
         self.assertFalse(
             response_json["order"]["order_id"], None)
 
-    def test_unauthorized_user_post(self):
-        """
-            3. Test that unauthorised user cannot place order
-        """
-        response = self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food, headers={
-                "Content-Type": "application/json"})
-
-        response_json = response_as_json(response)
-
-        self.assertEqual(response.status_code, 403)
-        self.assertEqual(
-            response_json["message"], "Forbidden. You must be logged in")
-
     def test_user_cannot_order_non_existent_food(self):
         """
-            4. Test that user cannot place order for an item not on the
+            3. Test that user cannot place order for an item not on the
             menu
         """
         token = self.login_test_user()
         response = self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food, headers={
+            self.base_url), json=self.food_fake, headers={
                 "Content-Type": "application/json", "Authorization": token
             })
 
@@ -148,7 +185,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_incomplete_order_data(self):
         """
-            5. Test that user cannot place order with invalid data
+            4. Test that user cannot place order with invalid data
             menu
         """
         token = self.login_test_user()
@@ -166,4 +203,137 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(
             response_json["message"],
             "Bad request. Missing required order param")
-        
+
+############################## GET users/orders ########################
+
+    def test_unauthorized_user_get_all(self):
+        """
+            5. Test that an unauthorised user cannot get order history
+        """
+        response = self.client.get("{}/users/orders".format(
+            self.base_url))
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response_json["message"], "Forbidden. You must be logged in")
+
+    def test_get_all_orders_when_none_exist(self):
+        """
+            6. Test that authorised (logged in) user can get order history
+            When no orders exist
+        """
+        # Register and login user
+        token = self.login_test_user()
+
+        response = self.client.get("{}/users/orders".format(
+            self.base_url), headers={
+                "Content-Type": "application/json", "Authorization": token})
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response_json["message"], "No orders exist as yet")
+
+    def test_get_all_orders_when_orders_exist(self):
+        """
+            7. Test that authorised (logged in) user can get order history
+            When at least one order exists
+        """
+        # Register and login user
+        token = self.login_test_user()
+        # Make POST request
+        self.client.post("{}/users/orders".format(
+            self.base_url), json=self.food, headers={
+                "Content-Type": "application/json", "Authorization": token
+            })
+        # Make another POST request
+        self.client.post("{}/users/orders".format(
+            self.base_url), json=self.food_2, headers={
+                "Content-Type": "application/json", "Authorization": token
+            })
+
+        response = self.client.get("{}/users/orders".format(
+            self.base_url), headers={
+                "Content-Type": "application/json", "Authorization": token})
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response_json["message"], "Request successful")
+        self.assertEqual(len(response_json["orders"]), 2)
+        self.assertEqual(
+            response_json["orders"][0]["order_id"], 1)
+        self.assertEqual(
+            response_json["orders"][1]["order_id"], 2)
+
+############################## GET users/orders/order_id ########################
+
+    def test_unauthorized_user_get_specific_order(self):
+        """
+            8. Test that an unauthorised user cannot get specific order
+        """
+        # Make POST request
+        self.client.post("{}/users/orders".format(
+            self.base_url), json=self.food, headers={
+                "Content-Type": "application/json"})
+
+        response = self.client.get("{}/users/orders/1".format(
+            self.base_url))
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response_json["message"], "Forbidden. You must be logged in")
+
+    def test_get_specific_orders_when_not_exists(self):
+        """
+            9. Test that authorised (logged in) user cannot get
+            a specific order When the order does not exist
+        """
+        # Register and login user
+        token = self.login_test_user()
+
+        response = self.client.get("{}/users/orders/10".format(
+            self.base_url), headers={
+                "Content-Type": "application/json", "Authorization": token})
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response_json["message"], "Order with id 10 not found")
+
+    def test_get_specific_order_when_order_exists(self):
+        """
+            10. Test that authorised (logged in) user can get 
+            specific order when the order exists
+        """
+        # Register and login user
+        token = self.login_test_user()
+        # Make POST request
+        self.client.post("{}/users/orders".format(
+            self.base_url), json=self.food, headers={
+                "Content-Type": "application/json", "Authorization": token
+            })
+
+        response = self.client.get("{}/users/orders/1".format(
+            self.base_url), headers={
+                "Content-Type": "application/json", "Authorization": token})
+
+        response_json = response_as_json(response)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response_json["message"], "Request successful")
+        self.assertEqual(
+            response_json["order"]["order_id"], 1)
+        self.assertEqual(
+            response_json["order"]["food_item_name"],
+            self.food["food_item_name"])
+
+############################## UNAUTHORIZED ROUTES FOR non-admin users ########################
