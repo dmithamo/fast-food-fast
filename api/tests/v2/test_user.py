@@ -30,17 +30,17 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
         self.app = APP
         self.app.config.from_object(CONFIGS['testing_config'])
-        self.api_testing_client = self.app.test_client()
+        self.client = self.app.test_client()
 
         # Sample data for registration
-        self.test_user_data = {
+        self.user = {
             "username": "dmithamo",
             "user_email": "dmithamo@andela.com",
             "password": "dmit-password"
         }
 
         # Sample data for login in
-        self.partial_user_data = {
+        self.user_logins = {
             "user_email": "dmithamo@andela.com",
             "password": "dmit-password"
         }
@@ -51,7 +51,6 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         with self.app.app_context():
             # initialize db, create tables
             init_db()
-            print("\n\n\nDB Connection successful\n\n\n")
 
     def tearDown(self):
         """
@@ -65,8 +64,8 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
            1. Test whether registration with valid data succeeds
         """
-        response = self.api_testing_client.post("{}/signup".format(
-            self.base_url), json=self.test_user_data, headers={
+        response = self.client.post("{}/signup".format(
+            self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 201)
@@ -77,8 +76,8 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
            2. Test that registration fails without all required data
         """
-        response = self.api_testing_client.post("{}/signup".format(
-            self.base_url), json=self.partial_user_data, headers={
+        response = self.client.post("{}/signup".format(
+            self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 400)
@@ -89,7 +88,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
            3. Test that registration fails without data
         """
-        response = self.api_testing_client.post("{}/signup".format(
+        response = self.client.post("{}/signup".format(
             self.base_url), json={}, headers={
                 'Content-Type': 'application/json'})
 
@@ -101,11 +100,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
            4. Test that registration with email already in use fails
         """
-        self.api_testing_client.post("{}/signup".format(
-            self.base_url), json=self.test_user_data, headers={
+        self.client.post("{}/signup".format(
+            self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
-        response = self.api_testing_client.post("{}/signup".format(
+        response = self.client.post("{}/signup".format(
             self.base_url), json={
                 "username": "mithamod",
                 "user_email": "dmithamo@andela.com",
@@ -122,11 +121,11 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
            5. Test that registration with email already in use fails
         """
         # Register a user
-        self.api_testing_client.post("{}/signup".format(
-            self.base_url), json=self.test_user_data, headers={
+        self.client.post("{}/signup".format(
+            self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
-        response = self.api_testing_client.post("{}/signup".format(
+        response = self.client.post("{}/signup".format(
             self.base_url), json={
                 "username": "dmithamo",
                 "user_email": "myemail@andela.com",
@@ -142,7 +141,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
            6. Test that registration with email already in use fails
         """
-        response = self.api_testing_client.post("{}/signup".format(
+        response = self.client.post("{}/signup".format(
             self.base_url), json={
                 "username": "dmithamo",
                 "user_email": "myemail.andela.com",
@@ -159,12 +158,12 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             7. Test that a registered user can login
         """
         # Register a user
-        self.api_testing_client.post("{}/signup".format(
-            self.base_url), json=self.test_user_data, headers={
+        self.client.post("{}/signup".format(
+            self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
-        response = self.api_testing_client.post("{}/login".format(
-            self.base_url), json=self.partial_user_data, headers={
+        response = self.client.post("{}/login".format(
+            self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
         # Attempt login
         self.assertEqual(response.status_code, 201)
@@ -176,8 +175,8 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             8. Test that an unregistered user cannot login
         """
 
-        response = self.api_testing_client.post("{}/login".format(
-            self.base_url), json=self.partial_user_data, headers={
+        response = self.client.post("{}/login".format(
+            self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
         self.assertEqual(response.status_code, 404)
@@ -189,10 +188,10 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             9. Test that user cannot login with invalid credentials
         """
         # Register a user
-        self.api_testing_client.post("{}/auth/signup".format(
-            self.base_url), json=self.test_user_data)
+        self.client.post("{}/auth/signup".format(
+            self.base_url), json=self.user)
         # Attempt login
-        response = self.api_testing_client.post("{}/login".format(
+        response = self.client.post("{}/login".format(
             self.base_url), json={
                 "user_email": "dmithamo@andela.com",
                 "password": "not-correct"}, headers={
