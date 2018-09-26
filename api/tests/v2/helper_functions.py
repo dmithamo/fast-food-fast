@@ -34,17 +34,14 @@ def sample_params():
     food = {
         "food_item_name": "Guacamole and Marshmallows",
         "food_item_price": 200,
-        "quantity": 2
     }
     food_2 = {
         "food_item_name": "Roast Meat",
         "food_item_price": 1000,
-        "quantity": 2,
     }
     food_fake = {
         "food_item_name": "Njugu Karanga",
         "food_item_price": 50,
-        "quantity": 1,
     }
     new_food = {
         "food_item_name": "Chicken Curry",

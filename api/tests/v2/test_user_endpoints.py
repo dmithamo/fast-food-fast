@@ -31,6 +31,7 @@ class TestEndpoints(unittest.TestCase):
 
         self.user = sample_params["user"]
         self.user_logins = sample_params["user_logins"]
+        self.admin_logins = sample_params["admin_logins"]
         self.food = sample_params["food"]
         self.food_2 = sample_params["food_2"]
         self.food_fake = sample_params["food_fake"]
@@ -73,12 +74,56 @@ class TestEndpoints(unittest.TestCase):
         auth_token = helper_functions.response_as_json(resp)['Authorization']
         return auth_token
 
+    def logged_in_user_post_order(self, food_params, token):
+        """
+            Helper function
+            Posts an order with logged in user
+        """
+        # Make POST request
+        self.client.post("{}/users/orders".format(
+            self.base_url), json=food_params, headers={
+                "Content-Type": "application/json", "Authorization": token
+            })
+
+    def login_test_admin(self):
+        """
+            Helper function
+            Logs in the admin
+        """
+        # Login the admin
+        resp = self.client.post("{}/login".format(
+            self.base_url), json=self.admin_logins, headers={
+                "Content-Type": "application/json"
+            })
+
+        auth_token = helper_functions.response_as_json(resp)['Authorization']
+        return auth_token
+
+    def logged_in_admin_post_to_menu(self, food_params, token):
+        """
+            Helper function
+            Posts a new food item to menu with admin logged in
+            Makes food items available for order
+        """
+        # Make POST request
+        self.client.post("{}/menu".format(
+            self.base_url), json=food_params, headers={
+                "Content-Type": "application/json", "Authorization": token
+            })
+
     # POST users/orders
 
     def test_unauthorized_user_post(self):
         """
             1. Test that unauthorised user cannot place order
         """
+        # Login admin and post food item on menu
+        adm_token = self.login_test_admin()
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+
+        # Add quantity to food itema and attempt to place order
+        self.food["quantity"] = 2
+
         response = self.client.post("{}/users/orders".format(
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json"})
@@ -93,6 +138,13 @@ class TestEndpoints(unittest.TestCase):
         """
             2. Test that authorised (logged in) user can place an order
         """
+        # Login admin and post food item on menu
+        adm_token = self.login_test_admin()
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+
+        # Add quantity to food itema and attempt to place order
+        self.food["quantity"] = 1
+
         # Register and login user
         token = self.login_test_user()
 
@@ -109,7 +161,8 @@ class TestEndpoints(unittest.TestCase):
             response_json["order"]["total_order_cost"],
             self.food["food_item_price"] * self.food["quantity"])
         self.assertFalse(
-            response_json["order"]["order_id"], None)
+            response_json["order"]["food_item_price"],
+            self.food["food_item_name"])
 
     def test_user_cannot_order_non_existent_food(self):
         """
@@ -130,8 +183,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_incomplete_order_data(self):
         """
-            4. Test that user cannot place order with invalid data
-            menu
+            4. Test that user cannot place order with incomplete data
         """
         token = self.login_test_user()
         response = self.client.post("{}/users/orders".format(
@@ -187,18 +239,18 @@ class TestEndpoints(unittest.TestCase):
             7. Test that authorised (logged in) user can get order history
             When at least one order exists
         """
+        # Login admin and post food item on menu
+        adm_token = self.login_test_admin()
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+        self.logged_in_admin_post_to_menu(self.food_2, adm_token)
+
         # Register and login user
         token = self.login_test_user()
-        # Make POST request
-        self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food, headers={
-                "Content-Type": "application/json", "Authorization": token
-            })
-        # Make another POST request
-        self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food_2, headers={
-                "Content-Type": "application/json", "Authorization": token
-            })
+        # Make some POST request
+        self.food["quantity"] = 3
+        self.food_2["quantity"] = 1
+        self.logged_in_user_post_order(self.food, token)
+        self.logged_in_user_post_order(self.food_2, token)
 
         response = self.client.get("{}/users/orders".format(
             self.base_url), headers={
@@ -221,10 +273,17 @@ class TestEndpoints(unittest.TestCase):
         """
             8. Test that an unauthorised user cannot get specific order
         """
-        # Make POST request
-        self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food, headers={
-                "Content-Type": "application/json"})
+        # Login admin and post food item on menu
+        adm_token = self.login_test_admin()
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+
+        # Register and login user
+        token = self.login_test_user()
+        # Make some POST request
+        self.food["quantity"] = 3
+        self.food_2["quantity"] = 1
+        self.logged_in_user_post_order(self.food, token)
+        self.logged_in_user_post_order(self.food_2, token)
 
         response = self.client.get("{}/users/orders/1".format(
             self.base_url))
@@ -258,13 +317,20 @@ class TestEndpoints(unittest.TestCase):
             10. Test that authorised (logged in) user can get
             specific order when the order exists
         """
+        # Login admin and post food item on menu
+        adm_token = self.login_test_admin()
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
+
         # Register and login user
         token = self.login_test_user()
+        # Make some POST request
+        self.food["quantity"] = 3
+        self.food_2["quantity"] = 1
+        self.logged_in_user_post_order(self.food, token)
+        self.logged_in_user_post_order(self.food_2, token)
+
         # Make POST request
-        self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food, headers={
-                "Content-Type": "application/json", "Authorization": token
-            })
+        self.logged_in_user_post_order(self.food, token)
 
         response = self.client.get("{}/users/orders/1".format(
             self.base_url), headers={
