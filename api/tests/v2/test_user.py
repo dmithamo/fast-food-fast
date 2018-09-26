@@ -46,7 +46,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         }
 
         # Define a base url, common to all endpoints
-        self.base_url = "/auth/api/v2"
+        self.base_url = "/api/v2/auth"
 
         with self.app.app_context():
             # initialize db, create tables
