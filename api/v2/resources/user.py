@@ -1,6 +1,7 @@
 """
     Module sets up UserRegistration, UserLogin as Resources
 """
+import psycopg2
 
 from flask import request, jsonify, abort, make_response
 from flask_restful import Resource
@@ -8,6 +9,8 @@ from flask_restful import Resource
 # local imports
 from api.v2.models import User
 from api.v2.utils import validate
+from api.v2.database import select_from_db
+
 
 class UserRegistration(Resource):
     """
@@ -26,16 +29,36 @@ class UserRegistration(Resource):
 
         # Register user
         username = registration_params['username']
-        user_email = registration_params['user_email']
+        email = registration_params['email']
         password = registration_params['password']
 
         # See if username or email is already in use
         validate.check_duplication({"username": username})
-        validate.check_duplication({"user_email": user_email})
-        # User(username, user_email, password)
-        # new_user = User.create_new_user()
-        response = make_response(jsonify(
-            message="No duplicates"
-        ), 201)
+        validate.check_duplication({"email": email})
+
+        # Register new user
+        new_user = User(username, email, password)
+
+        try:
+            new_user.save_new_user_to_db()
+            # See if new_user was added to db
+            query = """
+            SELECT username, email FROM users WHERE users.username = '{}';
+            """.format(username)
+
+            registered_user = {
+                "username": select_from_db(query)[0][0],  # First item is username
+                "email": select_from_db(query)[0][1]  # second item is email
+                }
+
+            response = make_response(
+                jsonify({
+                    "message": "Succesfully registered user",
+                    "user": registered_user}), 201)
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            response = make_response(jsonify({
+                "message": "Something went wrong : {}".format(error)
+            }), 500)
 
         return response

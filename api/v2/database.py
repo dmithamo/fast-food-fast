@@ -19,27 +19,29 @@ def init_db(db_url=None):
         db_url = CONFIGS['db_url']
     try:
         conn = psycopg2.connect(db_url)
-        print("\n\nConnected to {}: \n\n".format(conn.get_dsn_parameters()))
+
+        print("\nConnected: {} \n\n".format(conn.get_dsn_parameters()))
 
         cursor = conn.cursor()
         cursor.execute(select_all_tables_to_reset())
         rows = cursor.fetchall()
 
         for row in rows:
+            print("Droping {} ......".format(row[0]))
             cursor.execute(
-                "DROP TABLE {} CASCADE".format(row[0]))
+                "DROP TABLE {}".format(row[0]))
+            print("Dropped {} ......\n".format(row[0]))
 
         # Create the tables afresh
         for query in set_up_tables():
             cursor.execute(query)
             conn.commit()
 
-    except psycopg2.DatabaseError as error:
+    except (Exception, psycopg2.DatabaseError) as error:
         print("\n\nError: {}".format(error))
 
     # Close the connection to db
     finally:
-        cursor.close()
         conn.close()
 
 def set_up_tables():
@@ -50,7 +52,7 @@ def set_up_tables():
     CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
         username VARCHAR (24) NOT NULL UNIQUE,
-        user_email VARCHAR (30) NOT NULL UNIQUE,
+        email VARCHAR (30) NOT NULL UNIQUE,
         password VARCHAR (128) NOT NULL
     )"""
 
@@ -64,13 +66,10 @@ def set_up_tables():
     orders_table_query = """
     CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,
-        food_item_id INTEGER REFERENCES menu (food_item_id)
-           ON DELETE NO ACTION ON UPDATE NO ACTION,
         ordered_on TIMESTAMP NOT NULL,
         quantity INTEGER NOT NULL,
         total_order_cost NUMERIC NOT NULL
     )"""
-
 
     return [users_table_query, menu_table_query, orders_table_query]
 
@@ -84,7 +83,6 @@ def select_all_tables_to_reset():
 
     return select_all_tables_query
 
-
 def insert_into_db(query):
     """
         Handles INSERT queries
@@ -92,7 +90,6 @@ def insert_into_db(query):
     db_url = CONFIGS['db_url']
     try:
         conn = psycopg2.connect(db_url)
-        print("\n\nConnected to {}: \n\n".format(conn.get_dsn_parameters()))
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
@@ -102,7 +99,6 @@ def insert_into_db(query):
 
     # Commit changes and close the connection to db
     finally:
-        cursor.close()
         conn.close()
 
 def select_from_db(query):
@@ -113,24 +109,19 @@ def select_from_db(query):
     result = None
     try:
         conn = psycopg2.connect(db_url)
-        print("\n\nConnected to {}: \n\n".format(conn.get_dsn_parameters()))
         cursor = conn.cursor()
         cursor.execute(query)
 
         rows = cursor.fetchall()
+        result = {}
         if rows:
-            result = rows
+            return rows
 
     except (Exception, psycopg2.DatabaseError) as error:
         print("Connection failed: {}".format(error))
 
     # Commit changes and close the connection to db
     finally:
-        cursor.close()
         conn.close()
 
     return result
-
-
-if __name__ == '__main__':
-    init_db()

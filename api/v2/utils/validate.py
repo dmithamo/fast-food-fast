@@ -30,13 +30,14 @@ def abort_missing_required_param():
     abort(make_response(jsonify(
         message="Bad request. Missing required param"), 400))
 
-def abort_invalid_param():
+def abort_invalid_param(param):
     """
         Checks whether all required params are present
         Aborts if any is missing or is None (e.g, 0 or "" )
     """
-    abort(make_response(jsonify(
-        message="Bad request. Invalid username, password or email"), 400))
+    for key, value in param.items():
+        abort(make_response(jsonify(
+            message="Bad request. '{}' is an invalid {}".format(value, key)), 400))
 
 def check_registration_params(data):
     """
@@ -45,7 +46,7 @@ def check_registration_params(data):
     """
     try:
         username = data["username"]
-        user_email = data["user_email"]
+        email = data["email"]
         password = data["password"]
     except KeyError:
         # if required param is missing, abort
@@ -53,7 +54,7 @@ def check_registration_params(data):
     # check username
     check_username_validity(username)
     # check email
-    check_email_validity(user_email)
+    check_email_validity(email)
     # check password
     check_password_validity(password)
 
@@ -68,13 +69,13 @@ def check_email_validity(email):
     try:
         user, domain = email.split("@")
     except ValueError:
-        abort_invalid_param()
+        abort_invalid_param({"email": email})
 
     # Check that domain is valid
     try:
         a, b = domain.split(".")
     except ValueError:
-        abort_invalid_param()
+        abort_invalid_param({"email": email})
 
 def check_username_validity(username):
     """
@@ -82,8 +83,7 @@ def check_username_validity(username):
     """
     if len(username) < 4:
         # If blank username or too short
-        abort_invalid_param()
-
+        abort_invalid_param({"password": username})
 
 def check_password_validity(password):
     """
@@ -91,7 +91,7 @@ def check_password_validity(password):
     """
     if len(password) < 8:
         # If blank password or password too short
-        abort_invalid_param()
+        abort_invalid_param({"password": password})
 
 def check_duplication(params):
     """

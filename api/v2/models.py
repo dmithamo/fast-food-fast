@@ -12,28 +12,21 @@ class User:
         Model of User
         Defines User params and methods callable on User
     """
-
     def __init__(self, username, email, password):
         """
-            Initialize user
+            Initialize a user object
         """
         self.username = username
         self.email = email
         self.password = password
 
-    @classmethod
-    def query_db_by_username(cls, username):
+    def save_new_user_to_db(self):
         """
-            Searches db for username, returns user if found
+            Saves newly created user to db
         """
         query = """
-        SELECT * FROM users;
-        """
-        users = {}
-        rows = database.select_from_db(query)
-        if rows:
-            for row in rows:
-                users["username"] = row
-                users["user_email"] = row[1]
-                users["user_password"] = row[2]
-        return users
+        INSERT INTO users(username, email, password) VALUES(
+            '{}', '{}', '{}'
+        )""".format(self.username, self.email, self.password)
+
+        database.insert_into_db(query)
