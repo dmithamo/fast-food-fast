@@ -31,8 +31,8 @@ def sample_params():
     }
 
     admin_logins = {
-        "email": "admintest@admin.com",
-        "password": "admin-pass-10s"
+        "email": "admin@andela.com",
+        "password": "admininstr8"
     }
 
     # Sample order data for POST request
