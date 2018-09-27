@@ -47,11 +47,14 @@ class UserRegistration(Resource):
             """.format(username)
 
             registered_user_data = select_from_db(query)
+            # Generate token for registered user
+            auth_token = new_user.generate_auth_token(registered_user_data[0][0])
 
             registered_user = {
                 "user_id": registered_user_data[0][0],  # first item is user_id
                 "username": registered_user_data[0][1],  # second item is username
-                "email": registered_user_data[0][2]  # third item is email
+                "email": registered_user_data[0][2],  # third item is email
+                "auth_token": str(auth_token)
                 }
 
             response = make_response(
@@ -65,3 +68,64 @@ class UserRegistration(Resource):
             }), 500)
 
         return response
+
+
+class UserLogin(Resource):
+    """
+        Sets up UserLogin as a Resource
+        Logs in user if params are valid
+    """
+    def post(self):
+        """
+            POST auth/login enpoint
+        """
+        try:
+            # Get json from request object
+            data = request.get_json()
+        except:
+            abort(make_response(jsonify(
+                message="Bad request. Data must be json-formatted"
+            ), 400))
+        try:
+            # extract params from json
+            email = data["email"]
+            password = data["password"]
+        except KeyError:
+            abort(make_response(jsonify(
+                message="Bad request. Supply email AND password to login"
+            ), 400))
+        try:
+            # Query db for user with those params
+            query = """
+            SELECT user_id, username, email, password FROM users WHERE users.email = '{}'
+            AND users.password = '{}'""".format(email, password)
+            user = select_from_db(query)
+
+            if not user:
+                abort(make_response(jsonify(
+                    message="Wrong password or email."
+                ), 404))
+
+            user_obj = User(user[0][1], user[0][2], user[0][3])
+            auth_token = user_obj.generate_auth_token(user[0][0])
+
+            logged_in_user = {
+                "user_id": user[0][0],  # first item is user_id
+                "username": user[0][1],  # second item is username
+                "email": user[0][2],  # third item is email
+                "auth_token": str(auth_token)
+                }
+
+            # Return successful login response
+            response = make_response(jsonify({
+                "message": "Login successful.",
+                "user": logged_in_user
+            }), 201)
+
+        except psycopg2.DatabaseError as error:
+            abort(make_response(jsonify(
+                message="Server error : {}".format(error)
+            ), 500))
+
+        return response
+    

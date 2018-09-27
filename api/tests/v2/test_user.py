@@ -20,20 +20,25 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
             Configure params usable accross every test
         """
+        # Define a base url, common to all endpoints
+        self.base_url = '/api/v2/auth'
+
+        # Retrieve db_url from env
+        self.db_url = os.getenv("DB_URL")
+        # initialize db, create tables
+        init_db(self.db_url)
+
         APP.config.from_object(CONFIGS['testing_config'])
+
         self.app = APP
         self.client = self.app.test_client()
 
         # Sample data for registration
         self.user = helper_functions.sample_params()["user"]
+        self.user_2 = helper_functions.sample_params()["user_2"]
 
         # Sample data for login in
         self.user_logins = helper_functions.sample_params()["user_logins"]
-
-        # Define a base url, common to all endpoints
-        self.base_url = '/api/v2/auth'
-        # Retrieve db_url from env
-        self.db_url = os.getenv("DB_URL")
 
         with self.app.app_context():
             # initialize db, create tables
@@ -52,7 +57,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
            1. Test whether registration with valid data succeeds
         """
         response = self.client.post("{}/signup".format(
-            self.base_url), json=self.user, headers={
+            self.base_url), json=self.user_2, headers={
                 'Content-Type': 'application/json'})
 
         response_json = helper_functions.response_as_json(response)
@@ -151,9 +156,47 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             response_json['message'],
             "Bad request. 'myemail.andela.com' is an invalid email")
 
+    def test_user_registration_invalid_username(self):
+        """
+           7. Test that registration fails with invalid username
+        """
+        response = self.client.post('{}/signup'.format(
+            self.base_url), json={
+                "username": "d",
+                "email": "dmithamo@andela.com",
+                "password": "dmit-password"
+            }, headers={
+                'Content-Type': 'application/json'})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response_json['message'],
+            "Bad request. 'd' is an invalid username")
+
+    def test_user_registration_invalid_password(self):
+        """
+           8. Test that registration fails with invalid password
+        """
+        response = self.client.post('{}/signup'.format(
+            self.base_url), json={
+                "username": "dennisb",
+                "email": "dmithamo@andela.com",
+                "password": "dmit"
+            }, headers={
+                'Content-Type': 'application/json'})
+
+        response_json = helper_functions.response_as_json(response)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response_json['message'],
+            "Bad request. 'dmit' is an invalid password")
+
     def test_registered_user_login(self):
         """
-            7. Test that a registered user can login
+            9. Test that a registered user can login
         """
         # Register a user
         self.client.post("{}/signup".format(
@@ -171,38 +214,48 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
     def test_unregistered_user_login(self):
         """
-            8. Test that an unregistered user cannot login
+            10. Test that an unregistered user cannot login
         """
 
         response = self.client.post("{}/login".format(
-            self.base_url), json=self.user_logins, headers={
+            self.base_url), json={
+                "email": "mary@kenya.co.ke",
+                "password": "passwords-are-us"
+            }, headers={
                 'Content-Type': 'application/json'})
 
         response_json = helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
-            response_json['message'], "Unsuccessful. User unknown.")
+            response_json['message'], "Wrong password or email.")
 
     def test_user_login_with_wrong_password(self):
         """
-            9. Test that user cannot login with invalid credentials
+            11. Test that user cannot login with invalid credentials
         """
         # Register a user
-        self.client.post("{}/signup".format(
-            self.base_url), json=self.user)
+        resp1 = self.client.post("{}/signup".format(
+            self.base_url), json={
+                "username": "dennismith",
+                "email": "dennismith@andela.com",
+                "password": "is-correct"}, headers={
+                    'Content-Type': 'application/json'})
+
+        self.assertEqual(resp1.status_code, 201)
+
         # Attempt login
         response = self.client.post("{}/login".format(
             self.base_url), json={
-                "email": "dmithamo@andela.com",
-                "password": "not-correct"}, headers={
+                "email": "dennismith@andela.com",
+                "password": "is-not-correct"}, headers={
                     'Content-Type': 'application/json'})
 
         response_json = helper_functions.response_as_json(response)
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(
-            response_json['message'], "Unsuccessful. Invalid credentials.")
+            response_json['message'], "Wrong password or email.")
 
 
 if __name__ == '__main__':

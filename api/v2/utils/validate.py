@@ -83,7 +83,7 @@ def check_username_validity(username):
     """
     if len(username) < 4:
         # If blank username or too short
-        abort_invalid_param({"password": username})
+        abort_invalid_param({"username": username})
 
 def check_password_validity(password):
     """

@@ -1,7 +1,8 @@
 """
     Models User, FoodItem, Order as objects
 """
-
+import os
+import jwt
 
 # local imports
 from api.v2 import database
@@ -30,3 +31,12 @@ class User:
         )""".format(self.username, self.email, self.password)
 
         database.insert_into_db(query)
+
+    def generate_auth_token(self, user_id):
+        """
+            Generate authentication token on signup/login
+        """
+        payload = {"user": user_id}
+
+        token = jwt.encode(payload, os.getenv('SECRET_KEY'), algorithm='HS256')
+        return token
