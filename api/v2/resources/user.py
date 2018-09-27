@@ -26,7 +26,6 @@ class UserRegistration(Resource):
 
         # Check validity of registration params
         registration_params = validate.check_registration_params(data)
-
         # Register user
         username = registration_params['username']
         email = registration_params['email']
