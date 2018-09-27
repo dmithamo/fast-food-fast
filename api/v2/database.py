@@ -14,14 +14,14 @@ def init_db(db_url=None):
         Initialize db connection
         Run queries that set up tables
     """
-    if not db_url:
-        db_url = CONFIGS["db_url"]
+    # Connect to db on start up/restart : drop all tables
+    if db_url is None:
+        db_url = CONFIGS['db_url']
     try:
         conn = psycopg2.connect(db_url)
-        print("\n\n\nConnection Successful\n\n\n")
-        cursor = conn.cursor()
+        print("\n\nConnected to {}: \n\n".format(conn.get_dsn_parameters()))
 
-        # Reset db on restart : drop all tables
+        cursor = conn.cursor()
         cursor.execute(select_all_tables_to_reset())
         rows = cursor.fetchall()
 
@@ -32,19 +32,15 @@ def init_db(db_url=None):
         # Create the tables afresh
         for query in set_up_tables():
             cursor.execute(query)
+            conn.commit()
 
-        # Commit changes and close the connection to db
-        cursor.close()
-        conn.commit()
+    except psycopg2.DatabaseError as error:
+        print("\n\nError: {}".format(error))
 
-    except (Exception, psycopg2.DatabaseError) as error:
-        # Print error for ease of debugging
-        print(error)
-
+    # Close the connection to db
     finally:
-        # Close connection after commiting
-        if conn:
-            conn.close()
+        cursor.close()
+        conn.close()
 
 def set_up_tables():
     """
@@ -53,20 +49,16 @@ def set_up_tables():
     users_table_query = """
     CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
-        user_name VARCHAR (24) NOT NULL UNIQUE,
+        username VARCHAR (24) NOT NULL UNIQUE,
         user_email VARCHAR (30) NOT NULL UNIQUE,
-        user_password VARCHAR (128) NOT NULL,
-        registered_on TIMESTAMP NOT NULL,
-        last_login TIMESTAMP NOT NULL,
-        user_orders INT[]
+        password VARCHAR (128) NOT NULL
     )"""
 
     menu_table_query = """
     CREATE TABLE menu (
         food_item_id SERIAL PRIMARY KEY,
         food_item_name VARCHAR (24) NOT NULL,
-        food_item_price numeric NOT NULL,
-        food_item_quantity integer NOT NULL
+        food_item_price numeric NOT NULL
     )"""
 
     orders_table_query = """
@@ -86,15 +78,58 @@ def select_all_tables_to_reset():
     """
         Removes all tables if app needs restarting
     """
-    # drop_table_query = """
-    # DROP TABLE IF EXISTS {} CASCADE
-    # """.format(table_name)
-
     select_all_tables_query = """
     SELECT table_name FROM information_schema.tables WHERE
         table_schema = 'public'"""
 
     return select_all_tables_query
+
+
+def insert_into_db(query):
+    """
+        Handles INSERT queries
+    """
+    db_url = CONFIGS['db_url']
+    try:
+        conn = psycopg2.connect(db_url)
+        print("\n\nConnected to {}: \n\n".format(conn.get_dsn_parameters()))
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Connection failed: {}".format(error))
+
+    # Commit changes and close the connection to db
+    finally:
+        cursor.close()
+        conn.close()
+
+def select_from_db(query):
+    """
+        Handles SELECT queries
+    """
+    db_url = CONFIGS['db_url']
+    result = None
+    try:
+        conn = psycopg2.connect(db_url)
+        print("\n\nConnected to {}: \n\n".format(conn.get_dsn_parameters()))
+        cursor = conn.cursor()
+        cursor.execute(query)
+
+        rows = cursor.fetchall()
+        if rows:
+            result = rows
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Connection failed: {}".format(error))
+
+    # Commit changes and close the connection to db
+    finally:
+        cursor.close()
+        conn.close()
+
+    return result
 
 
 if __name__ == '__main__':
