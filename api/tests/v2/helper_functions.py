@@ -15,19 +15,24 @@ def sample_params():
     # Sample data for registration
     user = {
         "username": "dmithamo",
-        "user_email": "dmithamo@andela.com",
+        "email": "dmithamo@andela.com",
         "password": "dmit-password"
+    }
+    user_2 = {
+        "username": "myname",
+        "email": "myname@andela.com",
+        "password": "my-password"
     }
 
     # Sample data for login in
     user_logins = {
-        "user_email": "dmithamo@andela.com",
+        "email": "dmithamo@andela.com",
         "password": "dmit-password"
     }
 
     admin_logins = {
-        "user_email": "admin@andela.com",
-        "password": "admininstr8"
+        "email": "admintest@admin.com",
+        "password": "admin-pass-10s"
     }
 
     # Sample order data for POST request
@@ -50,6 +55,7 @@ def sample_params():
 
     return {
         "user": user,
+        "user_2": user_2,
         "user_logins": user_logins,
         "admin_logins": admin_logins,
         "food": food,
