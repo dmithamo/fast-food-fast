@@ -15,18 +15,18 @@ def sample_params():
     # Sample data for registration
     user = {
         "username": "dmithamo",
-        "user_email": "dmithamo@andela.com",
+        "email": "dmithamo@andela.com",
         "password": "dmit-password"
     }
 
     # Sample data for login in
     user_logins = {
-        "user_email": "dmithamo@andela.com",
+        "email": "dmithamo@andela.com",
         "password": "dmit-password"
     }
 
     admin_logins = {
-        "user_email": "admin@andela.com",
+        "email": "admin@andela.com",
         "password": "admininstr8"
     }
 

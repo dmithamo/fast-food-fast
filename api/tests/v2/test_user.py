@@ -5,7 +5,7 @@ import os
 import unittest
 
 # local imports
-from api.v2 import APP
+from api.v2.views import APP
 from api.v2.config import CONFIGS
 from api.v2.database import init_db
 from api.tests.v2 import helper_functions
@@ -20,8 +20,8 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
             Configure params usable accross every test
         """
+        APP.config.from_object(CONFIGS['testing_config'])
         self.app = APP
-        self.app.config.from_object(CONFIGS['testing_config'])
         self.client = self.app.test_client()
 
         # Sample data for registration
@@ -31,7 +31,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         self.user_logins = helper_functions.sample_params()["user_logins"]
 
         # Define a base url, common to all endpoints
-        self.base_url = "/api/v2/auth"
+        self.base_url = '/api/v2/auth'
         # Retrieve db_url from env
         self.db_url = os.getenv("DB_URL")
 
@@ -63,7 +63,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         """
            2. Test that registration fails without all required data
         """
-        response = self.client.post("{}/signup".format(
+        response = self.client.post('{}/signup'.format(
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
@@ -87,7 +87,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         self.assertEqual(
             response_json['message'], "Unsuccesful. Missing required param")
 
-    def test_duplicate_user_email_registration(self):
+    def test_duplicate_email_registration(self):
         """
            4. Test that registration with email already in use fails
         """
@@ -98,7 +98,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         response = self.client.post("{}/signup".format(
             self.base_url), json={
                 "username": "mithamod",
-                "user_email": "dmithamo@andela.com",
+                "email": "dmithamo@andela.com",
                 "password": "dmit-password"
             }, headers={
                 'Content-Type': 'application/json'})
@@ -107,7 +107,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Email already in use")
+            response_json['message'], "Error. email is already in use")
 
     def test_duplicate_user_name_registration(self):
         """
@@ -121,7 +121,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         response = self.client.post("{}/signup".format(
             self.base_url), json={
                 "username": "dmithamo",
-                "user_email": "myemail@andela.com",
+                "email": "myemail@andela.com",
                 "password": "dmit-weedpass"
             }, headers={
                 'Content-Type': 'application/json'})
@@ -130,16 +130,16 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Username already in use")
+            response_json['message'], "Error. username is already in use")
 
-    def test_invalid_user_email_registration(self):
+    def test_invalid_email_registration(self):
         """
            6. Test that registration with invalid email fails
         """
         response = self.client.post("{}/signup".format(
             self.base_url), json={
                 "username": "dmithamo",
-                "user_email": "myemail.andela.com",
+                "email": "myemail.andela.com",
                 "password": "dmit-weedpass"
             }, headers={
                 'Content-Type': 'application/json'})
@@ -148,7 +148,8 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Invalid credentials")
+            response_json['message'],
+            "Bad request. 'myemail.andela.com' is an invalid email")
 
     def test_registered_user_login(self):
         """
@@ -188,12 +189,12 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             9. Test that user cannot login with invalid credentials
         """
         # Register a user
-        self.client.post("{}/auth/signup".format(
+        self.client.post("{}/signup".format(
             self.base_url), json=self.user)
         # Attempt login
         response = self.client.post("{}/login".format(
             self.base_url), json={
-                "user_email": "dmithamo@andela.com",
+                "email": "dmithamo@andela.com",
                 "password": "not-correct"}, headers={
                     'Content-Type': 'application/json'})
 

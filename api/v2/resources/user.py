@@ -56,7 +56,7 @@ class UserRegistration(Resource):
 
             response = make_response(
                 jsonify({
-                    "message": "Succesfully registered user",
+                    "message": "Registration successful",
                     "user": registered_user}), 201)
 
         except (Exception, psycopg2.DatabaseError) as error:

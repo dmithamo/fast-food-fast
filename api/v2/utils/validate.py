@@ -28,7 +28,7 @@ def abort_missing_required_param():
         Aborts if any is missing or is None (e.g, 0 or "" )
     """
     abort(make_response(jsonify(
-        message="Bad request. Missing required param"), 400))
+        message="Unsuccesful. Missing required param"), 400))
 
 def abort_invalid_param(param):
     """
