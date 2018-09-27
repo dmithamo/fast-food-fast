@@ -7,9 +7,9 @@ install:
     - pip install -r requirements.txt
 
 # Run tests
-script:
-    - pytest
-    - coverage run --source=api.v1 -m pytest && coverage report
+# script:
+#     - pytest
+#     - coverage run --source=api.v1 -m pytest && coverage report
 
-after_success:
-    - coveralls
+# after_success:
+#     - coveralls
