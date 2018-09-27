@@ -43,12 +43,15 @@ class UserRegistration(Resource):
             new_user.save_new_user_to_db()
             # See if new_user was added to db
             query = """
-            SELECT username, email FROM users WHERE users.username = '{}';
+            SELECT user_id, username, email FROM users WHERE users.username = '{}';
             """.format(username)
 
+            registered_user_data = select_from_db(query)
+
             registered_user = {
-                "username": select_from_db(query)[0][0],  # First item is username
-                "email": select_from_db(query)[0][1]  # second item is email
+                "user_id": registered_user_data[0][0],  # first item is user_id
+                "username": registered_user_data[0][1],  # second item is username
+                "email": registered_user_data[0][2]  # third item is email
                 }
 
             response = make_response(
@@ -58,7 +61,7 @@ class UserRegistration(Resource):
 
         except (Exception, psycopg2.DatabaseError) as error:
             response = make_response(jsonify({
-                "message": "Something went wrong : {}".format(error)
+                "message": "Server error : {}".format(error)
             }), 500)
 
         return response

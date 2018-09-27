@@ -106,14 +106,12 @@ def select_from_db(query):
         Handles SELECT queries
     """
     db_url = CONFIGS['db_url']
-    result = None
     try:
         conn = psycopg2.connect(db_url)
         cursor = conn.cursor()
         cursor.execute(query)
 
         rows = cursor.fetchall()
-        result = {}
         if rows:
             return rows
 
@@ -123,5 +121,3 @@ def select_from_db(query):
     # Commit changes and close the connection to db
     finally:
         conn.close()
-
-    return result
