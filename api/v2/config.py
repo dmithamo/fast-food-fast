@@ -33,5 +33,6 @@ class TestingConfig(DefaultConfig):
 
 CONFIGS = {
     'development_config': DevelopmentConfig,
-    'testing_config': TestingConfig
+    'testing_config': TestingConfig,
+    'db_url': 'dbname=fast_food_fast_db user=dmithamo password=dmithamo'
 }

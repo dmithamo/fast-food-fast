@@ -4,10 +4,8 @@
     each of the above, respectively
 """
 
-from flask_restful import Resource
 
-
-class User(Resource):
+class User:
     """
         Model of User
         Defines User params and methods callable on User

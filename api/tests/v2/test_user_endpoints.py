@@ -1,6 +1,7 @@
 """
     Module contains tests for other user specific endpoints
 """
+import os
 import unittest
 
 # local imports
@@ -25,6 +26,8 @@ class TestEndpoints(unittest.TestCase):
 
         # Define a base url, common to all endpoints
         self.base_url = "/api/v2"
+        # Retrieve db_url from env
+        self.db_url = os.getenv("DB_URL")
 
         # Set up sample params, extract for use within tests
         sample_params = helper_functions.sample_params()
@@ -38,7 +41,7 @@ class TestEndpoints(unittest.TestCase):
 
         with self.app.app_context():
             # initialize db, create tables
-            init_db()
+            init_db(self.db_url)
 
     def tearDown(self):
         """
@@ -46,7 +49,7 @@ class TestEndpoints(unittest.TestCase):
             recreate all the tables, wiping all data
         """
         with self.app.app_context():
-            init_db()
+            init_db(self.db_url)
 
     def register_test_user(self):
         """

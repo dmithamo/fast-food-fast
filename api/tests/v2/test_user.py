@@ -1,6 +1,7 @@
 """
     Module contains tests for user registration and login
 """
+import os
 import unittest
 
 # local imports
@@ -31,10 +32,12 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
         # Define a base url, common to all endpoints
         self.base_url = "/api/v2/auth"
+        # Retrieve db_url from env
+        self.db_url = os.getenv("DB_URL")
 
         with self.app.app_context():
             # initialize db, create tables
-            init_db()
+            init_db(self.db_url)
 
     def tearDown(self):
         """
@@ -42,7 +45,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             recreate all the tables, wiping all data
         """
         with self.app.app_context():
-            init_db()
+            init_db(self.db_url)
 
     def test_user_registration(self):
         """

@@ -3,19 +3,22 @@
     Given a db_url previously exported to thevirtualenv
 """
 
-import os
 import psycopg2
 
+# local imports
+from api.v2.config import CONFIGS
 
-def init_db():
+
+def init_db(db_url=None):
     """
         Initialize db connection
         Run queries that set up tables
     """
-
+    if not db_url:
+        db_url = CONFIGS["db_url"]
     try:
-        db_url = os.getenv('DB_URL')
         conn = psycopg2.connect(db_url)
+        print("\n\n\nConnection Successful\n\n\n")
         cursor = conn.cursor()
 
         # Reset db on restart : drop all tables
