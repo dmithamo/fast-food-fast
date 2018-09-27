@@ -63,6 +63,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         response_json = helper_functions.response_as_json(response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Registration successful")
+        self.assertTrue(response_json['user']['auth_token'])
 
     def test_user_registration_missing_some_data(self):
         """
@@ -211,6 +212,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
         response_json = helper_functions.response_as_json(response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Login successful.")
+        self.assertTrue(response_json['user']['auth_token'])
 
     def test_unregistered_user_login(self):
         """
@@ -228,7 +230,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
-            response_json['message'], "Wrong password or email.")
+            response_json['message'], "User not found.")
 
     def test_user_login_with_wrong_password(self):
         """
@@ -253,9 +255,9 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
         response_json = helper_functions.response_as_json(response)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response_json['message'], "Wrong password or email.")
+            response_json['message'], "Wrong password.")
 
 
 if __name__ == '__main__':

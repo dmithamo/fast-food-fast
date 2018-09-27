@@ -54,7 +54,7 @@ class UserRegistration(Resource):
                 "user_id": registered_user_data[0][0],  # first item is user_id
                 "username": registered_user_data[0][1],  # second item is username
                 "email": registered_user_data[0][2],  # third item is email
-                "auth_token": str(auth_token)
+                "auth_token": User.decode_auth_token(auth_token)
                 }
 
             response = make_response(
@@ -94,26 +94,37 @@ class UserLogin(Resource):
             abort(make_response(jsonify(
                 message="Bad request. Supply email AND password to login"
             ), 400))
-        try:
-            # Query db for user with those params
-            query = """
-            SELECT user_id, username, email, password FROM users WHERE users.email = '{}'
-            AND users.password = '{}'""".format(email, password)
-            user = select_from_db(query)
 
+        if not email or not password:
+            abort(make_response(jsonify(
+                message="Supply valid credentials to login."
+            ), 400))
+        try:
+            user = User.retrieve_user_from_db(email)
             if not user:
                 abort(make_response(jsonify(
-                    message="Wrong password or email."
-                ), 404))
+                    message="User not found."), 404))
 
-            user_obj = User(user[0][1], user[0][2], user[0][3])
-            auth_token = user_obj.generate_auth_token(user[0][0])
+            user_id_from_db = user[0][0]
+            username_from_db = user[0][1]
+            email_from_db = user[0][2]
+            password_hash_from_db = user[0][3]
+
+            password_valid = User.check_password_at_login(
+                password_hash_from_db, password)
+
+            # Check password
+            if not password_valid:
+                abort(make_response(jsonify(
+                    message="Wrong password."), 403))
+
+            auth_token = User.generate_auth_token(user_id_from_db)
 
             logged_in_user = {
-                "user_id": user[0][0],  # first item is user_id
-                "username": user[0][1],  # second item is username
-                "email": user[0][2],  # third item is email
-                "auth_token": str(auth_token)
+                "user_id": user_id_from_db,  # first item is user_id
+                "username": username_from_db,  # second item is username
+                "email": email_from_db,  # third item is email
+                "auth_token": User.decode_auth_token(auth_token)
                 }
 
             # Return successful login response
@@ -128,4 +139,3 @@ class UserLogin(Resource):
             ), 500))
 
         return response
-    
