@@ -26,14 +26,15 @@ class UserRegistration(Resource):
 
         # Check validity of registration params
         registration_params = validate.check_registration_params(data)
+
         # Register user
         username = registration_params['username']
         email = registration_params['email']
         password = registration_params['password']
 
         # See if username or email is already in use
-        validate.check_duplication({"username": username}, "users")
-        validate.check_duplication({"email": email}, "users")
+        validate.check_duplication({"username": username})
+        validate.check_duplication({"email": email})
 
         # Register new user
         new_user = User(username, email, password)
