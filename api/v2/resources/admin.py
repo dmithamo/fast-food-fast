@@ -27,7 +27,8 @@ class AdminLogin(Resource):
         """
         payload = {"admin": name}
 
-        token = jwt.encode(payload, os.getenv('SECRET_KEY'), algorithm='HS256')
+        token = jwt.encode(payload, os.getenv(
+            'SECRET_KEY'), algorithm='HS256')
         return token
 
     def post(self):
@@ -40,7 +41,8 @@ class AdminLogin(Resource):
         # save to db fro token verification later
         query = """
         INSERT INTO users (username, email, password)
-        VALUES ('{}', '{}', '{}')""".format(admin.username, admin.email, admin.password)
+        VALUES ('{}', '{}', '{}')""".format(
+            admin.username, admin.email, admin.password)
         database.insert_into_db(query)
 
         # Generate token for admin
@@ -48,7 +50,7 @@ class AdminLogin(Resource):
             "message": "Admin succesfully authenticated",
             "admin": {
                 "email": admin.email,
-                "auth_token": str(self.generate_auth_token(admin.email.split("@")))
+                "auth_token": str(self.generate_auth_token(admin.email))
             }
         }), 201)
 

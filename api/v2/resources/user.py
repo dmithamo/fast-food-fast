@@ -42,17 +42,19 @@ class UserRegistration(Resource):
             new_user.save_new_user_to_db()
             # See if new_user was added to db
             query = """
-            SELECT user_id, username, email FROM users WHERE users.username = '{}';
+            SELECT user_id, username, email FROM users
+            WHERE users.username = '{}';
             """.format(username)
 
             registered_user_data = select_from_db(query)
             # Generate token for registered user
-            auth_token = new_user.generate_auth_token(registered_user_data[0][0])
+            auth_token = new_user.generate_auth_token(
+                registered_user_data[0][0])
 
             registered_user = {
-                "user_id": registered_user_data[0][0],  # first item is user_id
-                "username": registered_user_data[0][1],  # second item is username
-                "email": registered_user_data[0][2],  # third item is email
+                "user_id": registered_user_data[0][0],
+                "username": registered_user_data[0][1],
+                "email": registered_user_data[0][2],
                 "auth_token": User.decode_auth_token(auth_token)
                 }
 
@@ -81,7 +83,7 @@ class UserLogin(Resource):
         try:
             # Get json from request object
             data = request.get_json()
-        except:
+        except Exception:
             abort(make_response(jsonify(
                 message="Bad request. Data must be json-formatted"
             ), 400))

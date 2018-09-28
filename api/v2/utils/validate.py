@@ -18,6 +18,7 @@ def abort_missing_required_param():
     abort(make_response(jsonify(
         message="Unsuccesful. Missing required param"), 400))
 
+
 def abort_invalid_param(param):
     """
         Checks whether all required params are present
@@ -25,7 +26,9 @@ def abort_invalid_param(param):
     """
     for key, value in param.items():
         abort(make_response(jsonify(
-            message="Bad request. '{}' is an invalid {}".format(value, key)), 400))
+            message="Bad request. '{}' is an invalid {}".format(
+                value, key)), 400))
+
 
 def abort_access_unauthorized():
     """
@@ -33,6 +36,7 @@ def abort_access_unauthorized():
     """
     abort(make_response(jsonify(
         message="Unauthorised. No valid authentication token"), 403))
+
 
 def abort_not_found(item, table):
     """
@@ -49,11 +53,12 @@ def check_request_validity(request):
     """
     try:
         data = request.get_json()
-    except:
+    except Exception:
         abort(make_response(jsonify(
             message="Bad request. Request data must be json formatted"), 400))
 
     return data
+
 
 def check_token_present(request):
     """
@@ -87,6 +92,7 @@ def check_admin_logins(data):
         abort_access_unauthorized()
     return data
 
+
 def check_registration_params(data):
     """
         Carry out all checks necessary on registration data
@@ -109,6 +115,7 @@ def check_registration_params(data):
     # For valid params
     return data
 
+
 def check_email_validity(email):
     """
         Checks that provided email address is valid
@@ -125,6 +132,7 @@ def check_email_validity(email):
     except ValueError:
         abort_invalid_param({"email": email})
 
+
 def check_username_validity(username):
     """
         Checks for validity of provided username
@@ -133,6 +141,7 @@ def check_username_validity(username):
         # If blank username or too short
         abort_invalid_param({"username": username})
 
+
 def check_password_validity(password):
     """
         Checks for validity of provided password
@@ -140,6 +149,7 @@ def check_password_validity(password):
     if len(password) < 8:
         # If blank password or password too short
         abort_invalid_param({"password": password})
+
 
 def check_duplication(params, table_name):
     """
@@ -154,6 +164,7 @@ def check_duplication(params, table_name):
             # Abort if duplicated
             abort(make_response(jsonify(
                 message="Error. {} is already in use".format(key)), 400))
+
 
 def check_food_item_params(data):
     """

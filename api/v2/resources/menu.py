@@ -9,6 +9,7 @@ from flask_restful import Resource
 from api.v2.utils import validate
 from api.v2 import database
 
+
 class Menu(Resource):
     """
         Define routes to menu
@@ -21,7 +22,8 @@ class Menu(Resource):
             query = """
             INSERT INTO menu (food_item_name, food_item_price) VALUES (
                 '{}', '{}'
-            )""".format(food_item["food_item_name"], food_item["food_item_price"])
+            )""".format(food_item["food_item_name"],
+                        food_item["food_item_price"])
             database.insert_into_db(query)
 
             # Check is save was successful
@@ -72,5 +74,3 @@ class Menu(Resource):
         }), 200)
 
         return response
-
-    

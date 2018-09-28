@@ -1,5 +1,5 @@
 """
-    Models Order, ShoppingCart as a resource defining 
+    Models Order, ShoppingCart as a resource defining
     order endpoints
 """
 import psycopg2
@@ -95,4 +95,3 @@ class ShoppingCart(Resource):
             }))
 
         return response
-                

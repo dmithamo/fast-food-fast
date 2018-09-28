@@ -72,7 +72,6 @@ class User:
 
         return resp
 
-
     def encrypt_password_on_signup(self):
         """
             Encrypt password before saving to db
@@ -108,6 +107,7 @@ class Order:
         query = """
         INSERT INTO orders(food_item_name, food_item_price, quantity) VALUES(
             '{}', '{}', '{}', '{}'
-        )""".format(self.food_item_name, self.food_item_price, self.quantity, self.timestamp)
+        )""".format(self.food_item_name,
+                    self.food_item_price, self.quantity, self.timestamp)
 
         database.insert_into_db(query)

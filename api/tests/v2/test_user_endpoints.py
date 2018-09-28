@@ -1,119 +1,13 @@
 """
     Module contains tests for other user specific endpoints
 """
-import os
-import unittest
-
-# local imports
-from api.v2.views import APP
-from api.v2.config import CONFIGS
-from api.v2.database import init_db
-from api.tests.v2 import helper_functions
+from api.tests.v2.base_test_class import TestClassBase
 
 
-class TestEndpoints(unittest.TestCase):
+class TestEndpoints(TestClassBase):
     """
         Tests for user specific endpoints
     """
-
-    def setUp(self):
-        """
-            Configure params usable accross every test
-        """
-        self.app = APP
-        self.app.config.from_object(CONFIGS['testing_config'])
-        self.client = self.app.test_client()
-
-        # Define a base url, common to all endpoints
-        self.base_url = "/api/v2"
-        # Retrieve db_url from env
-        self.db_url = os.getenv("DB_URL")
-
-        # Set up sample params, extract for use within tests
-        sample_params = helper_functions.sample_params()
-
-        self.user = sample_params["user"]
-        self.user_logins = sample_params["user_logins"]
-        self.admin_logins = sample_params["admin_logins"]
-        self.food = sample_params["food"]
-        self.food_2 = sample_params["food_2"]
-        self.food_fake = sample_params["food_fake"]
-
-        with self.app.app_context():
-            # initialize db, create tables
-            init_db(self.db_url)
-
-    def tearDown(self):
-        """
-            Recreate the db connection and
-            recreate all the tables, wiping all data
-        """
-        with self.app.app_context():
-            init_db(self.db_url)
-
-    def register_test_user(self):
-        """
-            Helper function
-            Registers a user for use during testing
-        """
-        self.client.post("{}/auth/signup".format(
-            self.base_url), json=self.user, headers={
-                "Content-Type": "application/json"
-            })
-
-    def login_test_user(self):
-        """
-            Helper function
-            Logs in the user registered above for use during testing
-        """
-        # Register user
-        self.register_test_user()
-        # Login the user
-        resp = self.client.post("{}/auth/login".format(
-            self.base_url), json=self.user_logins, headers={
-                "Content-Type": "application/json"
-            })
-
-        auth_token = helper_functions.response_as_json(resp)['user']['auth_token']
-        return auth_token
-
-    def logged_in_user_post_order(self, food_params, token):
-        """
-            Helper function
-            Posts an order with logged in user
-        """
-        # Make POST request
-        self.client.post("{}/users/orders".format(
-            self.base_url), json=food_params, headers={
-                "Content-Type": "application/json", "Authorization": token
-            })
-
-    def login_test_admin(self):
-        """
-            Helper function
-            Logs in the admin
-        """
-        # Login the admin
-        resp = self.client.post("{}/login".format(
-            self.base_url), json=self.admin_logins, headers={
-                "Content-Type": "application/json"
-            })
-
-        auth_token = helper_functions.response_as_json(resp)['Authorization']
-        return auth_token
-
-    def logged_in_admin_post_to_menu(self, food_params, token):
-        """
-            Helper function
-            Posts a new food item to menu with admin logged in
-            Makes food items available for order
-        """
-        # Make POST request
-        self.client.post("{}/menu".format(
-            self.base_url), json=food_params, headers={
-                "Content-Type": "application/json", "Authorization": token
-            })
-
     # POST users/orders
 
     def test_unauthorized_user_post(self):
@@ -122,7 +16,7 @@ class TestEndpoints(unittest.TestCase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        self.logged_in_admin_post_to_menu(self.food, adm_token)
+        super.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Add quantity to food itema and attempt to place order
         self.food["quantity"] = 2
@@ -131,7 +25,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json"})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -143,7 +37,7 @@ class TestEndpoints(unittest.TestCase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        self.logged_in_admin_post_to_menu(self.food, adm_token)
+        super.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Add quantity to food itema and attempt to place order
         self.food["quantity"] = 1
@@ -155,7 +49,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json", "Authorization": token
             })
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
@@ -178,7 +72,7 @@ class TestEndpoints(unittest.TestCase):
                 "Content-Type": "application/json", "Authorization": token
             })
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -197,7 +91,7 @@ class TestEndpoints(unittest.TestCase):
                 "Content-Type": "application/json", "Authorization": token
             })
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -213,7 +107,7 @@ class TestEndpoints(unittest.TestCase):
         response = self.client.get("{}/users/orders".format(
             self.base_url))
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -232,7 +126,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -245,8 +139,8 @@ class TestEndpoints(unittest.TestCase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        self.logged_in_admin_post_to_menu(self.food, adm_token)
-        self.logged_in_admin_post_to_menu(self.food_2, adm_token)
+        super.logged_in_admin_post_to_menu(self.food, adm_token)
+        super.logged_in_admin_post_to_menu(self.food_2, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -260,7 +154,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -279,7 +173,7 @@ class TestEndpoints(unittest.TestCase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        self.logged_in_admin_post_to_menu(self.food, adm_token)
+        super.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -292,7 +186,7 @@ class TestEndpoints(unittest.TestCase):
         response = self.client.get("{}/users/orders/1".format(
             self.base_url))
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -310,7 +204,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -323,7 +217,7 @@ class TestEndpoints(unittest.TestCase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        self.logged_in_admin_post_to_menu(self.food, adm_token)
+        super.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -340,7 +234,7 @@ class TestEndpoints(unittest.TestCase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -353,4 +247,4 @@ class TestEndpoints(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    super.unittest.main()

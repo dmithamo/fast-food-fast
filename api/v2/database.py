@@ -14,30 +14,20 @@ def init_db(db_url=None):
         Initialize db connection
         Run queries that set up tables
     """
-    # Connect to db on start up/restart : drop all tables
-    if db_url is None:
-        db_url = CONFIGS['db_url']
     try:
-        conn = psycopg2.connect(db_url)
-
-        print("\nConnected: {} \n\n".format(conn.get_dsn_parameters()))
-
-        cursor = conn.cursor()
-        for query in drop_table_if_exists():
+        conn, cursor = connect_to_and_query_db()
+        all_init_queries = drop_table_if_exists() + set_up_tables()
+        i = 0
+        while i != len(all_init_queries):
+            query = all_init_queries[i]
             cursor.execute(query)
             conn.commit()
+            i += 1
+        print("--"*50)
 
-        # Create the tables afresh
-        for query in set_up_tables():
-            cursor.execute(query)
-            conn.commit()
+    except Exception as error:
+        print("\nQuery not executed : {} \n".format(error))
 
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("\n\nError: {}".format(error))
-
-    # Close the connection to db
-    finally:
-        conn.close()
 
 def set_up_tables():
     """
@@ -69,6 +59,7 @@ def set_up_tables():
 
     return [users_table_query, menu_table_query, orders_table_query]
 
+
 def drop_table_if_exists():
     """
         Removes all tables if app needs restarting
@@ -84,41 +75,64 @@ def drop_table_if_exists():
 
     return [drop_menu_table, drop_orders_table, drop_users_table]
 
+
+def connect_to_and_query_db(query=None, db_url=None):
+    """
+        Initiates a connection to the db
+        Executes a query
+    """
+    conn = None
+    if db_url is None:
+        db_url = CONFIGS['db_url']
+
+    try:
+        # connect to db
+        conn = psycopg2.connect(db_url)
+        print("\n\nConnected {}\n".format(conn.get_dsn_parameters()))
+        cursor = conn.cursor()
+
+        if query:
+            # Execute query
+            cursor.execute(query)
+            # Commit changes
+            conn.commit()
+
+    except(Exception,
+           psycopg2.DatabaseError,
+           psycopg2.ProgrammingError) as error:
+        print("DB ERROR: {}".format(error))
+
+    return conn, cursor
+
+
 def insert_into_db(query):
     """
         Handles INSERT queries
     """
-    db_url = CONFIGS['db_url']
-    try:
-        conn = psycopg2.connect(db_url)
-        cursor = conn.cursor()
-        cursor.execute(query)
-        conn.commit()
-
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("Connection failed: {}".format(error))
-
-    # Commit changes and close the connection to db
-    finally:
+    success = False
+    conn = connect_to_and_query_db(query)[0]
+    if conn:
+        # After successful INSERT query
+        success = True
         conn.close()
+
+    return success
+
 
 def select_from_db(query):
     """
         Handles SELECT queries
     """
-    db_url = CONFIGS['db_url']
-    try:
-        conn = psycopg2.connect(db_url)
-        cursor = conn.cursor()
-        cursor.execute(query)
-
+    rows = None
+    conn, cursor = connect_to_and_query_db(query)
+    if conn:
+        # Retrieve SELECT query results from db
         rows = cursor.fetchall()
-        if rows:
-            return rows
-
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("Connection failed: {}".format(error))
-
-    # Commit changes and close the connection to db
-    finally:
         conn.close()
+
+    return rows
+
+
+if __name__ == '__main__':
+    init_db()
+    connect_to_and_query_db()

@@ -1,57 +1,13 @@
 """
     Module contains tests for user registration and login
 """
-import os
-import unittest
-
-# local imports
-from api.v2.views import APP
-from api.v2.config import CONFIGS
-from api.v2.database import init_db
-from api.tests.v2 import helper_functions
+from api.tests.v2.base_test_class import TestClassBase
 
 
-class TestUserRegistrationAndLogin(unittest.TestCase):
+class TestUserRegistrationAndLogin(TestClassBase):
     """
         Tests for user registration and Login
     """
-
-    def setUp(self):
-        """
-            Configure params usable accross every test
-        """
-        # Define a base url, common to all endpoints
-        self.base_url = '/api/v2/auth'
-
-        # Retrieve db_url from env
-        self.db_url = os.getenv("DB_URL")
-        # initialize db, create tables
-        init_db(self.db_url)
-
-        APP.config.from_object(CONFIGS['testing_config'])
-
-        self.app = APP
-        self.client = self.app.test_client()
-
-        # Sample data for registration
-        self.user = helper_functions.sample_params()["user"]
-        self.user_2 = helper_functions.sample_params()["user_2"]
-
-        # Sample data for login in
-        self.user_logins = helper_functions.sample_params()["user_logins"]
-
-        with self.app.app_context():
-            # initialize db, create tables
-            init_db(self.db_url)
-
-    def tearDown(self):
-        """
-            Recreate the db connection and
-            recreate all the tables, wiping all data
-        """
-        with self.app.app_context():
-            init_db(self.db_url)
-
     def test_user_registration(self):
         """
            1. Test whether registration with valid data succeeds
@@ -60,7 +16,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user_2, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Registration successful")
         self.assertTrue(response_json['user']['auth_token'])
@@ -73,7 +29,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -87,7 +43,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json={}, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -109,7 +65,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -132,7 +88,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -150,7 +106,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -169,7 +125,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -188,7 +144,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -209,7 +165,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Login successful.")
         self.assertTrue(response_json['user']['auth_token'])
@@ -226,7 +182,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -253,7 +209,7 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
                 "password": "is-not-correct"}, headers={
                     'Content-Type': 'application/json'})
 
-        response_json = helper_functions.response_as_json(response)
+        response_json = super.helper_functions.response_as_json(response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -261,4 +217,4 @@ class TestUserRegistrationAndLogin(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    super.unittest.main()

@@ -64,6 +64,7 @@ def sample_params():
         "new_food": new_food
     }
 
+
 def response_as_json(resp):
     """
         Helper function
