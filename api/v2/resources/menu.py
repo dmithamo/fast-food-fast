@@ -57,7 +57,7 @@ class Menu(Resource):
         food_item = validate.check_food_item_params(data)
         # Save valid food to db
         self.save_to_db(food_item)
-    
+
     def get(self):
         """
             Retrieve the menu

@@ -74,7 +74,7 @@ class TestEndpoints(unittest.TestCase):
                 "Content-Type": "application/json"
             })
 
-        auth_token = helper_functions.response_as_json(resp)['Authorization']
+        auth_token = helper_functions.response_as_json(resp)['user']['auth_token']
         return auth_token
 
     def logged_in_user_post_order(self, food_params, token):
@@ -217,7 +217,8 @@ class TestEndpoints(unittest.TestCase):
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response_json["message"], "Forbidden. You must be logged in")
+            response_json["message"],
+            "Unauthorised. No valid authentication token")
 
     def test_get_all_orders_when_none_exist(self):
         """

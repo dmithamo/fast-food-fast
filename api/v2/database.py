@@ -67,6 +67,7 @@ def set_up_tables():
     CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,
         ordered_on TIMESTAMP NOT NULL,
+        ordered_by INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         total_order_cost NUMERIC NOT NULL
     )"""

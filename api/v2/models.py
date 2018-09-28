@@ -63,12 +63,14 @@ class User:
         """
             Decrypts token
         """
+        resp = ''
         try:
             decoded_token = jwt.decode(token, os.getenv('SECRET_KEY'))["user"]
-        except jwt.InvalidTokenError as error:
-            decoded_token = error
+            resp = decoded_token
+        except (Exception, jwt.InvalidTokenError) as error:
+            resp = None
 
-        return decoded_token
+        return resp
 
 
     def encrypt_password_on_signup(self):

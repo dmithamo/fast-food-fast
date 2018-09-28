@@ -32,7 +32,14 @@ def abort_access_unauthorized():
         Aborts if user is no authentication token
     """
     abort(make_response(jsonify(
-        message="Unauthorised. You must be logged in"), 403))
+        message="Unauthorised. No valid authentication token"), 403))
+
+def abort_not_found(user, item):
+    """
+        Aborts if user is no items found from db search
+    """
+    abort(make_response(jsonify(
+        message="No {} found for {} {}".format(item, user, user)), 404))
 
 
 def check_request_validity(request):
@@ -47,6 +54,16 @@ def check_request_validity(request):
             message="Bad request. Request data must be json formatted"), 400))
 
     return data
+
+def check_token_present(request):
+    """
+        Checks if request contains an authorization token
+    """
+    try:
+        token = request.headers.get('Authorization')
+    except KeyError:
+        abort_access_unauthorized()
+    return token
 
 
 def check_admin_logins(data):
