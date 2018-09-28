@@ -34,12 +34,12 @@ def abort_access_unauthorized():
     abort(make_response(jsonify(
         message="Unauthorised. No valid authentication token"), 403))
 
-def abort_not_found(user, item):
+def abort_not_found(item, table):
     """
         Aborts if user is no items found from db search
     """
     abort(make_response(jsonify(
-        message="No {} found for {} {}".format(item, user, user)), 404))
+        message="No {} found in {}".format(item, table)), 404))
 
 
 def check_request_validity(request):

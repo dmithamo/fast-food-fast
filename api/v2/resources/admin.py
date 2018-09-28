@@ -9,9 +9,10 @@ from flask import request, jsonify, make_response, abort
 from flask_restful import Resource
 
 
-
 # local imports
 from api.v2.utils import validate
+from api.v2.models import User
+from api.v2 import database
 
 
 class AdminLogin(Resource):
@@ -34,12 +35,20 @@ class AdminLogin(Resource):
             POST /login
         """
         data = validate.check_request_validity(request)
+        # Model admin as user
+        admin = User("admin", data["email"], data["password"])
+        # save to db fro token verification later
+        query = """
+        INSERT INTO users (username, email, password)
+        VALUES ('{}', '{}', '{}')""".format(admin.username, admin.email, admin.password)
+        database.insert_into_db(query)
+
         # Generate token for admin
         response = make_response(jsonify({
             "message": "Admin succesfully authenticated",
             "admin": {
-                "email": data["email"],
-                "auth_token": str(self.generate_auth_token(data["email"].split("@")))
+                "email": admin.email,
+                "auth_token": str(self.generate_auth_token(admin.email.split("@")))
             }
         }), 201)
 

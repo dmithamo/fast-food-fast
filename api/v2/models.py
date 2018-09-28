@@ -85,3 +85,29 @@ class User:
             Encrypt password before saving to db
         """
         return check_password_hash(password_hash, password)
+
+
+class Order:
+    """
+        Model an order
+    """
+    def __init__(self, food_item_name, food_item_price, quantity, ordered_by):
+        """"
+            Initilize an order, given params
+        """
+        self.food_item_name = food_item_name
+        self.food_item_price = food_item_price
+        self.quantity = quantity
+        self.ordered_by = ordered_by
+        self.timestamp = datetime.now()
+
+    def save_order_to_db(self):
+        """
+            Add order with valid params to db
+        """
+        query = """
+        INSERT INTO orders(food_item_name, food_item_price, quantity) VALUES(
+            '{}', '{}', '{}', '{}'
+        )""".format(self.food_item_name, self.food_item_price, self.quantity, self.timestamp)
+
+        database.insert_into_db(query)

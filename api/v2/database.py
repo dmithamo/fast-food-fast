@@ -23,14 +23,9 @@ def init_db(db_url=None):
         print("\nConnected: {} \n\n".format(conn.get_dsn_parameters()))
 
         cursor = conn.cursor()
-        cursor.execute(select_all_tables_to_reset())
-        rows = cursor.fetchall()
-
-        for row in rows:
-            print("Droping {} ......".format(row[0]))
-            cursor.execute(
-                "DROP TABLE {}".format(row[0]))
-            print("Dropped {} ......\n".format(row[0]))
+        for query in drop_table_if_exists():
+            cursor.execute(query)
+            conn.commit()
 
         # Create the tables afresh
         for query in set_up_tables():
@@ -74,15 +69,20 @@ def set_up_tables():
 
     return [users_table_query, menu_table_query, orders_table_query]
 
-def select_all_tables_to_reset():
+def drop_table_if_exists():
     """
         Removes all tables if app needs restarting
     """
-    select_all_tables_query = """
-    SELECT table_name FROM information_schema.tables WHERE
-        table_schema = 'public'"""
+    drop_orders_table = """
+    DROP TABLE IF EXISTS orders"""
 
-    return select_all_tables_query
+    drop_users_table = """
+    DROP TABLE IF EXISTS users"""
+
+    drop_menu_table = """
+    DROP TABLE IF EXISTS menu"""
+
+    return [drop_menu_table, drop_orders_table, drop_users_table]
 
 def insert_into_db(query):
     """
