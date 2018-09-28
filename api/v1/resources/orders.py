@@ -168,6 +168,17 @@ class ShoppingCart(Resource):
             # If order is missing required item_name or item_price
             abort_if_missing_required_param()
 
+        if item_price < 1 or not isinstance(quantity, int) or not isinstance(
+                item_price, int) or quantity < 1 :
+            abort(make_response(jsonify(
+                message="Bad request. Price and quantity must be ints >= 1"
+            ), 400))
+
+        if not isinstance(item_name, str):
+            abort(make_response(jsonify(
+                message="Bad request. Item name must be a string"
+            ), 400))
+
         if CART:
             # If any orders have already been added to CART
             try:

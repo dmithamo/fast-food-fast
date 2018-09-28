@@ -144,11 +144,50 @@ class TestEndpoints(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response_as_json(
-            response)['message'], 'Bad request. Missing required param')
+            response)['message'], 'Bad request. Price and quantity must be ints >= 1')
+
+    def test_make_order_with_name_invalid(self):
+        """
+            7. Test POST /orders - with invalid price
+        """
+        response = self.api_test_client.post('{}/orders'.format(
+            self.BASE_URL), json={
+                'item_name': 10, 'item_price': 50, 'quantity': 3
+                }, headers={'Content-Type': 'application/json'})
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response_as_json(
+            response)['message'], 'Bad request. Item name must be a string')
+
+    def test_make_order_with_price_invalid(self):
+        """
+            8. Test POST /orders - with invalid price
+        """
+        response = self.api_test_client.post('{}/orders'.format(
+            self.BASE_URL), json={
+                'item_name': 'Watermelon', 'item_price': -50, 'quantity': 3
+                }, headers={'Content-Type': 'application/json'})
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response_as_json(
+            response)['message'], 'Bad request. Price and quantity must be ints >= 1')
+
+    def test_make_order_with_quantity_invalid(self):
+        """
+            9. Test POST /orders - with invalid quantity
+        """
+        response = self.api_test_client.post('{}/orders'.format(
+            self.BASE_URL), json={
+                'item_name': 'Watermelon', 'item_price': 50, 'quantity': -3
+                }, headers={'Content-Type': 'application/json'})
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response_as_json(
+            response)['message'], 'Bad request. Price and quantity must be ints >= 1')
 
     def test_make_order_without_any_request_data(self):
         """
-            7. Test POST /orders - without any data
+            10. Test POST /orders - without any data
         """
         response = self.api_test_client.post('{}/orders'.format(
             self.BASE_URL), json={}, headers={
@@ -160,7 +199,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_make_order_with_non_json_data(self):
         """
-            8. Test POST /orders - with non-json data in request
+            11. Test POST /orders - with non-json data in request
         """
         response = self.api_test_client.post('{}/orders'.format(
             self.BASE_URL), data='item_name=Guacamole&item_price=200')
@@ -172,7 +211,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_retrieve_all_orders(self):
         """
-            9. Test GET /orders - when one or several orders exist
+            12. Test GET /orders - when one or several orders exist
             After successful POSTs in Tests 1, 2, 3 above
         """
         response = self.api_test_client.get('{}/orders'.format(self.BASE_URL))
@@ -186,7 +225,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_retrieve_by_id(self):
         """
-            10. Test GET /orders/id - when order with given id exists
+            13. Test GET /orders/id - when order with given id exists
         """
         response = self.api_test_client.get(
             '{}/orders/1'.format(self.BASE_URL))
@@ -196,7 +235,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_fetch_specific_order_when_does_not_exist(self):
         """
-            11. Test GET /orders/id - when order with given id does not exist
+            14. Test GET /orders/id - when order with given id does not exist
         """
         response = self.api_test_client.get(
             '{}/orders/100'.format(self.BASE_URL))
@@ -207,7 +246,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_update_order(self):
         """
-            12. Test PUT /orders/id - when order with given id exists
+            15. Test PUT /orders/id - when order with given id exists
             and status is valid
         """
         response = self.api_test_client.put('{}/orders/1'.format(
@@ -221,7 +260,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_update_order_with_invalid_status(self):
         """
-            13. Test PUT /orders/id - when order with given id exists
+            16. Test PUT /orders/id - when order with given id exists
             but status is not valid
         """
         response = self.api_test_client.put('{}/orders/1'.format(
@@ -234,7 +273,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_change_order_status_when_order_does_not_exist(self):
         """
-            14. Test PUT /orders/id - when order with given id does not exist
+            17. Test PUT /orders/id - when order with given id does not exist
         """
         response = self.api_test_client.put('{}/orders/1000'.format(
             self.BASE_URL), json={'order_status': 'accepted'})
@@ -246,7 +285,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_update_order_with_no_status(self):
         """
-            15. Test PUT /orders/id - when order with given id exists
+            18. Test PUT /orders/id - when order with given id exists
             but status has not been provided
         """
         response = self.api_test_client.put('{}/orders/1'.format(
@@ -258,7 +297,7 @@ class TestEndpoints(unittest.TestCase):
 
     def test_update_order_with_non_json_data(self):
         """
-            16. Test PUT /orders/id - when order with given id exists
+            19. Test PUT /orders/id - when order with given id exists
             but status is provided in non-json format
         """
         response = self.api_test_client.put('{}/orders/1'.format(
