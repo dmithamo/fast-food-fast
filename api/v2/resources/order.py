@@ -89,5 +89,10 @@ class ShoppingCart(Resource):
             new_order = Order(name, price, quantity, ordered_by)
             new_order.save_order_to_db()
 
-        return None
+            response = make_response(jsonify({
+                "message": "Order posted successfully",
+                "order": new_order
+            }))
+
+        return response
                 
