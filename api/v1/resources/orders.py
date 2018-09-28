@@ -188,14 +188,9 @@ class ShoppingCart(Resource):
                     order for order in CART if order['item_name'] == item_name
                     and order['order_status'] == 'pending'][0]
 
-                unserviced_order['quantity'] += quantity
-                # Update order cost
-                calculate_order_cost(unserviced_order)
-                response = jsonify({
-                    "message": "Order quantity updated",
-                    "order": unserviced_order})
-                response.status_code = 201
-
+                abort(make_response(jsonify({
+                    "message": "Order already exists",
+                    "order": unserviced_order}), 400))
             except IndexError:
                 # if a similar order has not been added to CART, or
                 # any that have been added have been marked

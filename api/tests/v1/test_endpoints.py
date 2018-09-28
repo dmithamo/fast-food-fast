@@ -85,23 +85,17 @@ class TestEndpoints(unittest.TestCase):
 
     def test_make_similar_order(self):
         """
-            3. Test POST /orders - when similar order already exists
+            3. Test POST /orders - when similar unserviced order exists
         """
         response = self.api_test_client.post('{}/orders'.format(
             self.BASE_URL), json=self.ORDER, headers={
                 'Content-Type': 'application/json'})
 
-        self.assertEqual(response.status_code, 201)
-        print(response_as_json(
-            response))
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response_as_json(
-            response)['order']['item_name'], self.ORDER['item_name'])
-        self.assertEqual(response_as_json(
-            response)['order']['order_id'], 1)
-        self.assertEqual(response_as_json(
-            response)['order']['quantity'], 2)
-        self.assertEqual(response_as_json(
-            response)['order']['total_order_cost'], 400)
+            response)['message'], 'Order already exists')
+        self.assertTrue(response_as_json(
+            response)['order'])
 
     def test_make_second_order(self):
         """
@@ -144,7 +138,8 @@ class TestEndpoints(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response_as_json(
-            response)['message'], 'Bad request. Price and quantity must be ints >= 1')
+            response)['message'],
+            'Bad request. Price and quantity must be ints >= 1')
 
     def test_make_order_with_name_invalid(self):
         """
@@ -170,7 +165,8 @@ class TestEndpoints(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response_as_json(
-            response)['message'], 'Bad request. Price and quantity must be ints >= 1')
+            response)['message'],
+            'Bad request. Price and quantity must be ints >= 1')
 
     def test_make_order_with_quantity_invalid(self):
         """
@@ -258,18 +254,19 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(
             response_as_json(response)['order']['order_status'], 'accepted')
 
-    def test_update_order_with_invalid_status(self):
-        """
-            16. Test PUT /orders/id - when order with given id exists
-            but status is not valid
+    def test_update_order_invalid_status(self):
+        """"
+            16. Test PUT /orders/id - with invalid status
         """
         response = self.api_test_client.put('{}/orders/1'.format(
-            self.BASE_URL), json={'order_status': 'kenya'})
+            self.BASE_URL), json={"order_status": "brilliant"}, headers={
+                'Content-Type': 'application/json'
+            })
+
+        response_json = response_as_json(response)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response_as_json(
-            response)['message'],
-                         'Bad request. Invalid order status')
+        self.assertEqual(response_json['message'], 'Bad request. Invalid order status')
 
     def test_change_order_status_when_order_does_not_exist(self):
         """
