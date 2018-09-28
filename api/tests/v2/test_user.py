@@ -1,10 +1,10 @@
 """
     Module contains tests for user registration and login
 """
-from api.tests.v2.base_test_class import TestClassBase
+from api.tests.v2 import base_test_class
 
 
-class TestUserRegistrationAndLogin(TestClassBase):
+class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
     """
         Tests for user registration and Login
     """
@@ -12,11 +12,11 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            1. Test whether registration with valid data succeeds
         """
-        response = self.client.post("{}/signup".format(
+        response = self.client.post("{}/auth/signup".format(
             self.base_url), json=self.user_2, headers={
                 'Content-Type': 'application/json'})
-
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Registration successful")
         self.assertTrue(response_json['user']['auth_token'])
@@ -25,11 +25,12 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            2. Test that registration fails without all required data
         """
-        response = self.client.post('{}/signup'.format(
+        response = self.client.post('{}/auth/signup'.format(
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -39,11 +40,12 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            3. Test that registration fails without data
         """
-        response = self.client.post("{}/signup".format(
+        response = self.client.post("{}/auth/signup".format(
             self.base_url), json={}, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -53,11 +55,11 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            4. Test that registration with email already in use fails
         """
-        self.client.post("{}/signup".format(
+        self.client.post("{}/auth/signup".format(
             self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
-        response = self.client.post("{}/signup".format(
+        response = self.client.post("{}/auth/signup".format(
             self.base_url), json={
                 "username": "mithamod",
                 "email": "dmithamo@andela.com",
@@ -65,7 +67,8 @@ class TestUserRegistrationAndLogin(TestClassBase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -76,11 +79,11 @@ class TestUserRegistrationAndLogin(TestClassBase):
            5. Test that registration with username already in use fails
         """
         # Register a user
-        self.client.post("{}/signup".format(
+        self.client.post("{}/auth/signup".format(
             self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
-        response = self.client.post("{}/signup".format(
+        response = self.client.post("{}/auth/signup".format(
             self.base_url), json={
                 "username": "dmithamo",
                 "email": "myemail@andela.com",
@@ -88,7 +91,8 @@ class TestUserRegistrationAndLogin(TestClassBase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -98,7 +102,7 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            6. Test that registration with invalid email fails
         """
-        response = self.client.post("{}/signup".format(
+        response = self.client.post("{}/auth/signup".format(
             self.base_url), json={
                 "username": "dmithamo",
                 "email": "myemail.andela.com",
@@ -106,7 +110,8 @@ class TestUserRegistrationAndLogin(TestClassBase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -117,7 +122,7 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            7. Test that registration fails with invalid username
         """
-        response = self.client.post('{}/signup'.format(
+        response = self.client.post('{}/auth/signup'.format(
             self.base_url), json={
                 "username": "d",
                 "email": "dmithamo@andela.com",
@@ -125,7 +130,8 @@ class TestUserRegistrationAndLogin(TestClassBase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -136,7 +142,7 @@ class TestUserRegistrationAndLogin(TestClassBase):
         """
            8. Test that registration fails with invalid password
         """
-        response = self.client.post('{}/signup'.format(
+        response = self.client.post('{}/auth/signup'.format(
             self.base_url), json={
                 "username": "dennisb",
                 "email": "dmithamo@andela.com",
@@ -144,7 +150,8 @@ class TestUserRegistrationAndLogin(TestClassBase):
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -156,16 +163,17 @@ class TestUserRegistrationAndLogin(TestClassBase):
             9. Test that a registered user can login
         """
         # Register a user
-        self.client.post("{}/signup".format(
+        self.client.post("{}/auth/signup".format(
             self.base_url), json=self.user, headers={
                 'Content-Type': 'application/json'})
 
         # Attempt login
-        response = self.client.post("{}/login".format(
+        response = self.client.post("{}/auth/login".format(
             self.base_url), json=self.user_logins, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Login successful.")
         self.assertTrue(response_json['user']['auth_token'])
@@ -175,14 +183,15 @@ class TestUserRegistrationAndLogin(TestClassBase):
             10. Test that an unregistered user cannot login
         """
 
-        response = self.client.post("{}/login".format(
+        response = self.client.post("{}/auth/login".format(
             self.base_url), json={
                 "email": "mary@kenya.co.ke",
                 "password": "passwords-are-us"
             }, headers={
                 'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -193,7 +202,7 @@ class TestUserRegistrationAndLogin(TestClassBase):
             11. Test that user cannot login with invalid credentials
         """
         # Register a user
-        resp1 = self.client.post("{}/signup".format(
+        resp1 = self.client.post("{}/auth/signup".format(
             self.base_url), json={
                 "username": "dennismith",
                 "email": "dennismith@andela.com",
@@ -203,18 +212,15 @@ class TestUserRegistrationAndLogin(TestClassBase):
         self.assertEqual(resp1.status_code, 201)
 
         # Attempt login
-        response = self.client.post("{}/login".format(
+        response = self.client.post("{}/auth/login".format(
             self.base_url), json={
                 "email": "dennismith@andela.com",
                 "password": "is-not-correct"}, headers={
                     'Content-Type': 'application/json'})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
             response_json['message'], "Wrong password.")
-
-
-if __name__ == '__main__':
-    super.unittest.main()

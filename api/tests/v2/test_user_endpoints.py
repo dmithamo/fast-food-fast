@@ -1,10 +1,10 @@
 """
     Module contains tests for other user specific endpoints
 """
-from api.tests.v2.base_test_class import TestClassBase
+from api.tests.v2 import base_test_class
 
 
-class TestEndpoints(TestClassBase):
+class TestEndpoints(base_test_class.TestClassBase):
     """
         Tests for user specific endpoints
     """
@@ -16,7 +16,7 @@ class TestEndpoints(TestClassBase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        super.logged_in_admin_post_to_menu(self.food, adm_token)
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Add quantity to food itema and attempt to place order
         self.food["quantity"] = 2
@@ -25,11 +25,13 @@ class TestEndpoints(TestClassBase):
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json"})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response_json["message"], "Forbidden. You must be logged in")
+            response_json["message"],
+            "Unauthorised. No valid authentication token")
 
     def test_post_an_order(self):
         """
@@ -37,7 +39,7 @@ class TestEndpoints(TestClassBase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        super.logged_in_admin_post_to_menu(self.food, adm_token)
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Add quantity to food itema and attempt to place order
         self.food["quantity"] = 1
@@ -49,7 +51,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), json=self.food, headers={
                 "Content-Type": "application/json", "Authorization": token
             })
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
@@ -72,7 +75,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json", "Authorization": token
             })
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -91,7 +95,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json", "Authorization": token
             })
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -107,7 +112,8 @@ class TestEndpoints(TestClassBase):
         response = self.client.get("{}/users/orders".format(
             self.base_url))
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -126,7 +132,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -154,7 +161,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -173,7 +181,7 @@ class TestEndpoints(TestClassBase):
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
-        super.logged_in_admin_post_to_menu(self.food, adm_token)
+        self.logged_in_admin_post_to_menu(self.food, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -186,7 +194,8 @@ class TestEndpoints(TestClassBase):
         response = self.client.get("{}/users/orders/1".format(
             self.base_url))
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -204,7 +213,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -234,7 +244,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json", "Authorization": token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -244,7 +255,3 @@ class TestEndpoints(TestClassBase):
         self.assertEqual(
             response_json["order"]["food_item_name"],
             self.food["food_item_name"])
-
-
-if __name__ == '__main__':
-    super.unittest.main()

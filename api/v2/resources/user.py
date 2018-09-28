@@ -55,7 +55,7 @@ class UserRegistration(Resource):
                 "user_id": registered_user_data[0][0],
                 "username": registered_user_data[0][1],
                 "email": registered_user_data[0][2],
-                "auth_token": User.decode_auth_token(auth_token)
+                "auth_token": str(auth_token)
                 }
 
             response = make_response(
@@ -125,7 +125,7 @@ class UserLogin(Resource):
                 "user_id": user_id_from_db,  # first item is user_id
                 "username": username_from_db,  # second item is username
                 "email": email_from_db,  # third item is email
-                "auth_token": User.decode_auth_token(auth_token)
+                "auth_token": str(auth_token)
                 }
 
             # Return successful login response

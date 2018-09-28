@@ -6,7 +6,7 @@ import os
 import unittest
 
 # local imports
-from api.v2.views import create_app
+from api.v2.views import APP
 from api.v2.config import CONFIGS
 from api.v2.database import init_db
 from api.tests.v2 import helper_functions
@@ -20,8 +20,9 @@ class TestClassBase(unittest.TestCase):
         """
             Configure params usable accross every test
         """
+        self.app = APP
         testing_config = CONFIGS['testing_config']
-        self.app = create_app(testing_config)
+        self.app.config.from_object(testing_config)
         self.client = self.app.test_client()
 
         # Define a base url, common to all endpoints
@@ -121,3 +122,7 @@ class TestClassBase(unittest.TestCase):
             self.base_url), json=food_params, headers={
                 "Content-Type": "application/json", "Authorization": token
             })
+
+
+if __name__ == '__main__':
+    unittest.main()

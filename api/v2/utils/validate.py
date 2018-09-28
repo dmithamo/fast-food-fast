@@ -65,7 +65,7 @@ def check_token_present(request):
         Checks if request contains an authorization token
     """
     try:
-        token = request.headers.get('Authorization')
+        token = request.headers.get('Authorization').split(" ")[-1]
     except KeyError:
         abort_access_unauthorized()
     return token

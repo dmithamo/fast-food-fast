@@ -38,12 +38,7 @@ class Menu(Resource):
                 message="Server error : {}".format(error)
             ), 500))
 
-        response = make_response(jsonify({
-            "message": "Food added succesfully.",
-            "food": new_food
-        }), 201)
-
-        return response
+        return new_food
 
     def post(self):
         """
@@ -58,7 +53,14 @@ class Menu(Resource):
         data = validate.check_request_validity(request)
         food_item = validate.check_food_item_params(data)
         # Save valid food to db
-        self.save_to_db(food_item)
+        new_food = self.save_to_db(food_item)
+
+        response = make_response(jsonify({
+            "message": "Food added succesfully.",
+            "food": new_food
+        }), 201)
+
+        return response
 
     def get(self):
         """
@@ -68,9 +70,15 @@ class Menu(Resource):
         SELECT * FROM menu"""
         menu = database.select_from_db(query)
 
+        if not menu:
+            # If menu is empty
+            abort(make_response(jsonify(
+                message="{}Not food items found on the menu".format(menu),
+            ), 404))
+
         response = make_response(jsonify({
             "message": "Request successful",
-            "menu": menu
+            "menu": str(menu)
         }), 200)
 
         return response

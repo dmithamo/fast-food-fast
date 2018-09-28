@@ -1,10 +1,10 @@
 """
     Module contains tests for admin specific endpoints
 """
-from api.tests.v2.base_test_class import TestClassBase
+from api.tests.v2 import base_test_class
 
 
-class TestEndpoints(TestClassBase):
+class TestEndpoints(base_test_class.TestClassBase):
     """
         Tests for admin specific endpoints
     """
@@ -18,7 +18,8 @@ class TestEndpoints(TestClassBase):
         response = self.client.get("{}/orders".format(
             self.base_url))
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -38,7 +39,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -63,7 +65,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -90,7 +93,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json"})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
@@ -110,7 +114,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -134,7 +139,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -160,7 +166,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -186,7 +193,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -216,7 +224,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -233,7 +242,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json"})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -254,7 +264,8 @@ class TestEndpoints(TestClassBase):
             self.base_url), headers={
                 "Content-Type": "application/json"})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -279,7 +290,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
@@ -306,7 +318,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -329,7 +342,8 @@ class TestEndpoints(TestClassBase):
                 "Content-Type": "application/json",
                 "Authorization": adm_token})
 
-        response_json = super.helper_functions.response_as_json(response)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
@@ -341,7 +355,3 @@ class TestEndpoints(TestClassBase):
         self.assertNotEqual(
             response_json["food_item"]["food_item_price"],
             self.new_food["food_itme_price"])
-
-
-if __name__ == '__main__':
-    super.unittest.main()
