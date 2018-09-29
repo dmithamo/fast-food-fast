@@ -38,12 +38,12 @@ def abort_access_unauthorized():
         message="Unauthorised. No valid authentication token"), 403))
 
 
-def abort_not_found(item, table):
+def abort_not_found(item, user):
     """
         Aborts if user is no items found from db search
     """
     abort(make_response(jsonify(
-        message="No {} found in {}".format(item, table)), 404))
+        message="No '{}' found {}".format(item, user)), 404))
 
 
 def check_request_validity(request):
@@ -71,28 +71,6 @@ def check_token_present(request):
     return token
 
 
-def check_admin_logins(data):
-    """
-        Carry out all checks necessary on admin logins
-        Abort if any is invalid
-    """
-    try:
-        email = data["email"]
-        password = data["password"]
-    except KeyError:
-        # if required param is missing, abort
-        abort_missing_required_param()
-    # Check if email is valid
-    check_email_validity(email)
-    # check password length
-    check_password_validity(password)
-
-    # Require specific email and password for admin
-    if not email == "admintest@admin.com" or not password == "admin-pass-10s":
-        abort_access_unauthorized()
-    return data
-
-
 def check_registration_params(data):
     """
         Carry out all checks necessary on registration data
@@ -113,23 +91,64 @@ def check_registration_params(data):
     check_password_validity(password)
 
     # For valid params
-    return data
+    return {"username": username,
+            "email": email,
+            "password": password}
+
+def check_login_params(data):
+    """
+        Carry out all checks necessary on registration data
+        Abort if any is invalid
+    """
+    try:
+        # extract params from json
+        email = data["email"]
+        password = data["password"]
+    except KeyError:
+        abort_missing_required_param()
+
+    # For valid params
+    return {"email": email,
+            "password": password}
+
+
+def check_admin_logins(data):
+    """
+        Carry out all checks necessary on admin logins
+        Abort if any is invalid
+    """
+    try:
+        email = data["email"]
+        password = data["password"]
+    except KeyError:
+        # if required param is missing, abort
+        abort_missing_required_param()
+
+    # Require specific email and password for admin
+    if not email == "admintest@admin.com" or not password == "admin-pass-10s":
+        abort_access_unauthorized()
 
 
 def check_email_validity(email):
     """
         Checks that provided email address is valid
     """
-    # Check has user and domain components
+    # Check has valid user and domain components
     try:
-        user, domain = email.split("@")
+        user, domain = str(email).split("@")
     except ValueError:
         abort_invalid_param({"email": email})
+    if not user or not domain:
+        abort_invalid_param({"email": email})
+
 
     # Check that domain is valid
+    # valid domain has valid part before and after '.'
     try:
-        a, b = domain.split(".")
+        dom_1, dom_2 = domain.split(".")
     except ValueError:
+        abort_invalid_param({"email": email})
+    if not dom_1 or not dom_2:
         abort_invalid_param({"email": email})
 
 
@@ -137,7 +156,7 @@ def check_username_validity(username):
     """
         Checks for validity of provided username
     """
-    if len(username) < 4:
+    if len(str(username)) < 4:
         # If blank username or too short
         abort_invalid_param({"username": username})
 
@@ -146,7 +165,7 @@ def check_password_validity(password):
     """
         Checks for validity of provided password
     """
-    if len(password) < 8:
+    if len(str(password)) < 8:
         # If blank password or password too short
         abort_invalid_param({"password": password})
 

@@ -3,6 +3,8 @@
 """
 import psycopg2
 
+from flask_jwt_extended import create_access_token
+
 from flask import request, jsonify, abort, make_response
 from flask_restful import Resource
 
@@ -47,15 +49,15 @@ class UserRegistration(Resource):
             """.format(username)
 
             registered_user_data = select_from_db(query)
+
             # Generate token for registered user
-            auth_token = new_user.generate_auth_token(
-                registered_user_data[0][0])
+            token = create_access_token(identity=username)
 
             registered_user = {
                 "user_id": registered_user_data[0][0],
                 "username": registered_user_data[0][1],
                 "email": registered_user_data[0][2],
-                "auth_token": str(auth_token)
+                "auth_token": token
                 }
 
             response = make_response(
@@ -80,28 +82,10 @@ class UserLogin(Resource):
         """
             POST auth/login enpoint
         """
+        data = validate.check_request_validity(request)
+        user_data = validate.check_login_params(data)
         try:
-            # Get json from request object
-            data = request.get_json()
-        except Exception:
-            abort(make_response(jsonify(
-                message="Bad request. Data must be json-formatted"
-            ), 400))
-        try:
-            # extract params from json
-            email = data["email"]
-            password = data["password"]
-        except KeyError:
-            abort(make_response(jsonify(
-                message="Bad request. Supply email AND password to login"
-            ), 400))
-
-        if not email or not password:
-            abort(make_response(jsonify(
-                message="Supply valid credentials to login."
-            ), 400))
-        try:
-            user = User.retrieve_user_from_db(email)
+            user = User.retrieve_user_from_db(user_data["email"])
             if not user:
                 abort(make_response(jsonify(
                     message="User not found."), 404))
@@ -112,20 +96,21 @@ class UserLogin(Resource):
             password_hash_from_db = user[0][3]
 
             password_valid = User.check_password_at_login(
-                password_hash_from_db, password)
+                password_hash_from_db, user_data["password"])
 
             # Check password
             if not password_valid:
                 abort(make_response(jsonify(
                     message="Wrong password."), 403))
 
-            auth_token = User.generate_auth_token(user_id_from_db)
+            # Generate token for logged in user
+            token = create_access_token(identity=username_from_db)
 
             logged_in_user = {
                 "user_id": user_id_from_db,  # first item is user_id
                 "username": username_from_db,  # second item is username
                 "email": email_from_db,  # third item is email
-                "auth_token": str(auth_token)
+                "auth_token": token
                 }
 
             # Return successful login response
@@ -138,5 +123,26 @@ class UserLogin(Resource):
             abort(make_response(jsonify(
                 message="Server error : {}".format(error)
             ), 500))
+
+        return response
+
+
+class AdminLogin(Resource):
+    """
+        Define admin specific methods
+    """
+    def post(self):
+        """
+            POST /login
+        """
+        data = validate.check_request_validity(request)
+        validate.check_admin_logins(data)
+        # Generate token for admin
+        response = make_response(jsonify({
+            "message": "Admin succesfully authenticated",
+            "admin": {
+                "email": data["email"]
+            }
+        }), 201)
 
         return response

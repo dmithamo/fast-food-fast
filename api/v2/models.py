@@ -2,7 +2,6 @@
     Models User, FoodItem, Order as objects
 """
 import os
-import jwt
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
@@ -21,8 +20,7 @@ class User:
         """
         self.username = username
         self.email = email
-        self.password = password
-        self.encrypt_password_on_signup()
+        self.password = self.encrypt_password_on_signup(password)
 
     def save_new_user_to_db(self):
         """
@@ -31,7 +29,7 @@ class User:
         query = """
         INSERT INTO users(username, email, password) VALUES(
             '{}', '{}', '{}'
-        )""".format(self.username, self.email, self.password_hash)
+        )""".format(self.username, self.email, self.password)
 
         database.insert_into_db(query)
 
@@ -48,42 +46,19 @@ class User:
 
         return database.select_from_db(query)
 
-    @staticmethod
-    def generate_auth_token(user_id):
-        """
-            Generate authentication token on signup/login
-        """
-        payload = {"user": user_id}
-
-        token = jwt.encode(payload, os.getenv('SECRET_KEY'), algorithm='HS256')
-        return token
-
-    @staticmethod
-    def decode_auth_token(token):
-        """
-            Decrypts token
-        """
-        resp = ''
-        try:
-            decoded_token = jwt.decode(token, os.getenv('SECRET_KEY'))["user"]
-            resp = decoded_token
-        except (Exception, jwt.InvalidTokenError) as error:
-            resp = None
-
-        return resp
-
-    def encrypt_password_on_signup(self):
+    def encrypt_password_on_signup(self, password):
         """
             Encrypt password before saving to db
         """
-        self.password_hash = generate_password_hash(self.password)
+        password_hash = generate_password_hash(str(password))
+        return password_hash
 
     @staticmethod
     def check_password_at_login(password_hash, password):
         """
             Encrypt password before saving to db
         """
-        return check_password_hash(password_hash, password)
+        return check_password_hash(password_hash, str(password))
 
 
 class Order:
@@ -111,3 +86,12 @@ class Order:
                     self.food_item_price, self.quantity, self.timestamp)
 
         database.insert_into_db(query)
+
+        order = None
+        query_to_check = """
+        SELECT * FROM orders WHERE orders.food_item_name = '{}'""".format(self.food_item_name)
+
+        order = database.select_from_db(query_to_check)
+
+        return order
+        

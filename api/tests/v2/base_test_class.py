@@ -6,7 +6,7 @@ import os
 import unittest
 
 # local imports
-from api.v2.views import APP
+from run import APP
 from api.v2.config import CONFIGS
 from api.v2.database import init_db
 from api.tests.v2 import helper_functions
