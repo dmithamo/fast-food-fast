@@ -73,25 +73,34 @@ class Order:
         self.food_item_price = food_item_price
         self.quantity = quantity
         self.ordered_by = ordered_by
-        self.timestamp = datetime.now()
+        self.total_order_cost = self.food_item_price * self.quantity
+        # self.timestamp = datetime.now()
 
     def save_order_to_db(self):
         """
             Add order with valid params to db
         """
         query = """
-        INSERT INTO orders(food_item_name, food_item_price, quantity) VALUES(
-            '{}', '{}', '{}', '{}'
-        )""".format(self.food_item_name,
-                    self.food_item_price, self.quantity, self.timestamp)
+        INSERT INTO orders(food_item_name, food_item_price, quantity,
+        total_order_cost) VALUES(
+            '{}', '{}', '{}', '{}')""".format(
+                self.food_item_name,
+                self.food_item_price,
+                self.quantity,
+                self.total_order_cost)
 
-        database.insert_into_db(query)
+        successful_save = database.insert_into_db(query)
+        return successful_save
 
-        order = None
-        query_to_check = """
-        SELECT * FROM orders WHERE orders.food_item_name = '{}'""".format(self.food_item_name)
+    def retrieve_order_from_db(self, food_item_name):
+        """
+            Add order with valid params to db
+        """
+        query = """
+        SELECT order_id, food_item_name, food_item_price,
+        quantity, total_order_cost
+        FROM orders WHERE orders.food_item_name = '{}'""".format(
+            food_item_name)
 
-        order = database.select_from_db(query_to_check)
-
+        order = database.select_from_db(query)
         return order
-        

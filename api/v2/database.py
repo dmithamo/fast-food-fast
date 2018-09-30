@@ -2,7 +2,7 @@
     Module initializes a connection to the db
     Given a db_url previously exported to thevirtualenv
 """
-
+import sys
 import psycopg2
 
 # local imports
@@ -24,6 +24,7 @@ def init_db(db_url=None):
             conn.commit()
             i += 1
         print("--"*50)
+        conn.close()
 
     except Exception as error:
         print("\nQuery not executed : {} \n".format(error))
@@ -51,10 +52,10 @@ def set_up_tables():
     orders_table_query = """
     CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,
-        ordered_on TIMESTAMP NOT NULL,
-        ordered_by INTEGER NOT NULL,
+        food_item_name VARCHAR (24) NOT NULL,
+        food_item_price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
-        total_order_cost NUMERIC NOT NULL
+        total_order_cost INTEGER NOT NULL
     )"""
 
     return [users_table_query, menu_table_query, orders_table_query]
@@ -62,7 +63,7 @@ def set_up_tables():
 
 def drop_table_if_exists():
     """
-        Removes all tables if app needs restarting
+        Removes all tables on app restart
     """
     drop_orders_table = """
     DROP TABLE IF EXISTS orders"""
@@ -109,14 +110,12 @@ def insert_into_db(query):
     """
         Handles INSERT queries
     """
-    success = False
-    conn = connect_to_and_query_db(query)[0]
-    if conn:
+    try:
+        conn = connect_to_and_query_db(query)[0]
         # After successful INSERT query
-        success = True
         conn.close()
-
-    return success
+    except psycopg2.Error as error:
+        sys.exit(1)
 
 
 def select_from_db(query):

@@ -95,6 +95,7 @@ def check_registration_params(data):
             "email": email,
             "password": password}
 
+
 def check_login_params(data):
     """
         Carry out all checks necessary on registration data
@@ -140,7 +141,6 @@ def check_email_validity(email):
         abort_invalid_param({"email": email})
     if not user or not domain:
         abort_invalid_param({"email": email})
-
 
     # Check that domain is valid
     # valid domain has valid part before and after '.'
@@ -192,6 +192,7 @@ def check_food_item_params(data):
     try:
         food_item_name = data["food_item_name"]
         food_item_price = data["food_item_price"]
+        quantity = data["quantity"]
     except KeyError:
         abort_missing_required_param()
 
@@ -203,10 +204,15 @@ def check_food_item_params(data):
         # Require that food_item_price be an int
         abort_invalid_param({"food_item_price": food_item_price})
 
+    if not isinstance(quantity, int):
+        # Require that food_item_price be an int
+        abort_invalid_param({"quantity": quantity})
+
     check_duplication({"food_item_name": food_item_name}, "menu")
 
     food_item = {
         "food_item_name": food_item_name,
-        "food_item_price": food_item_price}
+        "food_item_price": food_item_price,
+        "quantity": quantity}
 
     return food_item
