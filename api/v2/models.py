@@ -81,7 +81,8 @@ class Order:
             Add order with valid params to db
         """
         query = """
-        INSERT INTO orders(ordered_by, food_item_name, food_item_price, quantity,
+        INSERT INTO orders(
+            ordered_by, food_item_name, food_item_price, quantity,
         total_order_cost) VALUES(
             '{}', '{}', '{}', '{}', '{}')""".format(
                 self.ordered_by,
@@ -104,6 +105,7 @@ class Order:
 
         order = database.select_from_db(query)
         return order
+
 
 class FoodItem:
     """

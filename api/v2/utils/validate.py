@@ -38,12 +38,12 @@ def abort_access_unauthorized():
         message="Unauthorised. No valid authentication token"), 403))
 
 
-def abort_not_found(item, user):
+def abort_not_found(item, defn):
     """
         Aborts if user is no items found from db search
     """
     abort(make_response(jsonify(
-        message="No '{}' found {}".format(item, user)), 404))
+        message="No '{}' found {}".format(item, defn)), 404))
 
 
 def check_request_validity(request):
@@ -182,26 +182,32 @@ def check_duplication(params, table_name):
         if duplicated:
             # Abort if duplicated
             abort(make_response(jsonify(
-                message="Error. {} is already in use".format(key)), 400))
+                message="Error. {} is already in use".format(value)), 400))
 
 
 def check_food_item_params_a(data):
     """
         Check food params before placing to order
     """
-    food_item = check_food_item_params(data)
     try:
+        food_item_id = data["food_item_id"]
         quantity = data["quantity"]
     except KeyError:
         abort_missing_required_param()
+
+    if not isinstance(food_item_id, int):
+        # Require that food_item_id be an int
+        abort_invalid_param({"food_item_id": food_item_id})
 
     if not isinstance(quantity, int):
         # Require that food_item_price be an int
         abort_invalid_param({"quantity": quantity})
 
-    food_item["quantity"] = quantity
+    return {
+        "food_item_id": food_item_id,
+        "quantity": quantity
+    }
 
-    return food_item
 
 def check_food_item_params(data):
     """

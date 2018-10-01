@@ -25,15 +25,25 @@ class Menu(Resource):
         data = validate.check_request_validity(request)
         food_item = validate.check_food_item_params(data)
         # Save valid food to db
-        new_food = FoodItem(food_item["food_item_name"], food_item["food_item_price"])
+        new_food = FoodItem(
+            food_item["food_item_name"], food_item["food_item_price"])
         new_food.save_food_item_to_menu()
 
         # Confirm save by querrying db for saved food item
-        saved_food = new_food.retrieve_food_item_from_db(food_item["food_item_name"])
+        saved_food = new_food.retrieve_food_item_from_db(
+            food_item["food_item_name"])
+        if not saved_food:
+            abort(make_response(jsonify(
+                message="Server / DB error ..."
+            ), 500))
 
         response = make_response(jsonify({
             "message": "Food item added succesfully.",
-            "food": str(saved_food)
+            "food": {
+                "food_item_id": saved_food[0][0],
+                "food_item_name": saved_food[0][1],
+                "food_item_price": saved_food[0][2]
+            }
         }), 201)
 
         return response
@@ -52,9 +62,19 @@ class Menu(Resource):
                 message="{} no food items found on the menu".format(menu),
             ), 404))
 
+        formatted_menu = []
+        for item in menu:
+            formatted_item = {
+                "food_item_id": item[0],
+                "food_item_name": item[1],
+                "food_item_price": item[2]
+            }
+
+            formatted_menu.append(formatted_item)
+
         response = make_response(jsonify({
             "message": "Request successful",
-            "menu": str(menu)
+            "menu": formatted_menu
         }), 200)
 
         return response

@@ -27,7 +27,6 @@ class ShoppingCart(Resource):
         query = """
         SELECT * FROM orders WHERE orders.ordered_by = '{}'""".format(user)
 
-
         orders = database.select_from_db(query)
 
         if not orders:
@@ -51,7 +50,7 @@ class ShoppingCart(Resource):
             "orders": formatted_orders,
             "total_expenditure": total_expenditure
         }), 200)
-            
+
         return response
 
     @jwt_required
@@ -60,58 +59,55 @@ class ShoppingCart(Resource):
             POST users/orders
         """
         data = validate.check_request_validity(request)
-        try:
-            # extract user id from token
-            user = get_jwt_identity()
-            # Check if required params are present
-            food_item = validate.check_food_item_params(data)
+        # extract user id from token
+        user = get_jwt_identity()
 
-            # Check whether food item on menu
-            food_item_name = food_item["food_item_name"]
-            food_item_price = food_item["food_item_price"]
-            food_item_obj = FoodItem(food_item_name, food_item_price)
-            in_menu = food_item_obj.retrieve_food_item_from_db(food_item_name)
+        # Check if required params are present
+        food_item_params = validate.check_food_item_params_a(data)
 
-            if not in_menu:
-                validate.abort_not_found("Food item with name '{}'".format(
-                    food_item_name), "in menu")
-            # Add ordered_by
-            food_item["ordered_by"] = user
+        # Check whether food item on menu
+        query = """
+        SELECT * FROM menu
+        WHERE menu.food_item_id = '{}'""".format(
+            food_item_params["food_item_id"])
 
-            ordered_by = food_item["ordered_by"]
-            food_item_name = food_item["food_item_name"]
-            food_item_price = food_item["food_item_price"]
-            quantity = food_item["quantity"]
+        food_item = database.select_from_db(query)
 
-            new_order = Order(
-                ordered_by,
-                food_item_name,
-                food_item_price,
-                quantity)
+        if not food_item:
+            validate.abort_not_found("food item with id '{}' ".format(
+                food_item_params["food_item_id"]), "in menu")
 
-            new_order.save_order_to_db()
-            # query db for saved order on success
-            saved_order = new_order.retrieve_order_from_db(
-                new_order.food_item_name)
+        # If the food_item exists on the menu
+        # Add ordered_by
+        ordered_by = user
+        food_item_name = food_item[0][1]
+        food_item_price = food_item[0][2]
+        quantity = food_item_params["quantity"]
 
-            if not saved_order:
-                validate.abort_not_found("Order with name '{}'".format(
-                    food_item_name), "in orders")
-            # on success
-            response = make_response(jsonify({
-                "message": "Order posted successfully",
-                "order": {
-                    "order_id": saved_order[0][0],
-                    "ordered_by": saved_order[0][1],
-                    "order_info": "{} {}s at {} each".format(
-                        saved_order[0][4],
-                        saved_order[0][2], saved_order[0][3]),
-                    "total_order_cost": saved_order[0][5]}
-                }))
+        new_order = Order(
+            ordered_by,
+            food_item_name,
+            food_item_price,
+            quantity)
 
-        except (Exception, psycopg2.Error) as error:
-            abort(make_response(jsonify(
-                message="Server error : {}".format(error)
-            ), 500))
+        new_order.save_order_to_db()
+        # query db for saved order on success
+        saved_order = new_order.retrieve_order_from_db(
+            new_order.food_item_name)
+
+        if not saved_order:
+            validate.abort_not_found("Order with name '{}'".format(
+                food_item_name), "in orders")
+        # on success
+        response = make_response(jsonify({
+            "message": "Order posted successfully",
+            "order": {
+                "order_id": saved_order[0][0],
+                "ordered_by": saved_order[0][1],
+                "order_info": "{} {}s at {} each".format(
+                    saved_order[0][4],
+                    saved_order[0][2], saved_order[0][3]),
+                "total_order_cost": saved_order[0][5]}
+            }))
 
         return response
