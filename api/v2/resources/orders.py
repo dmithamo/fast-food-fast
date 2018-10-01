@@ -25,12 +25,14 @@ class ShoppingCart(Resource):
         # extract user id from token
         username = get_jwt_identity()[0]
         query = """
-        SELECT * FROM orders WHERE orders.ordered_by = '{}'""".format(username)
+        SELECT * FROM orders
+        WHERE orders.ordered_by = '{}'""".format(username)
 
         orders = database.select_from_db(query)
 
         if not orders:
-            validate.abort_not_found("orders", "for user '{}' ".format(username))
+            validate.abort_not_found(
+                "orders", "for user '{}' ".format(username))
 
         formatted_orders = []
         total_expenditure = 0

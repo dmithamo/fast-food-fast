@@ -4,7 +4,8 @@
 import os
 import datetime
 
-from flask_jwt_extended import (create_access_token, jwt_required, get_jwt_identity)
+from flask_jwt_extended import (create_access_token,
+                                jwt_required, get_jwt_identity)
 from flask import request, jsonify, make_response, abort
 from flask_restful import Resource
 

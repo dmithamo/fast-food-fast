@@ -79,22 +79,18 @@ class TestClassBase(unittest.TestCase):
 
         auth_token = helper_functions.response_as_json(
             resp)['user']['auth_token']
-        # Make POST request
-        self.client.post("{}/users/orders".format(
-            self.base_url), json=self.food, headers={
-                "Content-Type": "application/json", "Authorization": auth_token
-            })
+
         return auth_token
 
-    def logged_in_user_post_order(self, food_params, token):
+    def logged_in_user_post_order(self, food_item, token):
         """
             Helper function
             Posts an order with logged in user
         """
         # Make POST request
         self.client.post("{}/users/orders".format(
-            self.base_url), json=food_params, headers={
-                "Content-Type": "application/json", "Authorization": token
+            self.base_url), json=food_item, headers={
+                "Content-Type": "application/json", "Authorization": "Bearer {}".format(token)
             })
 
     def login_test_admin(self):
@@ -112,15 +108,15 @@ class TestClassBase(unittest.TestCase):
             resp)['admin']['auth_token']
         return auth_token
 
-    def logged_in_admin_post_to_menu(self, food_params, token):
+    def logged_in_admin_post_to_menu(self, food_item, token):
         """
             Helper function
             Posts a new food item to menu with admin logged in
         """
         # Make POST request
         self.client.post("{}/menu".format(
-            self.base_url), json=food_params, headers={
-                "Content-Type": "application/json", "Authorization": token
+            self.base_url), json=food_item, headers={
+                "Content-Type": "application/json", "Authorization": "Bearer {}".format(token)
             })
 
 

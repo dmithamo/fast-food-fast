@@ -49,7 +49,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Missing required param")
+            response_json['message'],
+            "Bad request. Request data must be json formatted")
 
     def test_duplicate_email_registration(self):
         """
