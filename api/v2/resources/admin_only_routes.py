@@ -1,18 +1,15 @@
 """
     Module defines admin specific endpoints
 """
-import os
-import datetime
+from datetime import datetime
 
-from flask_jwt_extended import (create_access_token,
-                                jwt_required)
+from flask_jwt_extended import create_access_token, jwt_required
 from flask import request, jsonify, make_response, abort
 from flask_restful import Resource
 
 
 # local imports
 from api.v2.utils import validate
-from api.v2.models import User
 from api.v2 import database
 
 
@@ -32,7 +29,7 @@ class AdminLogin(Resource):
         response = make_response(jsonify({
             "message": "Admin logged in",
             "logged_in_admin": {
-                "email": data["email"],
+                "logged_in_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "token": create_access_token(identity=(data["email"], "admin"))
             }
         }))
@@ -48,7 +45,7 @@ class AllOrders(Resource):
         """
             GET users/orders endpoint
         """
-        validate.abort_if_user_role_not_appropriate("admin")
+        validate.abort_if_user_role_not_appropriate("Admin")
 
         # if user_role confirmed ok
 
@@ -92,7 +89,7 @@ class Order(Resource):
         """
             GET /orders/order_id endpoint
         """
-        validate.abort_if_user_role_not_appropriate("admin")
+        validate.abort_if_user_role_not_appropriate("Admin")
 
         # if user_role confirmed ok
         query = """
@@ -128,7 +125,7 @@ class Order(Resource):
         """
             PUT /orders/order_id endpoint
         """
-        validate.abort_if_user_role_not_appropriate("admin")
+        validate.abort_if_user_role_not_appropriate("Admin")
         data = validate.check_request_validity(request)
 
         # Check that supplied status is valid

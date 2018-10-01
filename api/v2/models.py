@@ -2,9 +2,9 @@
     Models User, FoodItem, Order as objects
 """
 import os
+from datetime import datetime
 
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timedelta
 # local imports
 from api.v2 import database
 

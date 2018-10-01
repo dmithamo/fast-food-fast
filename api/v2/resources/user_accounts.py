@@ -1,6 +1,7 @@
 """
     Module sets up UserRegistration, UserLogin as Resources
 """
+from datetime import datetime
 import psycopg2
 
 from flask_jwt_extended import create_access_token
@@ -60,6 +61,7 @@ class UserRegistration(Resource):
             "user_id": registered_user_data[0][0],
             "username": registered_user_data[0][1],
             "email": registered_user_data[0][2],
+            "logged_in_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "auth_token": token
             }
 
@@ -108,6 +110,7 @@ class UserLogin(Resource):
                 "user_id": user_id_from_db,  # first item is user_id
                 "username": username_from_db,  # second item is username
                 "email": email_from_db,  # third item is email
+                "logged_in_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "auth_token": token
                 }
 
