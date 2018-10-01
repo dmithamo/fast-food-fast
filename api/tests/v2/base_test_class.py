@@ -42,7 +42,7 @@ class TestClassBase(unittest.TestCase):
 
         with self.app.app_context():
             # Retrieve test_db url from env
-            self.db_url = os.getenv("DB_URL")
+            self.db_url = CONFIGS['test_db_url']
             # initialize db, create tables
             init_db(self.db_url)
 
