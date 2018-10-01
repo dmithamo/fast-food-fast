@@ -40,12 +40,14 @@ class ShoppingCart(Resource):
             formatted_order = {
                 "order_id": order[0],
                 "ordered_by": order[1],
+                "ordered_on": order[2],
+                "order_status": order[3],
                 "order_info": "{} {}s at {} each".format(
-                    order[4], order[2], order[3]),
-                "total_order_cost": order[5]
+                    order[6], order[4], order[5]),
+                "total_order_cost": order[7]
             }
             formatted_orders.append(formatted_order)
-            total_expenditure += order[5]
+            total_expenditure += order[7]
 
         response = make_response(jsonify({
             "message": "Orders found.",
@@ -66,6 +68,9 @@ class ShoppingCart(Resource):
 
         # Check if required params are present
         food_item_params = validate.check_food_item_params_a(data)
+
+        # Check that user is 'user' (not admin)
+        validate.abort_if_user_role_not_appropriate("user")
 
         # Check whether food item on menu
         query = """
@@ -106,10 +111,12 @@ class ShoppingCart(Resource):
             "order": {
                 "order_id": saved_order[0][0],
                 "ordered_by": saved_order[0][1],
+                "ordered_on": saved_order[0][2],
+                "order_status": saved_order[0][3],
                 "order_info": "{} {}s at {} each".format(
-                    saved_order[0][4],
-                    saved_order[0][2], saved_order[0][3]),
-                "total_order_cost": saved_order[0][5]}
+                    saved_order[0][6],
+                    saved_order[0][4], saved_order[0][5]),
+                "total_order_cost": saved_order[0][7]}
             }))
 
         return response

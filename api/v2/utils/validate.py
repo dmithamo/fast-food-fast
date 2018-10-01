@@ -231,13 +231,33 @@ def check_food_item_params(data):
     return food_item
 
 
-def abort_if_user_role_not_admin():
+def abort_if_user_role_not_appropriate(allowed_role):
     """
         For admin specific endpoints, aborts if role extracted from
         identity is not 'admin'
     """
     # extract user id from token
     user_role = get_jwt_identity()[1]
-    if not user_role == "admin":
+    if not user_role == allowed_role:
         abort(make_response(jsonify(
-            message="Forbidden. You are not an admin"), 403))
+            message="Forbidden. '{}' not allowed to access this route".format(
+                user_role)), 403))
+
+
+def check_order_status_validity(data):
+    """
+        Check whether the status supplied when updating order
+        is valid
+    """
+    if not data["order_status"]:
+        # if no status is provided
+        abort_missing_required_param()
+
+    if not data["order_status"] in ["New",
+                                    "Processing",
+                                    "Cancelled", "Complete"]:
+        # if status is invalid
+        abort(make_response(
+            jsonify(message="'{}' is an invalid order status".format(
+                data["order_status"])), 400))
+    return data["order_status"]

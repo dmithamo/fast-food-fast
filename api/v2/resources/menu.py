@@ -24,6 +24,9 @@ class Menu(Resource):
         """
         data = validate.check_request_validity(request)
         food_item = validate.check_food_item_params(data)
+
+        # Check if user is admin
+        validate.abort_if_user_role_not_appropriate("admin")
         # Save valid food to db
         new_food = FoodItem(
             food_item["food_item_name"], food_item["food_item_price"])
@@ -59,7 +62,7 @@ class Menu(Resource):
         if not menu:
             # If menu is empty
             abort(make_response(jsonify(
-                message="{} no food items found on the menu".format(menu),
+                message="No food items found on the menu",
             ), 404))
 
         formatted_menu = []
