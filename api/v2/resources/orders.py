@@ -4,7 +4,7 @@
 """
 import psycopg2
 from flask import request, abort, make_response, jsonify
-from flask_jwt_extended import (jwt_required, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from flask_restful import Resource
 
 # local imports
@@ -23,14 +23,14 @@ class ShoppingCart(Resource):
             GET users/orders endpoint
         """
         # extract user id from token
-        user = get_jwt_identity()
+        username = get_jwt_identity()[0]
         query = """
-        SELECT * FROM orders WHERE orders.ordered_by = '{}'""".format(user)
+        SELECT * FROM orders WHERE orders.ordered_by = '{}'""".format(username)
 
         orders = database.select_from_db(query)
 
         if not orders:
-            validate.abort_not_found("orders", "for user '{}' ".format(user))
+            validate.abort_not_found("orders", "for user '{}' ".format(username))
 
         formatted_orders = []
         total_expenditure = 0
@@ -60,7 +60,7 @@ class ShoppingCart(Resource):
         """
         data = validate.check_request_validity(request)
         # extract user id from token
-        user = get_jwt_identity()
+        username = get_jwt_identity()[0]
 
         # Check if required params are present
         food_item_params = validate.check_food_item_params_a(data)
@@ -79,7 +79,7 @@ class ShoppingCart(Resource):
 
         # If the food_item exists on the menu
         # Add ordered_by
-        ordered_by = user
+        ordered_by = username
         food_item_name = food_item[0][1]
         food_item_price = food_item[0][2]
         quantity = food_item_params["quantity"]

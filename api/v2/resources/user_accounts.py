@@ -54,7 +54,7 @@ class UserRegistration(Resource):
                 message="Server error. User not registered in db."), 500))
 
         # Generate token for registered user
-        token = create_access_token(identity=username)
+        token = create_access_token(identity=(username, "user"))
 
         registered_user = {
             "user_id": registered_user_data[0][0],

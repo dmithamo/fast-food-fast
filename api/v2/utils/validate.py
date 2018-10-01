@@ -51,24 +51,12 @@ def check_request_validity(request):
         Checks if request data is in json format
         Aborts if request data is in non-json format
     """
-    try:
-        data = request.get_json()
-    except Exception:
+    data = request.get_json() or None
+    if not data:
         abort(make_response(jsonify(
             message="Bad request. Request data must be json formatted"), 400))
 
     return data
-
-
-def check_token_present(request):
-    """
-        Checks if request contains an authorization token
-    """
-    try:
-        token = request.headers.get('Authorization').split(" ")[-1]
-    except KeyError:
-        abort_access_unauthorized()
-    return token
 
 
 def check_registration_params(data):
@@ -127,13 +115,18 @@ def check_admin_logins(data):
 
     # Require specific email and password for admin
     if not email == "admintest@admin.com" or not password == "admin-pass-10s":
-        abort_access_unauthorized()
+        abort(make_response(jsonify(
+            message="Unsuccessful. Invalid admin credentials"), 400))
 
 
 def check_email_validity(email):
     """
         Checks that provided email address is valid
     """
+    # prevent user from registering with admin email
+    if email == "admintest@admin.com":
+        abort(make_response(jsonify(
+            message="Email already in use"), 400))
     # Check has valid user and domain components
     try:
         user, domain = str(email).split("@")

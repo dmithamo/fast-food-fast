@@ -9,7 +9,7 @@ class DefaultConfig:
         Base config class with all the common and default config
         values
     """
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY = "this-is-obviously-not-a-secret"
     DEBUG = False
     CSRF_ENABLED = True
     TEST = False
