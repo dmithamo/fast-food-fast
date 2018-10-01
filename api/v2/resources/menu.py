@@ -9,38 +9,13 @@ from flask_restful import Resource
 # local imports
 from api.v2.utils import validate
 from api.v2 import database
+from api.v2.models import FoodItem
 
 
 class Menu(Resource):
     """
         Define routes to menu
     """
-    def save_to_db(self, food_item):
-        """
-            Saves valid food item to db
-        """
-        try:
-            query = """
-            INSERT INTO menu (food_item_name, food_item_price) VALUES (
-                '{}', '{}'
-            )""".format(food_item["food_item_name"],
-                        food_item["food_item_price"])
-            database.insert_into_db(query)
-
-            # Check is save was successful
-            query_2 = """
-            SELECT food_item_id, food_item_name, food_item_price FROM menu
-            WHERE food_item_name = '{}'""".format(food_item["food_item_name"])
-
-            new_food = database.select_from_db(query_2)
-
-        except psycopg2.DatabaseError as error:
-            abort(make_response(jsonify(
-                message="Server error : {}".format(error)
-            ), 500))
-
-        return new_food
-
     @jwt_required
     def post(self):
         """
@@ -50,11 +25,15 @@ class Menu(Resource):
         data = validate.check_request_validity(request)
         food_item = validate.check_food_item_params(data)
         # Save valid food to db
-        new_food = self.save_to_db(food_item)
+        new_food = FoodItem(food_item["food_item_name"], food_item["food_item_price"])
+        new_food.save_food_item_to_menu()
+
+        # Confirm save by querrying db for saved food item
+        saved_food = new_food.retrieve_food_item_from_db(food_item["food_item_name"])
 
         response = make_response(jsonify({
-            "message": "Food added succesfully.",
-            "food": str(new_food)
+            "message": "Food item added succesfully.",
+            "food": str(saved_food)
         }), 201)
 
         return response

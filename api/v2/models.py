@@ -104,3 +104,38 @@ class Order:
 
         order = database.select_from_db(query)
         return order
+
+class FoodItem:
+    """
+        Models a food_item
+    """
+    def __init__(self, food_item_name, food_item_price):
+        """"
+            Initilize an order, given params
+        """
+        self.food_item_name = food_item_name
+        self.food_item_price = food_item_price
+
+    def save_food_item_to_menu(self):
+        """
+            Add food item with valid params to db
+        """
+        query = """
+        INSERT INTO menu(food_item_name, food_item_price) VALUES(
+            '{}', '{}')""".format(
+                self.food_item_name,
+                self.food_item_price)
+
+        database.insert_into_db(query)
+
+    def retrieve_food_item_from_db(self, food_item_name):
+        """
+            Add order with valid params to db
+        """
+        query = """
+        SELECT food_item_id, food_item_name, food_item_price
+        FROM menu WHERE menu.food_item_name = '{}'""".format(
+            food_item_name)
+
+        food_item = database.select_from_db(query)
+        return food_item

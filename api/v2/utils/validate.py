@@ -185,6 +185,24 @@ def check_duplication(params, table_name):
                 message="Error. {} is already in use".format(key)), 400))
 
 
+def check_food_item_params_a(data):
+    """
+        Check food params before placing to order
+    """
+    food_item = check_food_item_params(data)
+    try:
+        quantity = data["quantity"]
+    except KeyError:
+        abort_missing_required_param()
+
+    if not isinstance(quantity, int):
+        # Require that food_item_price be an int
+        abort_invalid_param({"quantity": quantity})
+
+    food_item["quantity"] = quantity
+
+    return food_item
+
 def check_food_item_params(data):
     """
         Check food params before adding to menu
@@ -192,7 +210,6 @@ def check_food_item_params(data):
     try:
         food_item_name = data["food_item_name"]
         food_item_price = data["food_item_price"]
-        quantity = data["quantity"]
     except KeyError:
         abort_missing_required_param()
 
@@ -204,15 +221,10 @@ def check_food_item_params(data):
         # Require that food_item_price be an int
         abort_invalid_param({"food_item_price": food_item_price})
 
-    if not isinstance(quantity, int):
-        # Require that food_item_price be an int
-        abort_invalid_param({"quantity": quantity})
-
     check_duplication({"food_item_name": food_item_name}, "menu")
 
     food_item = {
         "food_item_name": food_item_name,
-        "food_item_price": food_item_price,
-        "quantity": quantity}
+        "food_item_price": food_item_price}
 
     return food_item

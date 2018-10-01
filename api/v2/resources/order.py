@@ -10,7 +10,7 @@ from flask_restful import Resource
 # local imports
 from api.v2.utils import validate
 from api.v2 import database
-from api.v2.models import User, Order
+from api.v2.models import User, FoodItem, Order
 
 
 class ShoppingCart(Resource):
@@ -51,7 +51,7 @@ class ShoppingCart(Resource):
             "orders": formatted_orders,
             "total_expenditure": total_expenditure
         }), 200)
-
+            
         return response
 
     @jwt_required
@@ -67,16 +67,14 @@ class ShoppingCart(Resource):
             food_item = validate.check_food_item_params(data)
 
             # Check whether food item on menu
-            # query = """
-            # SELECT food_item_name FROM menu
-            # WHERE menu.food_item_name = '{}'""".format(
-            #     food_item["food_item_name"])
+            food_item_name = food_item["food_item_name"]
+            food_item_price = food_item["food_item_price"]
+            food_item_obj = FoodItem(food_item_name, food_item_price)
+            in_menu = food_item_obj.retrieve_food_item_from_db(food_item_name)
 
-            # food_item = database.select_from_db(query)
-            # if not food_item:
-            #     # Abort not found
-            #     validate.abort_not_found(food_item["food_item_name"], "in menu")
-
+            if not in_menu:
+                validate.abort_not_found("Food item with name '{}'".format(
+                    food_item_name), "in menu")
             # Add ordered_by
             food_item["ordered_by"] = user
 
