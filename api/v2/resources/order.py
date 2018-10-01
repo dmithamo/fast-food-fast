@@ -22,25 +22,29 @@ class ShoppingCart(Resource):
         """
             GET users/orders endpoint
         """
+        # extract user id from token
+        user = get_jwt_identity()
         query = """
-        SELECT * FROM orders;"""
+        SELECT * FROM orders WHERE orders.ordered_by = '{}'""".format(user)
+
 
         orders = database.select_from_db(query)
 
         if not orders:
-            validate.abort_not_found("orders", "for user '' ")
+            validate.abort_not_found("orders", "for user '{}' ".format(user))
 
         formatted_orders = []
         total_expenditure = 0
         for order in orders:
             formatted_order = {
                 "order_id": order[0],
+                "ordered_by": order[1],
                 "order_info": "{} {}s at {} each".format(
-                    order[3], order[1], order[2]),
-                "total_order_cost": order[4]
+                    order[4], order[2], order[3]),
+                "total_order_cost": order[5]
             }
             formatted_orders.append(formatted_order)
-            total_expenditure += order[4]
+            total_expenditure += order[5]
 
         response = make_response(jsonify({
             "message": "Orders found.",
@@ -57,32 +61,35 @@ class ShoppingCart(Resource):
         """
         data = validate.check_request_validity(request)
         try:
+            # extract user id from token
+            user = get_jwt_identity()
             # Check if required params are present
             food_item = validate.check_food_item_params(data)
 
             # Check whether food item on menu
-            query = """
-            SELECT food_item_name FROM menu
-            WHERE menu.food_item_name = '{}'""".format(
-                food_item["food_item_name"])
+            # query = """
+            # SELECT food_item_name FROM menu
+            # WHERE menu.food_item_name = '{}'""".format(
+            #     food_item["food_item_name"])
 
-            food_item = database.select_from_db(query)
-            if not food_item:
-                # Abort not found
-                validate.abort_not_found(food_item["food_item_name"], "in menu")
+            # food_item = database.select_from_db(query)
+            # if not food_item:
+            #     # Abort not found
+            #     validate.abort_not_found(food_item["food_item_name"], "in menu")
 
             # Add ordered_by
-            food_item["ordered_by"] = ""
+            food_item["ordered_by"] = user
 
+            ordered_by = food_item["ordered_by"]
             food_item_name = food_item["food_item_name"]
             food_item_price = food_item["food_item_price"]
             quantity = food_item["quantity"]
-            ordered_by = food_item["ordered_by"]
 
             new_order = Order(
+                ordered_by,
                 food_item_name,
                 food_item_price,
-                quantity, ordered_by)
+                quantity)
 
             new_order.save_order_to_db()
             # query db for saved order on success
@@ -97,10 +104,11 @@ class ShoppingCart(Resource):
                 "message": "Order posted successfully",
                 "order": {
                     "order_id": saved_order[0][0],
+                    "ordered_by": saved_order[0][1],
                     "order_info": "{} {}s at {} each".format(
-                        saved_order[0][3],
-                        saved_order[0][1], saved_order[0][2]),
-                    "total_order_cost": saved_order[0][4]}
+                        saved_order[0][4],
+                        saved_order[0][2], saved_order[0][3]),
+                    "total_order_cost": saved_order[0][5]}
                 }))
 
         except (Exception, psycopg2.Error) as error:

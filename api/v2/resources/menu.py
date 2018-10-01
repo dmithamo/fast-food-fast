@@ -2,6 +2,7 @@
     Module models menu and defines routes to access menu
 """
 import psycopg2
+from flask_jwt_extended import (jwt_required, get_jwt_identity, get_raw_jwt)
 from flask import request, abort, make_response, jsonify
 from flask_restful import Resource
 
@@ -40,16 +41,12 @@ class Menu(Resource):
 
         return new_food
 
+    @jwt_required
     def post(self):
         """
             POST /menu endpoint
             Accessible by admin only
         """
-        try:
-            request.headers['Authorization']
-        except KeyError:
-            validate.abort_access_unauthorized()
-
         data = validate.check_request_validity(request)
         food_item = validate.check_food_item_params(data)
         # Save valid food to db
@@ -57,7 +54,7 @@ class Menu(Resource):
 
         response = make_response(jsonify({
             "message": "Food added succesfully.",
-            "food": new_food
+            "food": str(new_food)
         }), 201)
 
         return response
@@ -73,7 +70,7 @@ class Menu(Resource):
         if not menu:
             # If menu is empty
             abort(make_response(jsonify(
-                message="{}Not food items found on the menu".format(menu),
+                message="{} no food items found on the menu".format(menu),
             ), 404))
 
         response = make_response(jsonify({

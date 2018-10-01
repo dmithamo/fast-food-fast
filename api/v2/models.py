@@ -65,14 +65,14 @@ class Order:
     """
         Model an order
     """
-    def __init__(self, food_item_name, food_item_price, quantity, ordered_by):
+    def __init__(self, ordered_by, food_item_name, food_item_price, quantity):
         """"
             Initilize an order, given params
         """
+        self.ordered_by = ordered_by
         self.food_item_name = food_item_name
         self.food_item_price = food_item_price
         self.quantity = quantity
-        self.ordered_by = ordered_by
         self.total_order_cost = self.food_item_price * self.quantity
         # self.timestamp = datetime.now()
 
@@ -81,23 +81,23 @@ class Order:
             Add order with valid params to db
         """
         query = """
-        INSERT INTO orders(food_item_name, food_item_price, quantity,
+        INSERT INTO orders(ordered_by, food_item_name, food_item_price, quantity,
         total_order_cost) VALUES(
-            '{}', '{}', '{}', '{}')""".format(
+            '{}', '{}', '{}', '{}', '{}')""".format(
+                self.ordered_by,
                 self.food_item_name,
                 self.food_item_price,
                 self.quantity,
                 self.total_order_cost)
 
-        successful_save = database.insert_into_db(query)
-        return successful_save
+        database.insert_into_db(query)
 
     def retrieve_order_from_db(self, food_item_name):
         """
             Add order with valid params to db
         """
         query = """
-        SELECT order_id, food_item_name, food_item_price,
+        SELECT order_id, ordered_by, food_item_name, food_item_price,
         quantity, total_order_cost
         FROM orders WHERE orders.food_item_name = '{}'""".format(
             food_item_name)

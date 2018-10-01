@@ -46,12 +46,13 @@ def set_up_tables():
     CREATE TABLE menu (
         food_item_id SERIAL PRIMARY KEY,
         food_item_name VARCHAR (24) NOT NULL,
-        food_item_price numeric NOT NULL
+        food_item_price INTEGER NOT NULL
     )"""
 
     orders_table_query = """
     CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,
+        ordered_by VARCHAR (24) NOT NULL,
         food_item_name VARCHAR (24) NOT NULL,
         food_item_price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
