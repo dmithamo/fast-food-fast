@@ -3,7 +3,7 @@
     as appropriate.
     Serve api endpoints
 """
-from flask import Flask
+from flask import Flask, make_response, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
@@ -18,7 +18,7 @@ from api.v2.database import init_db
 from api.v2.resources.user_accounts import UserRegistration, UserLogin
 from api.v2.resources.orders import ShoppingCart
 from api.v2.resources.menu import Menu
-from api.v2.resources.admin_only_routes import AdminLogin
+from api.v2.resources.admin_only_routes import AdminLogin, AllOrders
 
 
 APP = Flask(__name__)
@@ -32,6 +32,18 @@ with API.app.app_context():
     # Add auth
     jwt = JWTManager(APP)
 
+
+@jwt.unauthorized_loader
+def custom_error_response_unauthorised_user(callback):
+    """
+        Custom response to attempt to access protected routes without
+        authorization header
+    """
+    response = make_response(jsonify(
+        message="Forbidden. Provide valid authorization header."), 403)
+    return response
+
+
 # Base url common to all endpoints
 BASE_URL = '/api/v2'
 
@@ -41,6 +53,7 @@ API.add_resource(UserLogin, '{}/auth/login'.format(BASE_URL))
 API.add_resource(ShoppingCart, '{}/users/orders'.format(BASE_URL))
 API.add_resource(Menu, '{}/menu'.format(BASE_URL))
 API.add_resource(AdminLogin, '{}/login'.format(BASE_URL))
+API.add_resource(AllOrders, '{}/orders'.format(BASE_URL))
 
 
 if __name__ == '__main__':
