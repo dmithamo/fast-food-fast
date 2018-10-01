@@ -15,10 +15,10 @@ from api.v2.database import init_db
 
 
 # import resources
-from api.v2.resources.user import UserRegistration, UserLogin
-from api.v2.resources.order import ShoppingCart
+from api.v2.resources.user_accounts import UserRegistration, UserLogin
+from api.v2.resources.orders import ShoppingCart
 from api.v2.resources.menu import Menu
-from api.v2.resources.admin import AdminLogin
+from api.v2.resources.admin_only_routes import AdminLogin
 
 
 APP = Flask(__name__)
