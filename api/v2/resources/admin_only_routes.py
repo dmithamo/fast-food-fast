@@ -79,6 +79,7 @@ class AllOrders(Resource):
 
         return response
 
+
 class Order(Resource):
     """
         Define routes targetted at a unique order in the DB
@@ -93,14 +94,15 @@ class Order(Resource):
 
         # if user_role confirmed ok
         query = """
-        SELECT * FROM orders 
+        SELECT * FROM orders
         WHERE orders.order_id = '{}'""".format(order_id)
 
         order = database.select_from_db(query)
 
         if not order:
             abort(make_response(jsonify(
-                message="Order with id '{}' not found.".format(order_id)), 404))
+                message="Order with id '{}' not found.".format(
+                    order_id)), 404))
 
         formatted_order = {
             "order_id": order[0][0],
