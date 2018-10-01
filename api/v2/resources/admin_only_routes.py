@@ -5,7 +5,7 @@ import os
 import datetime
 
 from flask_jwt_extended import (create_access_token,
-                                jwt_required, get_jwt_identity)
+                                jwt_required)
 from flask import request, jsonify, make_response, abort
 from flask_restful import Resource
 
@@ -48,11 +48,9 @@ class AllOrders(Resource):
         """
             GET users/orders endpoint
         """
-        # extract user id from token
-        user_role = get_jwt_identity()[1]
-        if not user_role == "admin":
-            abort(make_response(jsonify(
-                message="Forbidden. You are not an admin"), 403))
+        validate.abort_if_user_role_not_admin()
+
+        # if user_role confirmed ok
 
         query = """
         SELECT * FROM orders"""
@@ -77,6 +75,44 @@ class AllOrders(Resource):
         response = make_response(jsonify({
             "message": "Orders found.",
             "orders": formatted_orders
+        }), 200)
+
+        return response
+
+class Order(Resource):
+    """
+        Define routes targetted at a unique order in the DB
+        Requires order_id
+    """
+    @jwt_required
+    def get(self, order_id):
+        """
+            GET /orders/order_id endpoint
+        """
+        validate.abort_if_user_role_not_admin()
+
+        # if user_role confirmed ok
+        query = """
+        SELECT * FROM orders 
+        WHERE orders.order_id = '{}'""".format(order_id)
+
+        order = database.select_from_db(query)
+
+        if not order:
+            abort(make_response(jsonify(
+                message="Order with id '{}' not found.".format(order_id)), 404))
+
+        formatted_order = {
+            "order_id": order[0][0],
+            "ordered_by": order[0][1],
+            "order_info": "{} {}s at {} each".format(
+                order[0][4], order[0][2], order[0][3]),
+            "total_order_cost": order[0][5]
+        }
+
+        response = make_response(jsonify({
+            "message": "Order found.",
+            "order": formatted_order
         }), 200)
 
         return response

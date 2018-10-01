@@ -3,6 +3,8 @@
     Checks for validity of request data
     Aborts if data is in any way invalid
 """
+
+from flask_jwt_extended import (get_jwt_identity)
 from flask import abort, make_response, jsonify
 
 
@@ -227,3 +229,15 @@ def check_food_item_params(data):
         "food_item_price": food_item_price}
 
     return food_item
+
+
+def abort_if_user_role_not_admin():
+    """
+        For admin specific endpoints, aborts if role extracted from
+        identity is not 'admin'
+    """
+    # extract user id from token
+    user_role = get_jwt_identity()[1]
+    if not user_role == "admin":
+        abort(make_response(jsonify(
+            message="Forbidden. You are not an admin"), 403))

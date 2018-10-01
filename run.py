@@ -18,7 +18,7 @@ from api.v2.database import init_db
 from api.v2.resources.user_accounts import UserRegistration, UserLogin
 from api.v2.resources.orders import ShoppingCart
 from api.v2.resources.menu import Menu
-from api.v2.resources.admin_only_routes import AdminLogin, AllOrders
+from api.v2.resources.admin_only_routes import AdminLogin, AllOrders, Order
 
 
 APP = Flask(__name__)
@@ -54,6 +54,7 @@ API.add_resource(ShoppingCart, '{}/users/orders'.format(BASE_URL))
 API.add_resource(Menu, '{}/menu'.format(BASE_URL))
 API.add_resource(AdminLogin, '{}/login'.format(BASE_URL))
 API.add_resource(AllOrders, '{}/orders'.format(BASE_URL))
+API.add_resource(Order, '{}/orders/<int:order_id>'.format(BASE_URL))
 
 
 if __name__ == '__main__':
