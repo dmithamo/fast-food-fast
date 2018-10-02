@@ -151,9 +151,10 @@ class Order(Resource):
         # if user_role and order data confirmed ok
 
         if order_id:
-         # see if order exists
+            # see if order exists
             search_query = """
-            SELECT * FROM orders WHERE orders.order_id = '{}'""".format(order_id)
+            SELECT * FROM orders
+            WHERE orders.order_id = '{}'""".format(order_id)
 
             order = database.select_from_db(search_query)
             if not order:
