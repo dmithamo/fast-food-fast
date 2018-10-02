@@ -168,6 +168,17 @@ class ShoppingCart(Resource):
             # If order is missing required item_name or item_price
             abort_if_missing_required_param()
 
+        if item_price < 1 or not isinstance(quantity, int) or not isinstance(
+                item_price, int) or quantity < 1 :
+            abort(make_response(jsonify(
+                message="Bad request. Price and quantity must be ints >= 1"
+            ), 400))
+
+        if not isinstance(item_name, str):
+            abort(make_response(jsonify(
+                message="Bad request. Item name must be a string"
+            ), 400))
+
         if CART:
             # If any orders have already been added to CART
             try:
@@ -177,14 +188,9 @@ class ShoppingCart(Resource):
                     order for order in CART if order['item_name'] == item_name
                     and order['order_status'] == 'pending'][0]
 
-                unserviced_order['quantity'] += quantity
-                # Update order cost
-                calculate_order_cost(unserviced_order)
-                response = jsonify({
-                    "message": "Order quantity updated",
-                    "order": unserviced_order})
-                response.status_code = 201
-
+                abort(make_response(jsonify({
+                    "message": "Order already exists",
+                    "order": unserviced_order}), 400))
             except IndexError:
                 # if a similar order has not been added to CART, or
                 # any that have been added have been marked
