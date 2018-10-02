@@ -34,8 +34,7 @@ class TestingConfig(DefaultConfig):
 CONFIGS = {
     'development_config': DevelopmentConfig,
     'testing_config': TestingConfig,
-    'db_url':
-        'dbname=fast_food_fast_db user=dmithamo password=dmithamo',
+    'db_url': os.getenv("DATABASE_URL"),
     'test_db_url':
         'dbname=test_fast_food_fast_db user=dmithamo password=dmithamo'
 }
