@@ -31,7 +31,7 @@ class User:
             '{}', '{}', '{}'
         )""".format(self.username, self.email, self.password)
 
-        database.insert_into_db(query)
+        database.query_db_no_return(query)
 
     @staticmethod
     def retrieve_user_from_db(email):
@@ -95,7 +95,7 @@ class Order:
                 self.quantity,
                 self.total_order_cost)
 
-        database.insert_into_db(query)
+        database.query_db_no_return(query)
 
     def retrieve_order_from_db(self, food_item_name):
         """
@@ -130,7 +130,7 @@ class FoodItem:
                 self.food_item_name,
                 self.food_item_price)
 
-        database.insert_into_db(query)
+        database.query_db_no_return(query)
 
     def retrieve_food_item_from_db(self, food_item_name):
         """
