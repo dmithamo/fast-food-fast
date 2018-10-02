@@ -9,6 +9,7 @@ from flask_restful import Resource
 
 
 # local imports
+from api.v2.resources.orders import configure_response
 from api.v2.utils import validate
 from api.v2 import database
 
@@ -60,15 +61,7 @@ class AllOrders(Resource):
 
         formatted_orders = []
         for order in orders:
-            formatted_order = {
-                "order_id": order[0],
-                "ordered_by": order[1],
-                "ordered_on": order[2],
-                "ordered_status": order[3],
-                "order_info": "{} {}s at {} each".format(
-                    order[6], order[4], order[5]),
-                "total_order_cost": order[7]
-            }
+            formatted_order = configure_response(order)
             formatted_orders.append(formatted_order)
 
         response = make_response(jsonify({
@@ -97,22 +90,10 @@ class Order(Resource):
         WHERE orders.order_id = '{}'""".format(order_id)
 
         order = database.select_from_db(query)
+        # Abort if not order
+        validate.abort_order_not_found(order_id)
 
-        if not order:
-            abort(make_response(jsonify(
-                message="Order with id '{}' not found.".format(
-                    order_id)), 404))
-
-        formatted_order = {
-            "order_id": order[0][0],
-            "ordered_by": order[0][1],
-            "ordered_on": order[0][2],
-            "order_status": order[0][3],
-            "order_info": "{} {}s at {} each".format(
-                order[0][6], order[0][4], order[0][5]),
-            "total_order_cost": order[0][7]
-        }
-
+        formatted_order = configure_response(order)
         response = make_response(jsonify({
             "message": "Order found.",
             "order": formatted_order
@@ -152,15 +133,7 @@ class Order(Resource):
 
         updated_order = database.select_from_db(query)
 
-        formatted_updated_order = {
-            "order_id": updated_order[0][0],
-            "ordered_by": updated_order[0][1],
-            "ordered_on": updated_order[0][2],
-            "order_status": updated_order[0][3],
-            "order_info": "{} {}s at {} each".format(
-                updated_order[0][6], updated_order[0][4], updated_order[0][5]),
-            "total_order_cost": updated_order[0][7]
-        }
+        formatted_updated_order = configure_response(updated_order[0])
 
         response = make_response(jsonify({
             "message": "Order found.",

@@ -9,11 +9,8 @@ coverage==4.5.1
 coveralls==1.5.0
 docopt==0.6.2
 Flask==1.0.2
-<<<<<<< HEAD
 Flask-Bcrypt==0.7.1
 Flask-JWT-Extended==3.13.1
-=======
->>>>>>> develop
 Flask-RESTful==0.3.6
 gunicorn==19.9.0
 idna==2.7
@@ -25,14 +22,10 @@ MarkupSafe==1.0
 mccabe==0.6.1
 more-itertools==4.3.0
 pluggy==0.7.1
-<<<<<<< HEAD
 psycopg2-binary==2.7.5
 py==1.6.0
 pycparser==2.19
 PyJWT==1.4.2
-=======
-py==1.6.0
->>>>>>> develop
 pylint==2.1.1
 pytest==3.7.4
 pytest-cov==2.6.0

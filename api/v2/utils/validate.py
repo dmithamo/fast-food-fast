@@ -4,7 +4,7 @@
     Aborts if data is in any way invalid
 """
 
-from flask_jwt_extended import (get_jwt_identity)
+from flask_jwt_extended import get_jwt_identity
 from flask import abort, make_response, jsonify
 
 
@@ -46,6 +46,14 @@ def abort_not_found(item, defn):
     """
     abort(make_response(jsonify(
         message="No '{}' found {}".format(item, defn)), 404))
+
+
+def abort_order_not_found(order_id):
+    """
+        Aborts if order not in db
+    """
+    abort(make_response(jsonify(
+        message="Order with id '{}' not found.".format(order_id)), 404))
 
 
 def check_request_validity(request):

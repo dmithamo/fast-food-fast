@@ -12,6 +12,23 @@ from api.v2 import database
 from api.v2.models import Order
 
 
+# Helper functions
+def configure_response(order):
+    """
+        Configure appropriate
+    """
+    formatted_order = {
+        "order_id": order[0],
+        "ordered_by": order[1],
+        "ordered_on": order[2],
+        "order_status": order[3],
+        "order_info": "{} {}s at {} each".format(
+            order[6], order[4], order[5]),
+        "total_order_cost": order[7]
+    }
+    return formatted_order
+
+
 class ShoppingCart(Resource):
     """
         Models a users's shopping cart with all user orders
@@ -38,15 +55,7 @@ class ShoppingCart(Resource):
         formatted_orders = []
         total_expenditure = 0
         for order in orders:
-            formatted_order = {
-                "order_id": order[0],
-                "ordered_by": order[1],
-                "ordered_on": order[2],
-                "order_status": order[3],
-                "order_info": "{} {}s at {} each".format(
-                    order[6], order[4], order[5]),
-                "total_order_cost": order[7]
-            }
+            formatted_order = configure_response(order)
             formatted_orders.append(formatted_order)
             total_expenditure += order[7]
 
@@ -111,15 +120,7 @@ class ShoppingCart(Resource):
         # on success
         response = make_response(jsonify({
             "message": "Order posted successfully",
-            "order": {
-                "order_id": saved_order[0][0],
-                "ordered_by": saved_order[0][1],
-                "ordered_on": saved_order[0][2],
-                "order_status": saved_order[0][3],
-                "order_info": "{} {}s at {} each".format(
-                    saved_order[0][6],
-                    saved_order[0][4], saved_order[0][5]),
-                "total_order_cost": saved_order[0][7]}
+            "order": configure_response(saved_order[0])
             }))
 
         return response
