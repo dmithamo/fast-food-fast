@@ -45,7 +45,7 @@ class AllOrders(Resource):
         """
             GET users/orders endpoint
         """
-        validate.abort_if_user_role_not_appropriate("Admin")
+        validate.abort_if_user_role_not_appropriate("admin")
 
         # if user_role confirmed ok
 
@@ -89,7 +89,7 @@ class Order(Resource):
         """
             GET /orders/order_id endpoint
         """
-        validate.abort_if_user_role_not_appropriate("Admin")
+        validate.abort_if_user_role_not_appropriate("admin")
 
         # if user_role confirmed ok
         query = """
@@ -125,7 +125,7 @@ class Order(Resource):
         """
             PUT /orders/order_id endpoint
         """
-        validate.abort_if_user_role_not_appropriate("Admin")
+        validate.abort_if_user_role_not_appropriate("admin")
         data = validate.check_request_validity(request)
 
         # Check that supplied status is valid

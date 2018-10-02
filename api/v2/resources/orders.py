@@ -2,15 +2,14 @@
     Models Order, ShoppingCart as a resource defining
     order endpoints
 """
-import psycopg2
-from flask import request, abort, make_response, jsonify
+from flask import request, make_response, jsonify
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from flask_restful import Resource
 
 # local imports
 from api.v2.utils import validate
 from api.v2 import database
-from api.v2.models import User, FoodItem, Order
+from api.v2.models import Order
 
 
 class ShoppingCart(Resource):
@@ -22,6 +21,8 @@ class ShoppingCart(Resource):
         """
             GET users/orders endpoint
         """
+        # Abort if role not 'user'
+        validate.abort_if_user_role_not_appropriate("user")
         # extract user id from token
         username = get_jwt_identity()[0]
         query = """
@@ -63,6 +64,8 @@ class ShoppingCart(Resource):
             POST users/orders
         """
         data = validate.check_request_validity(request)
+        # Abort if role not 'user'
+        validate.abort_if_user_role_not_appropriate("user")
         # extract user id from token
         username = get_jwt_identity()[0]
 
