@@ -29,6 +29,7 @@ class TestingConfig(DefaultConfig):
         configs
     """
     TEST = True
+    DEBUG = True
 
 
 CONFIGS = {

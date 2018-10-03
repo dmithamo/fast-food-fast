@@ -121,6 +121,6 @@ class ShoppingCart(Resource):
         response = make_response(jsonify({
             "message": "Order posted successfully",
             "order": configure_response(saved_order[0])
-            }))
+            }), 201)
 
         return response
