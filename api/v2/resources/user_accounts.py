@@ -1,7 +1,7 @@
 """
     Module sets up UserRegistration, UserLogin as Resources
 """
-from datetime import datetime
+import datetime
 import psycopg2
 
 from flask_jwt_extended import create_access_token
@@ -55,13 +55,15 @@ class UserRegistration(Resource):
                 message="Server error. User not registered in db."), 500))
 
         # Generate token for registered user
-        token = create_access_token(identity=(username, "user"))
+        token = create_access_token(
+            identity=(username, "user"),
+            expires_delta=datetime.timedelta(days=5))
 
         registered_user = {
             "user_id": registered_user_data[0][0],
             "username": registered_user_data[0][1],
             "email": registered_user_data[0][2],
-            "logged_in_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "auth_token": token
             }
 
@@ -104,13 +106,16 @@ class UserLogin(Resource):
                     message="Wrong password."), 403))
 
             # Generate token for logged in user
-            token = create_access_token(identity=username_from_db)
+            token = create_access_token(
+                identity=(username_from_db, "user"),
+                expires_delta=datetime.timedelta(days=5))
+
 
             logged_in_user = {
                 "user_id": user_id_from_db,  # first item is user_id
                 "username": username_from_db,  # second item is username
                 "email": email_from_db,  # third item is email
-                "logged_in_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "auth_token": token
                 }
 

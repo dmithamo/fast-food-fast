@@ -1,7 +1,7 @@
 """
     Module defines admin specific endpoints
 """
-from datetime import datetime
+import datetime
 
 from flask_jwt_extended import create_access_token, jwt_required
 from flask import request, jsonify, make_response, abort
@@ -30,8 +30,9 @@ class AdminLogin(Resource):
         response = make_response(jsonify({
             "message": "Admin logged in",
             "logged_in_admin": {
-                "logged_in_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "token": create_access_token(identity=(data["email"], "admin"))
+                "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "token": create_access_token(
+                    identity=(data["email"], "admin"), expires_delta=datetime.timedelta(days=5))
             }
         }))
         return response
@@ -91,7 +92,8 @@ class Order(Resource):
 
         order = database.select_from_db(query)
         # Abort if not order
-        validate.abort_order_not_found(order_id)
+        if not order:
+            validate.abort_order_not_found(order_id)
 
         formatted_order = configure_response(order)
         response = make_response(jsonify({

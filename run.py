@@ -44,6 +44,16 @@ def custom_error_response_unauthorised_user(callback):
     return response
 
 
+@jwt.expired_token_loader
+def custom_error_response_expired_token():
+    """
+        Custom response for expired tokens
+    """
+    response = make_response(jsonify(
+        message="Your token has expired. Please login again."), 403)
+    return response
+
+
 # Base url common to all endpoints
 BASE_URL = '/api/v2'
 
