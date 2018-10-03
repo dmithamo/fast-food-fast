@@ -363,9 +363,91 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(
             response_json["message"], "Error. Mangoes is already in use")
 
+    def test_admin_can_modify_items_on_menu(self):
+        """
+            14. Test that logged in admin can modify
+            items on menu
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Add item to menu
+        self.logged_in_admin_post_to_menu(
+            {"food_item_name": "Maembe Kubwa",
+             "food_item_price": 2000}, adm_token)
+
+        # Update order status to "Complete"
+        response = self.client.put("{}/menu/1".format(
+            self.base_url), json={
+                "food_item_price": 1200
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            response_json["message"], "Food item modified succesfully.")
+
+    def test_admin_cannot_modify_items_on_menu_if_noc_change(self):
+        """
+            15. Test that logged in admin cannot modify
+            items on menu if request contains no change
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Add item to menu
+
+        food_item = {
+            "food_item_name": "Maembe Kubwa",
+            "food_item_price": 10
+        }
+        self.logged_in_admin_post_to_menu(food_item, adm_token)
+
+        # Update order status to "Complete"
+        response = self.client.put("{}/menu/1".format(
+            self.base_url), json={
+                "food_item_name": "Maembe Kubwa"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response_json["message"], "Not updated. No change detected")
+
+    def test_admin_can_delete_items_on_menu(self):
+        """
+            16. Test that logged in admin can delete
+            items on menu
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Add item to menu
+        self.logged_in_admin_post_to_menu(
+            {"food_item_name": "Flowerey Things",
+             "food_item_price": 2000}, adm_token)
+
+        # Update order status to "Complete"
+        response = self.client.delete("{}/menu/1".format(
+            self.base_url), headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response_json["message"], "Delete successful.")
+
     def test_admin_can_delete_completed_orders(self):
         """
-            14. Test that logged in admin can delete
+            17. Test that logged in admin can delete
             completed orders
         """
         # Login admin
@@ -402,7 +484,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
     def test_admin_can_delete_cancelled_orders(self):
         """
-            15. Test that logged in admin can delete
+            18. Test that logged in admin can delete
             cancelled orders
         """
         # Login admin
@@ -439,7 +521,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
     def test_admin_cannot_orders_unless_cancelled_or_complete(self):
         """
-            16. Test that logged in admin cannot delete
+            19. Test that logged in admin cannot delete
             orders whose status is not 'Cancelled' or 'Complete'
         """
         # Login admin
