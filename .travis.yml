@@ -8,14 +8,8 @@ install:
 
 Run tests
 script:
-    - pytest
-    - coverage run --source=api.v1 -m pytest && coverage report
+    - pytest api/tests/v2
+    - coverage run --source=api.v2 -m pytest api/tests/v2 && coverage report
 
 after_success:
     - coveralls
-
-branches:
- only:
-  - develop
-  - master
-  - gh-pages

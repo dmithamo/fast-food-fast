@@ -2,7 +2,6 @@
     Module contains tests for other user specific endpoints
 """
 from api.tests.v2 import base_test_class
-from flask_jwt_extended import get_jwt_identity
 
 
 class TestEndpoints(base_test_class.TestClassBase):
@@ -29,7 +28,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"],
-            "Forbidden. Provide valid authorization header.")
+            "Unauthorized. Provide valid authorization header.")
 
     def test_post_an_order(self):
         """
@@ -122,7 +121,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"],
-            "Forbidden. Provide valid authorization header.")
+            "Unauthorized. Provide valid authorization header.")
 
     def test_get_all_orders_when_none_exist(self):
         """

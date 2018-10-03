@@ -40,7 +40,7 @@ def custom_error_response_unauthorised_user(callback):
         authorization header
     """
     response = make_response(jsonify(
-        message="Forbidden. Provide valid authorization header."), 403)
+        message="Unauthorized. Provide valid authorization header."), 401)
     return response
 
 
@@ -50,7 +50,7 @@ def custom_error_response_expired_token():
         Custom response for expired tokens
     """
     response = make_response(jsonify(
-        message="Your token has expired. Please login again."), 403)
+        message="Your token has expired. Please login again."), 401)
     return response
 
 
