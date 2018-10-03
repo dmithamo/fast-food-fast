@@ -6,3 +6,4 @@ api/__pycache__/
 htmlcov/
 .coverage
 instance/
+.env
