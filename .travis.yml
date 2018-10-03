@@ -10,8 +10,8 @@ services:
     - postgresql
 
 before_script:
-    - psql -c 'CREATE DATABASE test_fast_food_fast_db;' -U dmithamo
-    - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC to dmithamo'
+    - psql -c 'CREATE DATABASE test_fast_food_fast_db;' -U postgres
+    - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC to postgres'
 
 # Run tests
 script:
