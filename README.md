@@ -20,12 +20,19 @@ The UI [(See dmithamo/fast-food-fast)](https://dmithamo.github.io/fast-food-fast
 
 The API contains the endpoints below:
   
-| Endpoint                  | What it Does                     | Git Branch                             |
-| :--------------------     | :-----------------------         | :--------------------------------      |
-| `POST /orders`            | Place an order                   | [ft-api-post-order-160244252](https://github.com/dmithamo/fast-food-fast/tree/ft-api-post-order-160244252)                           |
-| `GET /orders`             | Fetch all orders                 | [ft-api-get-orders-160244330](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-orders-160244330)                           |
-| `GET /orders/id`          | Fetch specific order             | [ft-api-get-specific-order-160244412](https://github.com/dmithamo/fast-food-fast/tree/ft-api-get-specific-order-160244412)                   |
-| `PUT /orders/id`          | Update order status              | [ft-api-update-order-status-160244454](https://github.com/dmithamo/fast-food-fast/tree/ft-api-update-order-status-160244454)                  |
+| Endpoint                  | What it Does                     | Comment                            |
+| :--------------------     | :-----------------------         | :--------------------------------  |
+| `POST /auth/signup`       | Signup a user                    |                                    |
+| `POST /auth/login`        | Login a user                     |                                    |
+| `POST /users/orders`      | Place an order                   | Needs Auth                         |
+| `GET /users/orders`       | Fetch all user orders            | Needs Auth                         |
+| `GET /menu`               | Fetch the menu                   |                                    |
+| `POST /menu`              | Add food item to the menu        | Needs Auth - Admin Only Access     |
+| `GET /orders`             | Fetch all orders                 | Needs Auth - Admin Only Access     |
+| `GET /orders/id`          | Fetch a single order             | Needs Auth - Admin Only Access     |
+| `PUT /orders/id`          | Update order status              | Needs Auth - Admin Only Access     |
+| `DELETE /orders`          | Delete multiple orders           | Needs Auth - Admin Only Access     |
+| `DELETE /orders/id`       | Delete an order                  | Needs Auth - Admin Only Access     |
 
 ## Manual testing of the API
 
@@ -39,12 +46,14 @@ To manually test these endpoints, configure and run the server as below:
 
 4. Run `export FLASK_APP=run.py`
 
-5. Run `flask run` to start the server
+5. Run `export SECRET_KEY="a-secret-key"` 
 
-Test the endpoints at `localhost:5000/api/v1/orders`.
+6. Run `flask run` to start the server
 
-The API is hosted on [Heroku](https://dashboard.heroku.com/apps/dmithamo-fast-food-fast-api).
-To test from the Heroku server, send requests to [https://dmithamo-fast-food-fast-api.herokuapp.com/api/v1/orders](https://dmithamo-fast-food-fast-api.herokuapp.com/api/v1/orders)
+Test the endpoints at `localhost:5000/api/v2`.
+
+The API is hosted on [Heroku](https://dmithamo-fast-food-fast-api.herokuapp.com/).
+To test from the Heroku server, send requests to [https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2](https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2)
 
 [Postman](https://www.getpostman.com/) is the recommended testing tool.
 
