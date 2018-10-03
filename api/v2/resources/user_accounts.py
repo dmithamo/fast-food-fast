@@ -63,7 +63,8 @@ class UserRegistration(Resource):
             "user_id": registered_user_data[0][0],
             "username": registered_user_data[0][1],
             "email": registered_user_data[0][2],
-            "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "logged_in_at": datetime.datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S"),
             "auth_token": token
             }
 
@@ -110,12 +111,12 @@ class UserLogin(Resource):
                 identity=(username_from_db, "user"),
                 expires_delta=datetime.timedelta(days=5))
 
-
             logged_in_user = {
                 "user_id": user_id_from_db,  # first item is user_id
                 "username": username_from_db,  # second item is username
                 "email": email_from_db,  # third item is email
-                "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "logged_in_at": datetime.datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"),
                 "auth_token": token
                 }
 

@@ -29,10 +29,12 @@ class AdminLogin(Resource):
         # for valid admin logins
         response = make_response(jsonify({
             "message": "Admin logged in",
-            "logged_in_admin": {
-                "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "admin": {
+                "logged_in_at": datetime.datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"),
                 "token": create_access_token(
-                    identity=(data["email"], "admin"), expires_delta=datetime.timedelta(days=5))
+                    identity=(data["email"], "admin"),
+                    expires_delta=datetime.timedelta(days=5))
             }
         }))
         return response
@@ -150,8 +152,8 @@ class Order(Resource):
             : can only delete where status is 'Complete' or 'Cancelled'
         """
         validate.abort_if_user_role_not_appropriate("admin")
-        # if user_role and order data confirmed ok
 
+        # if user_role and order data confirmed ok
         if order_id:
             # see if order exists
             search_query = """

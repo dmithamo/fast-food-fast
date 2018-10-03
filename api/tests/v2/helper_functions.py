@@ -38,7 +38,7 @@ def sample_params():
     # Sample order data for POST request
     food = {
         "food_item_name": "Guacamole and Marshmallows",
-        "food_item_price": 200,
+        "food_item_price": 200
     }
     food_2 = {
         "food_item_name": "Roast Meat",

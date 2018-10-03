@@ -73,7 +73,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Error. dmithamo@andela.com is already in use")
+            response_json['message'],
+            "Error. dmithamo@andela.com is already in use")
 
     def test_duplicate_user_name_registration(self):
         """
