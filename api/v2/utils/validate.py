@@ -95,19 +95,19 @@ def check_if_any_change(data, food_item):
         "food_item_name": food_item[0][1],
         "food_item_price": food_item[0][2]
     }
-    name_changed = True
-    price_changed = True
+    name_not_changed = True
+    price_not_changed = True
 
     for key, value in data.items():
         if key == "food_item_name" \
-         and value == formatted_food_item["food_item_name"]:
-            name_changed = False
+         and value != formatted_food_item["food_item_name"]:
+            name_not_changed = False
 
         if key == "food_item_price" \
-         and value == formatted_food_item["food_item_price"]:
-            price_changed = False
+         and value != formatted_food_item["food_item_price"]:
+            price_not_changed = False
 
-    if not name_changed and not price_changed:
+    if name_not_changed and price_not_changed:
         # If neither param changed, abort
         abort(make_response(jsonify(
             message="Not updated. No change detected"), 400))
