@@ -30,9 +30,11 @@ class AdminLogin(Resource):
         response = make_response(jsonify({
             "message": "Admin logged in",
             "admin": {
-                "logged_in_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "logged_in_at": datetime.datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"),
                 "token": create_access_token(
-                    identity=(data["email"], "admin"), expires_delta=datetime.timedelta(days=5))
+                    identity=(data["email"], "admin"),
+                    expires_delta=datetime.timedelta(days=5))
             }
         }))
         return response

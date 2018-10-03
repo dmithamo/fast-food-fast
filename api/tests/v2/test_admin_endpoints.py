@@ -255,7 +255,8 @@ class TestEndpoints(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json["message"], "'what have you' is an invalid order status")
+            response_json["message"],
+            "'what have you' is an invalid order status")
 
     # GET /menu
 
@@ -453,7 +454,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         # Make POST request
         self.logged_in_user_post_order({"food_item_id": 1,
                                         "quantity": 2}, token)
-  
+
         # Send DELETE request
         response = self.client.delete("{}/orders/1".format(
             self.base_url), headers={

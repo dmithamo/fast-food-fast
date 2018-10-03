@@ -69,7 +69,6 @@ class TestClassBase(unittest.TestCase):
 
         return auth_token
 
-
     def login_test_user(self):
         """
             Helper function
@@ -96,7 +95,8 @@ class TestClassBase(unittest.TestCase):
         # Make POST request
         self.client.post("{}/users/orders".format(
             self.base_url), json=food_item, headers={
-                "Content-Type": "application/json", "Authorization": "Bearer {}".format(token)
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(token)
             })
 
     def login_test_admin(self):
@@ -122,7 +122,8 @@ class TestClassBase(unittest.TestCase):
         # Make POST request
         self.client.post("{}/menu".format(
             self.base_url), json=food_item, headers={
-                "Content-Type": "application/json", "Authorization": "Bearer {}".format(token)
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(token)
             })
 
 
