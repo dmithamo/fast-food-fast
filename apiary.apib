@@ -244,6 +244,54 @@ this food_item to the menu.
                 "message": "Food item added succesfully."
             }
 
+### Update item on Menu [PUT /menu/id]
+On providing a `food_item` with valid parameters, the Admin, once logged in, can add
+this food_item to the menu.
+
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "food_item_name": "Not Salty Buggers",
+                "food_item_price": 350
+            }
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "food": {
+                    "food_item_id": 5,
+                    "food_item_name": "Not Salty Buggers",
+                    "food_item_price": 350
+                },
+                "message": "Food item modified succesfully."
+            }
+
+### Delete Menu Item [DELETE /menu/id]
+Admin can delete an item from the menu.
+
++ Request (application/json)
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "message": "Delete succesful."
+            }
+
 
 
 ### View All User Orders [GET /orders]
@@ -276,7 +324,7 @@ if there be any.
             }
 
 
-### View Specific User Order [GET /orders/1]
+### View Specific User Order [GET /orders/id]
 Admin can retrieve a single order from the db using it's id
 
 + Request (application/json)
@@ -301,7 +349,7 @@ Admin can retrieve a single order from the db using it's id
                 }
             }
 
-### Update Order Status [PUT /orders/1]
+### Update Order Status [PUT /orders/id]
 Admin can update order status, if the order exists and `order_status` is valid.
 
 + Request (application/json)
@@ -332,34 +380,20 @@ Admin can update order status, if the order exists and `order_status` is valid.
                     }
             }
 
-### Delete Order [PUT /orders/1]
+### Delete Order [DELETE /orders/id]
 Admin can delete an order from the DB, if the `order_status`
 is either 'Cancelled' or 'Complete'
 
 + Request (application/json)
 
-    + Body
-    
-            {
-                "order_status": "Complete"
-            }
-
     + Header (Authorization)
     
                 `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
     + Body
                 
             {
-                "message": "Order found.",
-                "order": {
-                    "order_id": 1,
-                    "order_info": "5 Juicy Pork Ribss at 1350 each",
-                    "order_status": "Complete",
-                    "ordered_by": "dmithamo",
-                    "ordered_on": "2018-10-03 10:16:05",
-                    "total_order_cost": 6750
-                    }
+                "message": "Delete succesful."
             }
