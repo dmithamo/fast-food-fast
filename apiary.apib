@@ -1,0 +1,383 @@
+FORMAT: 1A
+HOST: https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2/
+
+# dmithamo: fast-food-fast
+
+This documentation describes the `fast-food-fast` api, the back-end for an
+an online food ordering platform. It has the endpoints below.
+
+### User Accounts [/auth]
+The platform is controlled, required a user to have an account on it before they
+can carry out any of the User Actions.
+
+### Signup for an Account [POST /auth/signup]
+Users can create accounts on the platform, by sending a request to the endpoint above
+with a request body similar to the one exemplified below.
+An authentication token is generated at registration, and is useful for accessing
+endpoints which require authentication.
+
+
++ Request (application/json)
+
+        {
+            "username": "dmithamo",
+            "email": "dmithamo@mail.com",
+            "password": "the-password-10"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message": "Registration successful",
+                "user": {
+                            "auth_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MDk2NDYsIm5iZiI6MTUzODUwOTY0NiwianRpIjoiOGViYjk4Y2ItNjAxMy00ODU4LTliZGItOTg5YzRjY2U0MTdkIiwiZXhwIjoxNTM4NTEwNTQ2LCJpZGVudGl0eSI6WyJkbWl0aGFtbyIsInVzZXIiXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.SUG4RFIHGfLX4iYV70R6khERoPj3m1bAqngTj6Qfnlg",
+                            "email": "dmithamo@mail.com",
+                            "logged_in_at": "2018-10-02 22:47:26",
+                            "user_id": 1,
+                            "username": "dmithamo"
+                            }
+            }
+
+##
+
+### Login to an existing Account [POST /auth/login]
+Users with registered accounts can login to the application. 
+Required parameters are the registered `email` address and a matching `password`.
+An authentication token is generated at login, and is useful for accessing
+endpoints which require authentication.
+
+Tokens expire after `5 days`.
+
+
++ Request (application/json)
+
+        {
+            "email": "dmithamo@mail.com",
+            "password": "the-password-10"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message": "Login successful.",
+                "user": {
+                    "auth_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAwNjIsIm5iZiI6MTUzODUxMDA2MiwianRpIjoiYjBiNjhmNTktNWZjMi00OWZlLWJiNWQtNDg4NTQxNDZjYWU3IiwiZXhwIjoxNTM4NTEwOTYyLCJpZGVudGl0eSI6ImRtaXRoYW1vIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.TX22ooLneGGd2D0B8IRqSs4zIKeNkxF1FgngeBayrKY",
+                    "email": "dmithamo@mail.com",
+                    "logged_in_at": "2018-10-02 22:54:22",
+                    "user_id": 1,
+                    "username": "dmithamo"
+                }
+            }
+
+##
+
+
+## User Actions [/users]
+A logged in user (for whom a `valid token` has been generated, that is) can access
+the following resources on the platform.
+
+### View Menu [GET /menu]
+This endpoint returns a list of all the food items on offer.
+This special route is exempt from the requirement that a user be logged in.
+It can be accessed even when user is not logged in.
+
+The Admin also has access to this route, without needing to login.
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "No food items found on the menu"
+            }
+
+
+`OR` if menu has items :
+
++ Response 200 (application/json) 
+
+            {
+                "menu": [
+                    {
+                        "food_item_id": 1,
+                        "food_item_name": "Guacamole and Meat Balls",
+                        "food_item_price": 175
+                    },
+                    {
+                        "food_item_id": 2,
+                        "food_item_name": "Vegetable Salad",
+                        "food_item_price": 2000
+                    },
+                    {
+                        "food_item_id": 3,
+                        "food_item_name": "Raw Cassava",
+                        "food_item_price": 1295
+                    },
+                    {
+                        "food_item_id": 4,
+                        "food_item_name": "Juicy Pork Ribs",
+                        "food_item_price": 1350
+                    }
+                ],
+                "message": "Request successful"
+            }
+
+## 
+
+### Place Order [POST api/v2/users/orders]
+A logged user can place an order by sending a request to this endpoint.
+This route requires the `Authorization` header, with the value being the token
+generated at signup or at login.
+
+
++ Request (application/json)
+    
+    + Body
+        
+            {
+                "food_item_id": 1,
+                "quantity": 5
+            }
+            
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+    
+        {
+            "message": "Order posted successfully",
+            "order": {
+                "order_id": 1,
+                "order_info": "5 Guacamole and Meat Ballss at 175 each",
+                "order_status": "New",
+                "ordered_by": "dmithamo",
+                "ordered_on": "2018-10-03 07:49:37",
+                "total_order_cost": 875
+            }
+        }
+
+##
+
+### View Orders [GET api/v2/users/orders]
+Returns a list of all orders placed by user, if any exist.
+
++ Response 404 (application/json)
+
+    + Body
+
+        {
+            "message": "No 'orders' found for user 'denmithamo' "
+        }
+
+
+`OR` if orders has items :
+
++ Response 200 (application/json)
+    
+    + Body
+
+        {
+            "message": "Orders found.",
+            "orders": [
+                {
+                    "order_id": 1,
+                    "order_info": "5 Guacamole and Meat Ballss at 175 each",
+                    "order_status": "New",
+                    "ordered_by": "dmithamo",
+                    "ordered_on": "2018-10-03 07:49:37",
+                    "total_order_cost": 875
+                }
+            ],
+            "total_expenditure": 875
+        }
+
+
+### Admin Login [POST api/v2/login]
+A single admin account with special privileges exists on the platform. By logging into
+the system with the valid admin logins, a user can perform actions inaccessible to a
+normal (non-admin) user.
+
+
++ Request (application/json)
+    
+    + Body
+
+        {
+            "email": "admintest@admin.com",
+            "password": "admin-pass-10s"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "logged_in_admin": {
+                "logged_in_at": "2018-10-02 22:59:09",
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ"
+            },
+            "message": "Admin logged in"
+        }
+
+
+## Admin Actions [api/v2]
+Here, routes protected for admin-only access are defined.
+
+
+### Add to Menu [POST /menu]
+On providing a `food_item` with valid parameters, the Admin, once logged in, can add
+this food_item to the menu.
+
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "food_item_name": "Salty Buggers",
+                "food_item_price": 350
+            }
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "food": {
+                    "food_item_id": 5,
+                    "food_item_name": "Salty Buggers",
+                    "food_item_price": 350
+                },
+                "message": "Food item added succesfully."
+            }
+
+
+
+### View All User Orders [GET /orders]
+A logged in Admin can retrieve a list or all orders on the platform, 
+if there be any.
+
+
++ Request (application/json)
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+                
+            {
+                "message": "Orders found.",
+                "orders": [
+                    {
+                        "order_id": 1,
+                        "order_info": "5 Guacamole and Meat Ballss at 175 each",
+                        "order_status": "New",
+                        "ordered_by": "dmithamo",
+                        "ordered_on": "2018-10-03 07:49:37",
+                        "total_order_cost": 875
+                    }
+                ]
+            }
+
+
+### View Specific User Order [GET /orders/1]
+Admin can retrieve a single order from the db using it's id
+
++ Request (application/json)
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+                
+            {
+                "message": "Order found.",
+                "order": {
+                    "order_id": 1,
+                    "order_info": "5 Juicy Pork Ribss at 1350 each",
+                    "order_status": "New",
+                    "ordered_by": "dmithamo",
+                    "ordered_on": "2018-10-03 10:16:05",
+                    "total_order_cost": 6750
+                }
+            }
+
+### Update Order Status [PUT /orders/1]
+Admin can update order status, if the order exists and `order_status` is valid.
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "order_status": "Complete"
+            }
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+                
+            {
+                "message": "Order found.",
+                "order": {
+                    "order_id": 1,
+                    "order_info": "5 Juicy Pork Ribss at 1350 each",
+                    "order_status": "Complete",
+                    "ordered_by": "dmithamo",
+                    "ordered_on": "2018-10-03 10:16:05",
+                    "total_order_cost": 6750
+                    }
+            }
+
+### Delete Order [PUT /orders/1]
+Admin can delete an order from the DB, if the `order_status`
+is either 'Cancelled' or 'Complete'
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "order_status": "Complete"
+            }
+
+    + Header (Authorization)
+    
+                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
+
++ Response 201 (application/json)
+
+    + Body
+                
+            {
+                "message": "Order found.",
+                "order": {
+                    "order_id": 1,
+                    "order_info": "5 Juicy Pork Ribss at 1350 each",
+                    "order_status": "Complete",
+                    "ordered_by": "dmithamo",
+                    "ordered_on": "2018-10-03 10:16:05",
+                    "total_order_cost": 6750
+                    }
+            }
