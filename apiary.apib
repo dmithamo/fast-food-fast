@@ -92,15 +92,6 @@ The Admin also has access to this route, without needing to login.
     + Body
 
             {
-                "message": "No food items found on the menu"
-            }
-
-
-`OR` if menu has items :
-
-+ Response 200 (application/json) 
-
-            {
                 "menu": [
                     {
                         "food_item_id": 1,
@@ -126,9 +117,8 @@ The Admin also has access to this route, without needing to login.
                 "message": "Request successful"
             }
 
-## 
 
-### Place Order [POST api/v2/users/orders]
+### Place Order [POST /users/orders]
 A logged user can place an order by sending a request to this endpoint.
 This route requires the `Authorization` header, with the value being the token
 generated at signup or at login.
@@ -137,16 +127,12 @@ generated at signup or at login.
 + Request (application/json)
     
     + Body
-        
-            {
-                "food_item_id": 1,
-                "quantity": 5
-            }
-            
-    + Header (Authorization)
     
-                `Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzg1MTAzNDksIm5iZiI6MTUzODUxMDM0OSwianRpIjoiNTJhNDUwNmYtYjgyZC00NDYwLThiYjYtMDU3YTdiYWE2M2RlIiwiZXhwIjoxNTM4NTExMjQ5LCJpZGVudGl0eSI6WyJhZG1pbnRlc3RAYWRtaW4uY29tIiwiYWRtaW4iXSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.JWd_TKqx3U18Dy9DGvXov-pa1fRutZzuZb_Q4OXL8pQ" `
-
+        {
+            "food_item_id": 1,
+            "quantity": 5
+        }
+            
 + Response 201 (application/json)
 
     + Body
@@ -163,9 +149,8 @@ generated at signup or at login.
             }
         }
 
-##
 
-### View Orders [GET api/v2/users/orders]
+### View Orders [GET /users/orders]
 Returns a list of all orders placed by user, if any exist.
 
 + Response 404 (application/json)
@@ -198,8 +183,10 @@ Returns a list of all orders placed by user, if any exist.
             "total_expenditure": 875
         }
 
+## Admin Actions [/]
+This details the routes accessible only by the admin.
 
-### Admin Login [POST api/v2/login]
+### Admin Login [POST /login]
 A single admin account with special privileges exists on the platform. By logging into
 the system with the valid admin logins, a user can perform actions inaccessible to a
 normal (non-admin) user.
@@ -225,11 +212,6 @@ normal (non-admin) user.
             },
             "message": "Admin logged in"
         }
-
-
-## Admin Actions [api/v2]
-Here, routes protected for admin-only access are defined.
-
 
 ### Add to Menu [POST /menu]
 On providing a `food_item` with valid parameters, the Admin, once logged in, can add
