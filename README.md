@@ -4,7 +4,7 @@ This repo is a build out of the UI templates and API backend for an online food 
 
 ## Continous Integration Badges
 
-[![Build Status](https://travis-ci.org/dmithamo/fast-food-fast.svg?branch=develop)](https://travis-ci.org/dmithamo/fast-food-fast) [![Coverage Status](https://coveralls.io/repos/github/dmithamo/fast-food-fast/badge.svg?branch=api-v1)](https://coveralls.io/github/dmithamo/fast-food-fast?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/maintainability)](https://codeclimate.com/github/dmithamo/fast-food-fast/maintainability)
+[![Build Status](https://travis-ci.org/dmithamo/fast-food-fast.svg?branch=develop)](https://travis-ci.org/dmithamo/fast-food-fast) [![Coverage Status](https://coveralls.io/repos/github/dmithamo/fast-food-fast/badge.svg?branch=develop)](https://coveralls.io/github/dmithamo/fast-food-fast?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/8450eb14df4a1833c544/maintainability)](https://codeclimate.com/github/dmithamo/fast-food-fast/maintainability)
 
 ## UI Features
 
