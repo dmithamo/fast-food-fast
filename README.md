@@ -27,6 +27,8 @@ The API contains the endpoints below:
 | `POST /users/orders`      | Place an order                   | Needs Auth                         |
 | `GET /users/orders`       | Fetch all user orders            | Needs Auth                         |
 | `GET /menu`               | Fetch the menu                   |                                    |
+| `PUT /menu/id`            | Update a food item on the menu   | Needs Auth - Admin Only Access     |
+| `DELETE /menu`            | Remove a food item from the menu | Needs Auth - Admin Only Access     |
 | `POST /menu`              | Add food item to the menu        | Needs Auth - Admin Only Access     |
 | `GET /orders`             | Fetch all orders                 | Needs Auth - Admin Only Access     |
 | `GET /orders/id`          | Fetch a single order             | Needs Auth - Admin Only Access     |
