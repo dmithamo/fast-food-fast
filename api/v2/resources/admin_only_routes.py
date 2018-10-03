@@ -95,7 +95,7 @@ class Order(Resource):
         if not order:
             validate.abort_order_not_found(order_id)
 
-        formatted_order = configure_response(order)
+        formatted_order = configure_response(order[0])
         response = make_response(jsonify({
             "message": "Order found.",
             "order": formatted_order

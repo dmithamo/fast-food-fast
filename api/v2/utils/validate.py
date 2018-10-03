@@ -257,8 +257,9 @@ def check_order_status_validity(data):
         Check whether the status supplied when updating order
         is valid
     """
-    if not data["order_status"]:
-        # if no status is provided
+    try:
+        order_status = data["order_status"]
+    except KeyError:
         abort_missing_required_param()
 
     if not data["order_status"] in ["New",
@@ -268,4 +269,4 @@ def check_order_status_validity(data):
         abort(make_response(
             jsonify(message="'{}' is an invalid order status".format(
                 data["order_status"])), 400))
-    return data["order_status"]
+    return order_status
