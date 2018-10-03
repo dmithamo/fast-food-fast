@@ -54,7 +54,7 @@ class Menu(Resource):
     @jwt_required
     def put(self, food_item_id):
         """
-            PUT /menu endpoint
+            PUT /menu<int:food_item_id> endpoint
             Accessible by admin only
         """
         data = validate.check_request_validity(request)
@@ -102,6 +102,45 @@ class Menu(Resource):
                 "food_item_price": update_food_item[2]
             }
         }), 201)
+
+        return response
+
+    @jwt_required
+    def delete(self, food_item_id):
+        """
+            DELETE /menu/<int:food_item_id> endpoint
+            Accessible by admin only
+        """
+        # Check if user is admin
+        validate.abort_if_user_role_not_appropriate("admin")
+
+        query_search_for_item = """
+        SELECT * FROM menu
+        WHERE menu.food_item_id = '{}'""".format(food_item_id)
+
+        food_item = database.select_from_db(query_search_for_item)
+
+        if not food_item:
+            # If no item in db with matching id
+            validate.abort_not_found(
+                "food_item with id {}".format(food_item_id), "menu")
+
+        delete_query = """
+        DELETE FROM menu
+        WHERE menu.food_item_id = '{}'""".format(food_item_id)
+
+        database.query_db_no_return(delete_query)
+
+        # Confirm deletion by querying db for same item
+        food_item = database.select_from_db(query_search_for_item)
+        if food_item:
+            # Means the deletion did not happen
+            abort(make_response(jsonify(
+                message="Error. Not deleted for some reason"
+            ), 500))
+
+        response = make_response(jsonify(
+            message="Delete successful."), 200)
 
         return response
 
