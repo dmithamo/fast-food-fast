@@ -3,7 +3,7 @@
     as appropriate.
     Serve api endpoints
 """
-from flask import Flask, make_response, jsonify
+from flask import Flask, make_response, jsonify, redirect
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
@@ -56,6 +56,16 @@ def custom_error_response_expired_token():
 
 # Base url common to all endpoints
 BASE_URL = '/api/v2'
+
+# Access api docs at homepage of api
+@APP.route('/')
+def documentation():
+    """
+        Redirect to API docs on visiting root url
+    """
+    return redirect(
+        "https://dmithamofastfoodfast.docs.apiary.io/#reference/0/user-accounts/add-to-menu?console=1")
+
 
 # Define routes
 API.add_resource(UserRegistration, '{}/auth/signup'.format(BASE_URL))
