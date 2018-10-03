@@ -11,9 +11,9 @@ services:
 
 before_script:
     - psql -c 'CREATE DATABASE test_fast_food_fast_db;' -U dmithamo
-    - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC to dmithamo '
+    - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC to dmithamo'
 
-Run tests
+# Run tests
 script:
     - pytest api/tests/v2
     - coverage run --source=api.v2 -m pytest api/tests/v2 && coverage report
