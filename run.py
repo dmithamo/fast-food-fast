@@ -71,7 +71,8 @@ def documentation():
 API.add_resource(UserRegistration, '{}/auth/signup'.format(BASE_URL))
 API.add_resource(UserLogin, '{}/auth/login'.format(BASE_URL))
 API.add_resource(ShoppingCart, '{}/users/orders'.format(BASE_URL))
-API.add_resource(Menu, '{}/menu'.format(BASE_URL))
+API.add_resource(Menu, '{}/menu'.format(
+    BASE_URL), '{}/menu/<int:food_item_id>'.format(BASE_URL))
 API.add_resource(AdminLogin, '{}/login'.format(BASE_URL))
 API.add_resource(AllOrders, '{}/orders'.format(BASE_URL))
 API.add_resource(Order, '{}/orders/<int:order_id>'.format(

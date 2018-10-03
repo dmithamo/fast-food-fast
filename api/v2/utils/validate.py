@@ -42,7 +42,7 @@ def abort_access_unauthorized():
 
 def abort_not_found(item, defn):
     """
-        Aborts if user is no items found from db search
+        Aborts if no items found from db search
     """
     abort(make_response(jsonify(
         message="No '{}' found {}".format(item, defn)), 404))
@@ -54,6 +54,52 @@ def abort_order_not_found(order_id):
     """
     abort(make_response(jsonify(
         message="Order with id '{}' not found.".format(order_id)), 404))
+
+
+def check_duplication(params, table_name):
+    """
+        Check if a param is already in use, abort if in use
+    """
+    for key, value in params.items():
+        query = """
+        SELECT {} from {} WHERE {}.{} = '{}'
+        """.format(key, table_name, table_name, key, value)
+        duplicated = select_from_db(query)
+        if duplicated:
+            # Abort if duplicated
+            abort(make_response(jsonify(
+                message="Error. {} is already in use".format(value)), 400))
+
+
+def check_duplication_b(food_item_name, food_item_id):
+    """
+        Abort if new food_item_name would be a duplication
+    """
+    query = """
+    SELECT * FROM menu WHERE menu.food_item_name = '{}'
+    AND menu.food_item_id != '{}'""".format(food_item_name, food_item_id)
+
+    food_item = select_from_db(query)
+    if food_item:
+        # Abort if it would be a duplication
+        abort(make_response(jsonify(
+            message="Error. {} is already in use".format(
+                food_item_name)), 400))
+
+
+def check_if_any_change(data, food_item):
+    """
+        See if the request represents a change in a food_item_param
+    """
+    formatted_food_item = {
+        "food_item_name": food_item[0][1],
+        "food_item_price": food_item[0][2]
+    }
+    for key, value in data.items():
+        if value == formatted_food_item["{}".format(key)]:
+            # Abort, because no change
+            abort(make_response(jsonify(
+                message="Not updated. No change detected"), 400))
 
 
 def check_request_validity(request):
@@ -173,21 +219,6 @@ def check_password_validity(password):
         abort_invalid_param({"password": password})
 
 
-def check_duplication(params, table_name):
-    """
-        Check if a param is already in use, abort if in use
-    """
-    for key, value in params.items():
-        query = """
-        SELECT {} from {} WHERE {}.{} = '{}'
-        """.format(key, table_name, table_name, key, value)
-        duplicated = select_from_db(query)
-        if duplicated:
-            # Abort if duplicated
-            abort(make_response(jsonify(
-                message="Error. {} is already in use".format(value)), 400))
-
-
 def check_food_item_params_a(data):
     """
         Check food params before placing to order
@@ -237,6 +268,36 @@ def check_food_item_params(data):
         "food_item_price": food_item_price}
 
     return food_item
+
+
+def check_if_param_updatable(data):
+    """
+        Before PUT /menu/food_item_id, checks that param
+        being updated is valid
+    """
+    for key, value in data.items():
+        # if either is not a valid food_item_param
+        if key not in ["food_item_name", "food_item_price"]:
+            abort_not_food_item_param(key, "parameter")
+
+        if key == "food_item_price" \
+         and (not isinstance(value, int) or not value > 0):
+            # If param being updated is food_item_price
+            abort_not_food_item_param(value, "price")
+
+        elif key == "food_item_name" \
+         and (not isinstance(value, str) or not len(value) > 1):
+            # If param being updated is food_item_name
+            abort_not_food_item_param(value, "name")
+
+
+def abort_not_food_item_param(param_name, description):
+    """
+        Aborts if param is not a valid food_item_param
+    """
+    abort(make_response(
+        jsonify(message="'{}' is an invalid food_item {}".format(
+            param_name, description)), 400))
 
 
 def abort_if_user_role_not_appropriate(allowed_role):
