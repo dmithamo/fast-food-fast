@@ -76,7 +76,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
         # Register and login user
         token = self.login_test_user()
-        print("######{}####".format(token))
+
         food_item = {
             "food_item_id": 1,
             "quantity": 2

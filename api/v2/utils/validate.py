@@ -362,6 +362,7 @@ Valid statuses: '{}'".format(
     return order_status.strip()
 
 
+
 def abort_similar_order_exists(order):
     """
         Prevent placing of multiple similar orders with status unfullfilled
