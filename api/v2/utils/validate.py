@@ -12,24 +12,25 @@ from flask import abort, make_response, jsonify
 from api.v2.database import select_from_db
 
 
-def abort_missing_required_param():
+def abort_missing_required_param(*params):
     """
         Checks whether all required params are present
         Aborts if any is missing or is None (e.g, 0 or "" )
     """
     abort(make_response(jsonify(
-        message="Unsuccesful. Missing required param"), 400))
+        message="Unsuccesful. Missing required param. Requires: {}".format(
+            [param for param in params])), 400))
 
 
-def abort_invalid_param(param):
+def abort_invalid_param(param, reason):
     """
         Checks whether all required params are present
         Aborts if any is missing or is None (e.g, 0 or "" )
     """
     for key, value in param.items():
         abort(make_response(jsonify(
-            message="Bad request. '{}' is an invalid {}".format(
-                value, key)), 400))
+            message="Bad request. '{}' is an invalid {}. [Reason: {}]".format(
+                value, key, reason)), 400))
 
 
 def abort_access_unauthorized():
@@ -137,7 +138,7 @@ def check_registration_params(data):
         password = data["password"]
     except KeyError:
         # if required param is missing, abort
-        abort_missing_required_param()
+        abort_missing_required_param("username", "email", "password")
     # check username
     check_username_validity(username)
     # check email
@@ -161,7 +162,7 @@ def check_login_params(data):
         email = data["email"]
         password = data["password"]
     except KeyError:
-        abort_missing_required_param()
+        abort_missing_required_param("email", "password")
 
     # For valid params
     return {"email": email,
@@ -178,7 +179,7 @@ def check_admin_logins(data):
         password = data["password"]
     except KeyError:
         # if required param is missing, abort
-        abort_missing_required_param()
+        abort_missing_required_param("password", "email")
 
     # Require specific email and password for admin
     if not email == "admintest@admin.com" or not password == "admin-pass-10s":
@@ -198,18 +199,22 @@ def check_email_validity(email):
     try:
         user, domain = str(email).split("@")
     except ValueError:
-        abort_invalid_param({"email": email})
+        abort_invalid_param(
+            {"email": email}, "Must have domain and user segments")
     if not user or not domain:
-        abort_invalid_param({"email": email})
+        abort_invalid_param(
+            {"email": email}, "Invalid domain or user segments")
 
     # Check that domain is valid
     # valid domain has valid part before and after '.'
     try:
         dom_1, dom_2 = domain.split(".")
     except ValueError:
-        abort_invalid_param({"email": email})
+        abort_invalid_param(
+            {"email": email}, "Incomplete domain name")
     if not dom_1 or not dom_2:
-        abort_invalid_param({"email": email})
+        abort_invalid_param(
+            {"email": email}, "Incomplete domain name")
 
 
 def check_username_validity(username):
@@ -218,7 +223,8 @@ def check_username_validity(username):
     """
     if len(str(username)) < 4:
         # If blank username or too short
-        abort_invalid_param({"username": username})
+        abort_invalid_param(
+            {"username": username}, "Username too short")
 
 
 def check_password_validity(password):
@@ -227,7 +233,8 @@ def check_password_validity(password):
     """
     if len(str(password)) < 8:
         # If blank password or password too short
-        abort_invalid_param({"password": password})
+        abort_invalid_param(
+            {"password": password}, "Password too short")
 
 
 def check_food_item_params_a(data):
@@ -238,15 +245,17 @@ def check_food_item_params_a(data):
         food_item_id = data["food_item_id"]
         quantity = data["quantity"]
     except KeyError:
-        abort_missing_required_param()
+        abort_missing_required_param("food_item_id", "quantity")
 
     if not isinstance(food_item_id, int):
         # Require that food_item_id be an int
-        abort_invalid_param({"food_item_id": food_item_id})
+        abort_invalid_param(
+            {"food_item_id": food_item_id}, "food_item_id must be an int")
 
     if not isinstance(quantity, int):
         # Require that food_item_price be an int
-        abort_invalid_param({"quantity": quantity})
+        abort_invalid_param(
+            {"quantity": quantity}, "quantity must be an int")
 
     return {
         "food_item_id": food_item_id,
@@ -262,15 +271,19 @@ def check_food_item_params(data):
         food_item_name = data["food_item_name"]
         food_item_price = data["food_item_price"]
     except KeyError:
-        abort_missing_required_param()
+        abort_missing_required_param("food_item_name", "food_item_price")
 
     if not isinstance(food_item_name, str):
         # Require that food_item_name be a str
-        abort_invalid_param({"food_item_name": food_item_name})
+        abort_invalid_param(
+            {"food_item_name": food_item_name},
+            "food_item_name must be a str")
 
     if not isinstance(food_item_price, int):
         # Require that food_item_price be an int
-        abort_invalid_param({"food_item_price": food_item_price})
+        abort_invalid_param(
+            {"food_item_price": food_item_price},
+            "food_item_id must be an int")
 
     check_duplication({"food_item_name": food_item_name}, "menu")
 
@@ -332,15 +345,15 @@ def check_order_status_validity(data):
     try:
         order_status = data["order_status"]
     except KeyError:
-        abort_missing_required_param()
+        abort_missing_required_param("order_status")
 
-    if not data["order_status"] in ["New",
-                                    "Processing",
-                                    "Cancelled", "Complete"]:
+    valid_statuses = ["New", "Processing", "Cancelled", "Complete"]
+
+    if not data["order_status"] in valid_statuses:
         # if status is invalid
         abort(make_response(
-            jsonify(message="'{}' is an invalid order status".format(
-                data["order_status"])), 400))
+            jsonify(message="'{}' is an invalid order status. Valid statuses: '{}'".format(
+                data["order_status"], valid_statuses)), 400))
     return order_status
 
 
