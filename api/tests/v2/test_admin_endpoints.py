@@ -42,9 +42,9 @@ class TestEndpoints(base_test_class.TestClassBase):
         response_json = base_test_class.helper_functions.response_as_json(
             response)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response_json["message"], "No orders found.")
+            response_json["message"], "No orders yet.")
 
     def test_get_all_orders_when_orders_exist(self):
         """
@@ -273,9 +273,9 @@ class TestEndpoints(base_test_class.TestClassBase):
         response_json = base_test_class.helper_functions.response_as_json(
             response)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response_json["message"], "No food items found on the menu")
+            response_json["message"], "No food items on the menu yet")
 
     def test_get_menu(self):
         """
@@ -362,7 +362,8 @@ class TestEndpoints(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json["message"], "Error. Mangoes is already in use")
+            response_json["message"],
+            "Error. 'food_item_name' 'Mangoes' is already in use")
 
     def test_admin_can_modify_items_on_menu(self):
         """
@@ -391,7 +392,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(
             response_json["message"], "Food item modified succesfully.")
 
-    def test_admin_cannot_modify_items_on_menu_if_noc_change(self):
+    def test_admin_cannot_modify_items_on_menu_if_no_change(self):
         """
             15. Test that logged in admin cannot modify
             items on menu if request contains no change

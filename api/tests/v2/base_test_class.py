@@ -59,15 +59,10 @@ class TestClassBase(unittest.TestCase):
             Helper function
             Registers a user for use during testing
         """
-        resp = self.client.post("{}/auth/signup".format(
+        self.client.post("{}/auth/signup".format(
             self.base_url), json=self.user, headers={
                 "Content-Type": "application/json"
             })
-
-        auth_token = helper_functions.response_as_json(
-            resp)['user']['auth_token']
-
-        return auth_token
 
     def login_test_user(self):
         """

@@ -315,11 +315,8 @@ def check_if_param_updatable(data):
             # If param being updated is food_item_price
             abort_not_food_item_param(value, "price")
 
-        elif key == "food_item_name" \
-          and (not value.isalpha() or not isinstance(value, str)
-               or not len(value) > 3):
-            # If param being updated is food_item_name
-            abort_not_food_item_param(value, "name")
+        elif key == "food_item_name":
+            check_invalid_name("food_item_name", value)
 
 
 def abort_not_food_item_param(param_name, description):
