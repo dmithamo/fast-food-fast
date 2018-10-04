@@ -29,7 +29,7 @@ def abort_invalid_param(param, reason):
     """
     for key, value in param.items():
         abort(make_response(jsonify(
-            message="Bad request. '{}' is an invalid {}. [Reason: {}]".format(
+            message="Bad request. '{}' is an invalid {}. Reason: {}".format(
                 value, key, reason)), 400))
 
 
@@ -69,7 +69,8 @@ def check_duplication(params, table_name):
         if duplicated:
             # Abort if duplicated
             abort(make_response(jsonify(
-                message="Error. {} is already in use".format(value)), 400))
+                message="Error. '{}' '{}' \
+is already in use".format(key, value)), 400))
 
 
 def check_duplication_b(food_item_name, food_item_id):
@@ -105,7 +106,7 @@ def check_if_any_change(data, food_item):
             name_not_changed = False
 
         if key == "food_item_price" \
-         and value != formatted_food_item["food_item_price"]:
+          and value != formatted_food_item["food_item_price"]:
             price_not_changed = False
 
     if name_not_changed and price_not_changed:
@@ -140,7 +141,7 @@ def check_registration_params(data):
         # if required param is missing, abort
         abort_missing_required_param("username", "email", "password")
     # check username
-    check_username_validity(username)
+    check_invalid_name("username", username)
     # check email
     check_email_validity(email)
     # check password
@@ -200,10 +201,10 @@ def check_email_validity(email):
         user, domain = str(email).split("@")
     except ValueError:
         abort_invalid_param(
-            {"email": email}, "Must have domain and user segments")
+            {"email": email}, "Email must have domain and user segments")
     if not user or not domain:
         abort_invalid_param(
-            {"email": email}, "Invalid domain or user segments")
+            {"email": email}, "Invalid domain or user segment")
 
     # Check that domain is valid
     # valid domain has valid part before and after '.'
@@ -211,30 +212,23 @@ def check_email_validity(email):
         dom_1, dom_2 = domain.split(".")
     except ValueError:
         abort_invalid_param(
-            {"email": email}, "Incomplete domain name")
+            {"email": email}, "Invalid domain name")
     if not dom_1 or not dom_2:
         abort_invalid_param(
-            {"email": email}, "Incomplete domain name")
-
-
-def check_username_validity(username):
-    """
-        Checks for validity of provided username
-    """
-    if len(str(username)) < 4:
-        # If blank username or too short
-        abort_invalid_param(
-            {"username": username}, "Username too short")
+            {"email": email}, "Invalid domain name")
 
 
 def check_password_validity(password):
     """
         Checks for validity of provided password
     """
-    if len(str(password)) < 8:
+    if len(str(password)) < 8 \
+      or " " in str(password):
         # If blank password or password too short
         abort_invalid_param(
-            {"password": password}, "Password too short")
+            {"password": password},
+            "Password must be at least an 8-char \
+long alphanumeric without any spaces")
 
 
 def check_food_item_params_a(data):
@@ -247,15 +241,36 @@ def check_food_item_params_a(data):
     except KeyError:
         abort_missing_required_param("food_item_id", "quantity")
 
+    if not isinstance(food_item_id, int) or not food_item_id > 0:
+        # Require that food_item_id be an int
+        abort_invalid_param(
+            {"food_item_id": food_item_id}, "'food_item_id' \
+must be an int greater than 0")
+
     if not isinstance(quantity, int) or not quantity > 0:
         # Require that food_item_price be an int
         abort_invalid_param(
-            {"quantity": quantity}, "quantity must be an int greater than 0")
+            {"quantity": quantity}, "'quantity' must be an \
+int greater than 0")
 
     return {
         "food_item_id": food_item_id,
         "quantity": quantity
     }
+
+
+def check_invalid_name(key, value):
+    """
+        Checks whether food_item_name or username are valid
+    """
+    if not isinstance(value, str) or not value.replace(
+            " ", "").isalpha() \
+     or not len(value.replace(" ", "")) > 3:
+        # Require that food_item_name be a str
+        abort_invalid_param(
+            {"{}".format(key): value},
+            "'{}' must be an alphabet-only str at least 4 chars long".format(
+                key))
 
 
 def check_food_item_params(data):
@@ -268,17 +283,13 @@ def check_food_item_params(data):
     except KeyError:
         abort_missing_required_param("food_item_name", "food_item_price")
 
-    if not food_item_name or not isinstance(food_item_name, str):
-        # Require that food_item_name be a str
-        abort_invalid_param(
-            {"food_item_name": food_item_name},
-            "food_item_name must be an unempty str")
+    check_invalid_name("food_item_name", food_item_name)
 
     if not isinstance(food_item_price, int) or not food_item_price > 0:
         # Require that food_item_price be an int
         abort_invalid_param(
             {"food_item_price": food_item_price},
-            "food_item_price must be an int greater than 0")
+            "'food_item_price' must be an int greater than 0")
 
     check_duplication({"food_item_name": food_item_name}, "menu")
 
@@ -300,12 +311,13 @@ def check_if_param_updatable(data):
             abort_not_food_item_param(key, "parameter")
 
         if key == "food_item_price" \
-         and (not isinstance(value, int) or not value > 0):
+           and (not isinstance(value, int) or not value > 0):
             # If param being updated is food_item_price
             abort_not_food_item_param(value, "price")
 
         elif key == "food_item_name" \
-         and (not isinstance(value, str) or not len(value) > 1):
+          and (not value.isalpha() or not isinstance(value, str)
+               or not len(value) > 3):
             # If param being updated is food_item_name
             abort_not_food_item_param(value, "name")
 
@@ -344,12 +356,13 @@ def check_order_status_validity(data):
 
     valid_statuses = ["New", "Processing", "Cancelled", "Complete"]
 
-    if not data["order_status"] in valid_statuses:
+    if not data["order_status"].strip() in valid_statuses:
         # if status is invalid
         abort(make_response(
-            jsonify(message="'{}' is an invalid order status. Valid statuses: '{}'".format(
+            jsonify(message="'{}' is an invalid order status. \
+Valid statuses: '{}'".format(
                 data["order_status"], valid_statuses)), 400))
-    return order_status
+    return order_status.strip()
 
 
 def abort_similar_order_exists(order):
