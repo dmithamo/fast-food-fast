@@ -97,13 +97,15 @@ class Order:
 
         database.query_db_no_return(query)
 
-    def retrieve_order_from_db(self, food_item_name):
+    def retrieve_order_from_db(self, food_item_name, ordered_by):
         """
             Add order with valid params to db
         """
         query = """
-        SELECT * FROM orders WHERE orders.food_item_name = '{}'""".format(
-            food_item_name)
+        SELECT * FROM orders
+        WHERE orders.food_item_name = '{}'
+        AND orders.ordered_by = '{}'""".format(
+            food_item_name, ordered_by)
 
         order = database.select_from_db(query)
         return order

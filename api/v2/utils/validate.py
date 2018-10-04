@@ -342,3 +342,16 @@ def check_order_status_validity(data):
             jsonify(message="'{}' is an invalid order status".format(
                 data["order_status"])), 400))
     return order_status
+
+
+def abort_similar_order_exists(order):
+    """
+        Prevent placing of multiple similar orders with status unfullfilled
+    """
+    abort(make_response(
+        jsonify(
+            {
+                "message": "Similar unserviced order exists. \
+New order not placed",
+                "order": order
+            }), 400))
