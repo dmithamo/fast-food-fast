@@ -148,7 +148,8 @@ New order not placed")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json["message"],
-            "Unsuccesful. Missing required param")
+            "Unsuccesful. Missing required param. \
+Requires: ['food_item_id', 'quantity']")
 
     # GET users/orders
 

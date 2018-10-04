@@ -256,7 +256,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json["message"],
-            "'what have you' is an invalid order status")
+            "'what have you' is an invalid order status. Valid statuses: \
+'['New', 'Processing', 'Cancelled', 'Complete']'")
 
     # GET /menu
 

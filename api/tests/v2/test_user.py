@@ -34,7 +34,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Missing required param")
+            response_json['message'], "Unsuccesful. Missing required param. \
+Requires: ['username', 'email', 'password']")
 
     def test_user_registration_without_any_data(self):
         """
@@ -118,7 +119,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'myemail.andela.com' is an invalid email")
+            "Bad request. 'myemail.andela.com' is an invalid email. \
+[Reason: Must have domain and user segments]")
 
     def test_user_registration_invalid_username(self):
         """
@@ -138,7 +140,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'd' is an invalid username")
+            "Bad request. 'd' is an invalid username. \
+[Reason: Username too short]")
 
     def test_user_registration_invalid_password(self):
         """
@@ -158,7 +161,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'dmit' is an invalid password")
+            "Bad request. 'dmit' is an invalid password. \
+[Reason: Password too short]")
 
     def test_registered_user_login(self):
         """
