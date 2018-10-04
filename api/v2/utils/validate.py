@@ -185,7 +185,7 @@ def check_admin_logins(data):
     # Require specific email and password for admin
     if not email == "admintest@admin.com" or not password == "admin-pass-10s":
         abort(make_response(jsonify(
-            message="Unsuccessful. Invalid admin credentials"), 400))
+            message="Unsuccessful. Incorrect admin email or password"), 400))
 
 
 def check_email_validity(email):

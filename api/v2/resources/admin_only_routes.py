@@ -36,7 +36,7 @@ class AdminLogin(Resource):
                     identity=(data["email"], "admin"),
                     expires_delta=datetime.timedelta(days=5))
             }
-        }))
+        }), 200)
         return response
 
 
@@ -60,7 +60,7 @@ class AllOrders(Resource):
 
         if not orders:
             abort(make_response(jsonify(
-                message="No orders found."), 404))
+                message="No orders yet."), 200))
 
         formatted_orders = []
         for order in orders:
