@@ -247,15 +247,10 @@ def check_food_item_params_a(data):
     except KeyError:
         abort_missing_required_param("food_item_id", "quantity")
 
-    if not isinstance(food_item_id, int):
-        # Require that food_item_id be an int
-        abort_invalid_param(
-            {"food_item_id": food_item_id}, "food_item_id must be an int")
-
-    if not isinstance(quantity, int):
+    if not isinstance(quantity, int) or not quantity > 0:
         # Require that food_item_price be an int
         abort_invalid_param(
-            {"quantity": quantity}, "quantity must be an int")
+            {"quantity": quantity}, "quantity must be an int greater than 0")
 
     return {
         "food_item_id": food_item_id,
@@ -273,17 +268,17 @@ def check_food_item_params(data):
     except KeyError:
         abort_missing_required_param("food_item_name", "food_item_price")
 
-    if not isinstance(food_item_name, str):
+    if not food_item_name or not isinstance(food_item_name, str):
         # Require that food_item_name be a str
         abort_invalid_param(
             {"food_item_name": food_item_name},
-            "food_item_name must be a str")
+            "food_item_name must be an unempty str")
 
-    if not isinstance(food_item_price, int):
+    if not isinstance(food_item_price, int) or not food_item_price > 0:
         # Require that food_item_price be an int
         abort_invalid_param(
             {"food_item_price": food_item_price},
-            "food_item_id must be an int")
+            "food_item_price must be an int greater than 0")
 
     check_duplication({"food_item_name": food_item_name}, "menu")
 
