@@ -62,9 +62,53 @@ class TestEndpoints(base_test_class.TestClassBase):
             response_json["order"]["total_order_cost"],
             1000 * food_item["quantity"])
 
+    def test_cannot_duplicate_order_while_unserviced(self):
+        """
+            3. Test that authorised (logged in) user CANNOT
+            place an order while a similar uncomplete or uncancelled order
+            exists
+        """
+        # Login admin and post food item on menu
+        adm_token = self.login_test_admin()
+        self.logged_in_admin_post_to_menu(
+            {"food_item_name": "Guacamole",
+             "food_item_price": 1000}, adm_token)
+
+        # Register and login user
+        token = self.login_test_user()
+        food_item = {
+            "food_item_id": 1,
+            "quantity": 2
+        }
+
+        response_1 = self.client.post("{}/users/orders".format(
+            self.base_url), json=food_item, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(token)
+            })
+
+        response_2 = self.client.post("{}/users/orders".format(
+            self.base_url), json=food_item, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(token)
+            })
+        response_1_json = base_test_class.helper_functions.response_as_json(
+            response_1)
+
+        response_2_json = base_test_class.helper_functions.response_as_json(
+            response_2)
+
+        self.assertEqual(response_2.status_code, 400)
+        self.assertEqual(
+            response_2_json["message"], "Similar unserviced order exists. \
+New order not placed")
+        self.assertEqual(
+            response_1_json["order"]["order_id"],
+            response_2_json["order"]["order_id"])
+
     def test_user_cannot_order_non_existent_food(self):
         """
-            3. Test that user cannot place order for an item not on the
+            4. Test that user cannot place order for an item not on the
             menu
         """
         token = self.login_test_user()
@@ -87,7 +131,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
     def test_incomplete_order_data(self):
         """
-            4. Test that user cannot place order with incomplete data
+            5. Test that user cannot place order with incomplete data
         """
         token = self.login_test_user()
         response = self.client.post("{}/users/orders".format(
@@ -110,7 +154,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
     def test_unauthorized_user_get_all(self):
         """
-            5. Test that an unauthorised user cannot get order history
+            6. Test that an unauthorised user cannot get order history
         """
         response = self.client.get("{}/users/orders".format(
             self.base_url))
@@ -125,7 +169,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
     def test_get_all_orders_when_none_exist(self):
         """
-            6. Test that authorised (logged in) user can get order history
+            7. Test that authorised (logged in) user can get order history
             When no orders exist
         """
         # Register and login user
@@ -146,7 +190,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
     def test_get_all_orders_when_orders_exist(self):
         """
-            7. Test that authorised (logged in) user can get order history
+            8. Test that authorised (logged in) user can get order history
             When at least one order exists
         """
         # Login admin and post food item on menu
