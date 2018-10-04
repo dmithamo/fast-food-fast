@@ -101,7 +101,8 @@ class ShoppingCart(Resource):
         search_query = """
         SELECT * FROM orders WHERE
         orders.ordered_by = '{}' AND
-        orders.food_item_name = '{}' AND orders.order_status IN ('New', 'Processing')
+        orders.food_item_name = '{}' AND
+        orders.order_status IN ('New', 'Processing')
         """.format(username, food_item[0][1])
 
         order_exists = database.select_from_db(search_query)

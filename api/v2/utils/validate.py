@@ -351,6 +351,7 @@ def abort_similar_order_exists(order):
     abort(make_response(
         jsonify(
             {
-                "message": "Similar unserviced order exists. New order not placed",
+                "message": "Similar unserviced order exists. \
+New order not placed",
                 "order": order
             }), 400))
