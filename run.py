@@ -64,7 +64,7 @@ def documentation():
         Redirect to API docs on visiting root url
     """
     return redirect(
-        "https://dmithamofastfoodfast.docs.apiary.io/#reference/0/user-accounts/add-to-menu?console=1")
+        "https://dmithamofastfoodfast.docs.apiary.io/#")
 
 
 # Define routes
