@@ -97,6 +97,20 @@ class ShoppingCart(Resource):
                 food_item_params["food_item_id"]), "in menu")
 
         # If the food_item exists on the menu
+        # Check if a similar unfulfilled order exists
+        search_query = """
+        SELECT * FROM orders WHERE
+        orders.ordered_by = '{}' AND
+        orders.food_item_name = '{}' AND orders.order_status IN ('New', 'Processing')
+        """.format(username, food_item[0][1])
+
+        order_exists = database.select_from_db(search_query)
+        print("\n\n\n{}\n\n\n".format(order_exists))
+        if order_exists:
+            formated_ord = configure_response(order_exists[0])
+            # if a similar order has been placed which has not been serviced
+            validate.abort_similar_order_exists(formated_ord)
+
         # Add ordered_by
         ordered_by = username
         food_item_name = food_item[0][1]
