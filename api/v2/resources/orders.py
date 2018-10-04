@@ -112,7 +112,7 @@ class ShoppingCart(Resource):
         new_order.save_order_to_db()
         # query db for saved order on success
         saved_order = new_order.retrieve_order_from_db(
-            new_order.food_item_name)
+            new_order.food_item_name, new_order.ordered_by)
 
         if not saved_order:
             validate.abort_not_found("Order with name '{}'".format(
