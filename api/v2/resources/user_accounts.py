@@ -54,18 +54,10 @@ class UserRegistration(Resource):
             abort(make_response(jsonify(
                 message="Server error. User not registered in db."), 500))
 
-        # Generate token for registered user
-        token = create_access_token(
-            identity=(username, "user"),
-            expires_delta=datetime.timedelta(days=5))
-
         registered_user = {
             "user_id": registered_user_data[0][0],
             "username": registered_user_data[0][1],
-            "email": registered_user_data[0][2],
-            "logged_in_at": datetime.datetime.now().strftime(
-                "%Y-%m-%d %H:%M:%S"),
-            "auth_token": token
+            "email": registered_user_data[0][2]
             }
 
         response = make_response(
@@ -124,32 +116,11 @@ class UserLogin(Resource):
             response = make_response(jsonify({
                 "message": "Login successful.",
                 "user": logged_in_user
-            }), 201)
+            }), 200)
 
         except psycopg2.DatabaseError as error:
             abort(make_response(jsonify(
                 message="Server error : {}".format(error)
             ), 500))
-
-        return response
-
-
-class AdminLogin(Resource):
-    """
-        Define admin specific methods
-    """
-    def post(self):
-        """
-            POST /login
-        """
-        data = validate.check_request_validity(request)
-        validate.check_admin_logins(data)
-        # Generate token for admin
-        response = make_response(jsonify({
-            "message": "Admin succesfully authenticated",
-            "admin": {
-                "email": data["email"]
-            }
-        }), 201)
 
         return response

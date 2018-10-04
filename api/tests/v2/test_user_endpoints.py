@@ -76,6 +76,7 @@ class TestEndpoints(base_test_class.TestClassBase):
 
         # Register and login user
         token = self.login_test_user()
+
         food_item = {
             "food_item_id": 1,
             "quantity": 2
@@ -148,7 +149,8 @@ New order not placed")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json["message"],
-            "Unsuccesful. Missing required param")
+            "Unsuccesful. Missing required param. \
+Requires: ['food_item_id', 'quantity']")
 
     # GET users/orders
 
@@ -184,9 +186,9 @@ New order not placed")
         response_json = base_test_class.helper_functions.response_as_json(
             response)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response_json["message"], "No 'orders' found for user 'dmithamo' ")
+            response_json["message"], "No orders yet for user 'dmithamo'")
 
     def test_get_all_orders_when_orders_exist(self):
         """

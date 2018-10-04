@@ -36,7 +36,7 @@ class AdminLogin(Resource):
                     identity=(data["email"], "admin"),
                     expires_delta=datetime.timedelta(days=5))
             }
-        }))
+        }), 200)
         return response
 
 
@@ -60,7 +60,7 @@ class AllOrders(Resource):
 
         if not orders:
             abort(make_response(jsonify(
-                message="No orders found."), 404))
+                message="No orders yet."), 200))
 
         formatted_orders = []
         for order in orders:
@@ -113,9 +113,6 @@ class Order(Resource):
         validate.abort_if_user_role_not_appropriate("admin")
         data = validate.check_request_validity(request)
 
-        # Check that supplied status is valid
-        order_status = validate.check_order_status_validity(data)
-
         # if user_role confirmed ok, and order_status is ok
         query = """
         SELECT * FROM orders
@@ -125,6 +122,9 @@ class Order(Resource):
 
         if not order:
             validate.abort_order_not_found(order_id)
+
+        # Check that supplied status is valid
+        order_status = validate.check_order_status_validity(data)
 
         update_query = """
         UPDATE orders

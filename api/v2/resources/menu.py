@@ -155,8 +155,8 @@ class Menu(Resource):
         if not menu:
             # If menu is empty
             abort(make_response(jsonify(
-                message="No food items found on the menu",
-            ), 404))
+                message="No food items on the menu yet",
+            ), 200))
 
         formatted_menu = []
         for item in menu:

@@ -2,7 +2,7 @@
     Models Order, ShoppingCart as a resource defining
     order endpoints
 """
-from flask import request, make_response, jsonify
+from flask import request, make_response, jsonify, abort
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from flask_restful import Resource
 
@@ -49,8 +49,9 @@ class ShoppingCart(Resource):
         orders = database.select_from_db(query)
 
         if not orders:
-            validate.abort_not_found(
-                "orders", "for user '{}' ".format(username))
+            abort(make_response(
+                jsonify(message="No orders yet for user '{}'".format(
+                    username)), 200))
 
         formatted_orders = []
         total_expenditure = 0

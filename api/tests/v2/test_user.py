@@ -19,7 +19,6 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
             response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response_json['message'], "Registration successful")
-        self.assertTrue(response_json['user']['auth_token'])
 
     def test_user_registration_missing_some_data(self):
         """
@@ -34,7 +33,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Missing required param")
+            response_json['message'], "Unsuccesful. Missing required param. \
+Requires: ['username', 'email', 'password']")
 
     def test_user_registration_without_any_data(self):
         """
@@ -74,7 +74,7 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Error. dmithamo@andela.com is already in use")
+            "Error. 'email' 'dmithamo@andela.com' is already in use")
 
     def test_duplicate_user_name_registration(self):
         """
@@ -98,7 +98,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Error. dmithamo is already in use")
+            response_json['message'],
+            "Error. 'username' 'dmithamo' is already in use")
 
     def test_invalid_email_registration(self):
         """
@@ -118,7 +119,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'myemail.andela.com' is an invalid email")
+            "Bad request. 'myemail.andela.com' is an invalid email. \
+Reason: Email must have domain and user segments")
 
     def test_user_registration_invalid_username(self):
         """
@@ -138,7 +140,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'd' is an invalid username")
+            "Bad request. 'd' is an invalid username. \
+Reason: 'username' must be an alphabet-only str at least 4 chars long")
 
     def test_user_registration_invalid_password(self):
         """
@@ -158,7 +161,9 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'dmit' is an invalid password")
+            "Bad request. 'dmit' is an invalid password. \
+Reason: Password must be at least an 8-char \
+long alphanumeric without any spaces")
 
     def test_registered_user_login(self):
         """
@@ -176,7 +181,7 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         response_json = base_test_class.helper_functions.response_as_json(
             response)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response_json['message'], "Login successful.")
         self.assertTrue(response_json['user']['auth_token'])
 
