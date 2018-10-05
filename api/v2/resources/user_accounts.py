@@ -42,7 +42,7 @@ class UserRegistration(Resource):
         new_user = User(username, email, password)
 
         new_user.save_new_user_to_db()
-        # See if new_user was added to db
+        # See if new_user was added to db successfully
         query = """
         SELECT user_id, username, email FROM users
         WHERE users.username = '{}';
