@@ -28,7 +28,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"],
-            "Unauthorized. Provide valid authorization header.")
+            "Unauthorized. Please login.")
 
     def test_post_an_order(self):
         """
@@ -149,8 +149,7 @@ New order not placed")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json["message"],
-            "Unsuccesful. Missing required param. \
-Requires: ['food_item_id', 'quantity']")
+            "Unsuccesful. Missing 'quantity', which is a required param")
 
     # GET users/orders
 
@@ -167,7 +166,7 @@ Requires: ['food_item_id', 'quantity']")
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"],
-            "Unauthorized. Provide valid authorization header.")
+            "Unauthorized. Please login.")
 
     def test_get_all_orders_when_none_exist(self):
         """

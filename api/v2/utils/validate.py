@@ -145,7 +145,7 @@ def check_registration_params(data):
     username = data["username"]
     email = data["email"]
     password = data["password"]
-    check_invalid_name("username", "username")
+    check_invalid_name("username", username)
     # check email
     check_email_validity(email)
     # check password
@@ -185,7 +185,7 @@ def check_admin_logins(data):
 
     # Require specific email and password for admin
     email = data["email"]
-    password = data["paswword"]
+    password = data["password"]
     if email != "admintest@admin.com" or password != "admin-pass-10s":
         abort(make_response(jsonify(
             message="Unsuccessful. Incorrect admin email or password"), 400))
