@@ -171,13 +171,19 @@ class Order(Resource):
         if not order:
             validate.abort_order_not_found(order_id)
 
+        # if order_status not 'Cancelled' or 'Complete'
         if order[0][3] not in ["Complete", "Cancelled"]:
             abort(make_response(jsonify(
                 message="Not deleted. Status is '{}'. \
 Status must be 'Cancelled' or 'Complete' to delete".format(order[0][3])
             ), 401))
 
-        # if order_status is 'Cancelled' or 'Complete'
+        # if order_status already 'Deleted'
+        if order[0][3] == "Deleted":
+            abort(make_response(jsonify(
+                message="Error. This was already deleted."
+            ), 400))
+
 
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         delete_single_order = """
