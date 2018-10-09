@@ -355,7 +355,7 @@ def check_order_status_validity(data):
     abort_missing_required_param(required_params, data)
 
     order_status = data["order_status"]
-    valid_statuses = ["New", "Processing", "Cancelled", "Complete"]
+    valid_statuses = ["Processing", "Cancelled", "Complete"]
 
     if not order_status.strip() in valid_statuses:
         # if status is invalid
@@ -363,6 +363,8 @@ def check_order_status_validity(data):
             jsonify(message="'{}' is an invalid order status. \
 Valid statuses: '{}'".format(
     data["order_status"], valid_statuses)), 400))
+
+
     return order_status.strip()
 
 

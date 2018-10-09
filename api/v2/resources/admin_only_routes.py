@@ -123,14 +123,20 @@ class Order(Resource):
         if not order:
             validate.abort_order_not_found(order_id)
 
+        if order[0][3] in ["Complete", "Deleted"]:
+            # if order was already Deleted or marked Complete
+            abort(make_response(
+                jsonify(message="Error. This order is already '{}'".format(order[0][3])), 400))
+
         # Check that supplied status is valid
         order_status = validate.check_order_status_validity(data)
-        
+
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         update_query = """
         UPDATE orders
-        SET order_status = '{}' AND status_uodate_on = '{}' WHERE
+        SET order_status = '{}',
+            status_update_on = '{}' WHERE
         orders.order_id = '{}'""".format(order_status, timestamp, order_id)
 
         database.query_db_no_return(update_query)
@@ -176,8 +182,8 @@ Status must be 'Cancelled' or 'Complete' to delete".format(order[0][3])
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         delete_single_order = """
         UPDATE orders
-        SET order_status = 'Deleted' 
-        AND status_update_on = '{}'
+        SET order_status = 'Deleted',
+            status_update_on = '{}'
         WHERE orders.order_id = '{}'
         AND orders.order_status = 'Cancelled'
         OR orders.order_status = 'Complete' 

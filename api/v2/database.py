@@ -55,6 +55,7 @@ def set_up_tables():
         ordered_by VARCHAR (24) NOT NULL,
         ordered_on VARCHAR (50) NOT NULL,
         order_status VARCHAR (15) NOT NULL,
+        status_update_on VARCHAR (50) NOT NULL,
         food_item_name VARCHAR (24) NOT NULL,
         food_item_price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,

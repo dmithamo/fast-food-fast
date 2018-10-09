@@ -76,6 +76,7 @@ class Order:
         self.quantity = quantity
         self.total_order_cost = self.food_item_price * self.quantity
         self.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.status_update_on = self.timestamp
 
     def save_order_to_db(self):
         """
@@ -83,13 +84,14 @@ class Order:
         """
         query = """
         INSERT INTO orders(
-            ordered_by, ordered_on, order_status,
+            ordered_by, ordered_on, order_status, status_update_on,
             food_item_name, food_item_price, quantity,
         total_order_cost) VALUES(
-            '{}', '{}', '{}', '{}', '{}', '{}', '{}')""".format(
+            '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')""".format(
                 self.ordered_by,
                 self.timestamp,
                 self.order_status,
+                self.status_update_on,
                 self.food_item_name,
                 self.food_item_price,
                 self.quantity,
