@@ -12,14 +12,17 @@ from flask import abort, make_response, jsonify
 from api.v2.database import select_from_db
 
 
-def abort_missing_required_param(*params):
+def abort_missing_required_param(required_params, data):
     """
         Checks whether all required params are present
         Aborts if any is missing or is None (e.g, 0 or "" )
     """
-    abort(make_response(jsonify(
-        message="Unsuccesful. Missing required param. Requires: {}".format(
-            [param for param in params])), 400))
+    for param in required_params:
+        try:
+            value = data["{}".format(param)]
+        except KeyError:
+            abort(make_response(jsonify(
+                message="Unsuccesful. Missing '{}', which is a required param".format(param)), 400))
 
 
 def abort_invalid_param(param, reason):
@@ -133,15 +136,16 @@ def check_registration_params(data):
         Carry out all checks necessary on registration data
         Abort if any is invalid
     """
-    try:
-        username = data["username"]
-        email = data["email"]
-        password = data["password"]
-    except KeyError:
-        # if required param is missing, abort
-        abort_missing_required_param("username", "email", "password")
+    required_params = ["username", "email", "password"]
+
+    # if required param is missing, abort
+    abort_missing_required_param(required_params, data)
+
     # check username
-    check_invalid_name("username", username)
+    username = data["username"]
+    email = data["email"]
+    password = data["password"]
+    check_invalid_name("username", "username")
     # check email
     check_email_validity(email)
     # check password
@@ -158,14 +162,14 @@ def check_login_params(data):
         Carry out all checks necessary on registration data
         Abort if any is invalid
     """
-    try:
-        # extract params from json
-        email = data["email"]
-        password = data["password"]
-    except KeyError:
-        abort_missing_required_param("email", "password")
+    required_params = ["email", "password"]
+
+    # abort if a required param is missing
+    abort_missing_required_param(required_params, data)
 
     # For valid params
+    email = data["email"]
+    password = data["password"]
     return {"email": email,
             "password": password}
 
@@ -175,15 +179,14 @@ def check_admin_logins(data):
         Carry out all checks necessary on admin logins
         Abort if any is invalid
     """
-    try:
-        email = data["email"]
-        password = data["password"]
-    except KeyError:
-        # if required param is missing, abort
-        abort_missing_required_param("password", "email")
+    required_params = ["email", "password"]
+    # if required param is missing, abort
+    abort_missing_required_param(required_params, data)
 
     # Require specific email and password for admin
-    if not email == "admintest@admin.com" or not password == "admin-pass-10s":
+    email = data["email"]
+    password = data["paswword"]
+    if email != "admintest@admin.com" or password != "admin-pass-10s":
         abort(make_response(jsonify(
             message="Unsuccessful. Incorrect admin email or password"), 400))
 
@@ -235,13 +238,13 @@ def check_food_item_params_a(data):
     """
         Check food params before placing to order
     """
-    try:
-        food_item_id = data["food_item_id"]
-        quantity = data["quantity"]
-    except KeyError:
-        abort_missing_required_param("food_item_id", "quantity")
+    required_params = ["food_item_id", "quantity"]
+    # abort if a required param is missing
+    abort_missing_required_param(required_params, data)
 
-    if not isinstance(food_item_id, int) or not food_item_id > 0:
+    food_item_id = data["food_item_id"]
+    quantity = data["quantity"]
+    if not isinstance(food_item_id, int) or food_item_id <= 0:
         # Require that food_item_id be an int
         abort_invalid_param(
             {"food_item_id": food_item_id}, "'food_item_id' \
@@ -277,15 +280,16 @@ def check_food_item_params(data):
     """
         Check food params before adding to menu
     """
-    try:
-        food_item_name = data["food_item_name"]
-        food_item_price = data["food_item_price"]
-    except KeyError:
-        abort_missing_required_param("food_item_name", "food_item_price")
+    required_params = ["food_item_name", "food_item_price"]
+    # abort if missing a require param
+    abort_missing_required_param(required_params, data)
+
+    food_item_name = data["food_item_name"]
+    food_item_price = data["food_item_price"]
 
     check_invalid_name("food_item_name", food_item_name)
 
-    if not isinstance(food_item_price, int) or not food_item_price > 0:
+    if not isinstance(food_item_price, int) or food_item_price <= 0:
         # Require that food_item_price be an int
         abort_invalid_param(
             {"food_item_price": food_item_price},
@@ -346,19 +350,19 @@ def check_order_status_validity(data):
         Check whether the status supplied when updating order
         is valid
     """
-    try:
-        order_status = data["order_status"]
-    except KeyError:
-        abort_missing_required_param("order_status")
+    required_params = ["order_status"]
+    # abort if missing a required param
+    abort_missing_required_param(required_params, data)
 
+    order_status = data["order_status"]
     valid_statuses = ["New", "Processing", "Cancelled", "Complete"]
 
-    if not data["order_status"].strip() in valid_statuses:
+    if not order_status.strip() in valid_statuses:
         # if status is invalid
         abort(make_response(
             jsonify(message="'{}' is an invalid order status. \
 Valid statuses: '{}'".format(
-                data["order_status"], valid_statuses)), 400))
+    data["order_status"], valid_statuses)), 400))
     return order_status.strip()
 
 

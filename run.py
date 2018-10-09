@@ -40,7 +40,7 @@ def custom_error_response_unauthorised_user(callback):
         authorization header
     """
     response = make_response(jsonify(
-        message="Unauthorized. Provide valid authorization header."), 401)
+        message="Unauthorized. Please login."), 401)
     return response
 
 
@@ -75,8 +75,7 @@ API.add_resource(Menu, '{}/menu'.format(
     BASE_URL), '{}/menu/<int:food_item_id>'.format(BASE_URL))
 API.add_resource(AdminLogin, '{}/login'.format(BASE_URL))
 API.add_resource(AllOrders, '{}/orders'.format(BASE_URL))
-API.add_resource(Order, '{}/orders/<int:order_id>'.format(
-    BASE_URL), '{}/orders'.format(BASE_URL))
+API.add_resource(Order, '{}/orders/<int:order_id>'.format(BASE_URL))
 
 
 if __name__ == '__main__':
