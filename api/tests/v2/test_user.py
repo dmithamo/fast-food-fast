@@ -33,8 +33,8 @@ class TestUserRegistrationAndLogin(base_test_class.TestClassBase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response_json['message'], "Unsuccesful. Missing required param. \
-Requires: ['username', 'email', 'password']")
+            response_json['message'], "Unsuccesful. Missing 'username', \
+which is a required param")
 
     def test_user_registration_without_any_data(self):
         """

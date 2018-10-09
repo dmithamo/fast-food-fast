@@ -123,13 +123,21 @@ class Order(Resource):
         if not order:
             validate.abort_order_not_found(order_id)
 
+        if order[0][3] in ["Complete", "Deleted"]:
+            # if order was already Deleted or marked Complete
+            abort(make_response(
+                jsonify(message="Error. This order is already '{}'".format(order[0][3])), 400))
+
         # Check that supplied status is valid
         order_status = validate.check_order_status_validity(data)
 
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         update_query = """
         UPDATE orders
-        SET order_status = '{}' WHERE
-        orders.order_id = '{}'""".format(order_status, order_id)
+        SET order_status = '{}',
+            status_update_on = '{}' WHERE
+        orders.order_id = '{}'""".format(order_status, timestamp, order_id)
 
         database.query_db_no_return(update_query)
 
@@ -154,44 +162,34 @@ class Order(Resource):
         validate.abort_if_user_role_not_appropriate("admin")
 
         # if user_role and order data confirmed ok
-        if order_id:
-            # see if order exists
-            search_query = """
-            SELECT * FROM orders
-            WHERE orders.order_id = '{}'""".format(order_id)
+        # see if order exists
+        search_query = """
+        SELECT * FROM orders
+        WHERE orders.order_id = '{}'""".format(order_id)
 
-            order = database.select_from_db(search_query)
-            if not order:
-                validate.abort_order_not_found(order_id)
+        order = database.select_from_db(search_query)
+        if not order:
+            validate.abort_order_not_found(order_id)
 
-            if order[0][3] not in ["Complete", "Cancelled"]:
-                abort(make_response(jsonify(
-                    message="Not deleted. Status is '{}'. \
+        if order[0][3] not in ["Complete", "Cancelled"]:
+            abort(make_response(jsonify(
+                message="Not deleted. Status is '{}'. \
 Status must be 'Cancelled' or 'Complete' to delete".format(order[0][3])
-                ), 401))
+            ), 401))
 
-            # if order_status is 'Cancelled' or 'Complete'
-            delete_single_order = """
-            DELETE FROM orders
-            WHERE orders.order_id = '{}'
-            AND orders.order_status = 'Cancelled'
-            OR orders.order_status = 'Complete' """.format(order_id)
+        # if order_status is 'Cancelled' or 'Complete'
 
-            database.query_db_no_return(delete_single_order)
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        delete_single_order = """
+        UPDATE orders
+        SET order_status = 'Deleted',
+            status_update_on = '{}'
+        WHERE orders.order_id = '{}'
+        AND orders.order_status = 'Cancelled'
+        OR orders.order_status = 'Complete' 
+        """.format(timestamp, order_id)
 
-            # Confirm deletion by querying db for same item
-            order = database.select_from_db(search_query)
-            if order:
-                # Means the deletion did not happen
-                abort(make_response(jsonify(
-                    message="Error. Not deleted for some reason"
-                ), 500))
-        else:
-            delete_all_orders = """
-            DELETE FROM orders WHERE orders.order_status = 'Complete'
-            OR orders.order_status = 'Cancelled'"""
-
-            database.query_db_no_return(delete_all_orders)
+        database.query_db_no_return(delete_single_order)
 
         response = make_response(jsonify(
             message="Delete successful."), 200)

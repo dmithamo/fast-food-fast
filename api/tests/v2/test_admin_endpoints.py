@@ -24,7 +24,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"],
-            "Unauthorized. Provide valid authorization header.")
+            "Unauthorized. Please login.")
 
     def test_get_all_orders_when_none_exist(self):
         """
@@ -107,7 +107,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"],
-            "Unauthorized. Provide valid authorization header.")
+            "Unauthorized. Please login.")
 
     def test_get_specific_order_when_not_exists(self):
         """
@@ -256,8 +256,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json["message"],
-            "'what have you' is an invalid order status. Valid statuses: \
-'['New', 'Processing', 'Cancelled', 'Complete']'")
+            "'what have you' is an invalid order status. \
+Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     # GET /menu
 

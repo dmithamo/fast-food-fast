@@ -22,9 +22,10 @@ def configure_response(order):
         "ordered_by": order[1],
         "ordered_on": order[2],
         "order_status": order[3],
+        "status_update_on": order[4],
         "order_info": "{} {}s at {} each".format(
-            order[6], order[4], order[5]),
-        "total_order_cost": order[7]
+            order[7], order[5], order[6]),
+        "total_order_cost": order[8]
     }
     return formatted_order
 

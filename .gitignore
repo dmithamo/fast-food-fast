@@ -8,3 +8,4 @@ htmlcov/
 instance/
 .env
 .coveralls.yml
+.cache/
