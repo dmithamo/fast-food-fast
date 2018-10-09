@@ -59,7 +59,7 @@ class ShoppingCart(Resource):
         for order in orders:
             formatted_order = configure_response(order)
             formatted_orders.append(formatted_order)
-            total_expenditure += order[7]
+            total_expenditure += order[8]
 
         response = make_response(jsonify({
             "message": "Orders found.",
