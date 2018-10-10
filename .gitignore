@@ -5,3 +5,6 @@ apiEnv/
 .coverage
 htmlcov/
 instance/
+*.pyc
+.cache/
+.env
