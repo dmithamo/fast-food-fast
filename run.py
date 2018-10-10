@@ -6,6 +6,7 @@
 from flask import Flask, make_response, jsonify, redirect
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 # local imports
 from api.v2.config import CONFIGS
@@ -22,6 +23,7 @@ from api.v2.resources.admin_only_routes import AdminLogin, AllOrders, Order
 
 
 APP = Flask(__name__)
+CORS(APP)
 APP.config.from_object(CONFIGS['development_config'])
 
 API = Api(APP)
