@@ -1,0 +1,54 @@
+<!-- This is the web app's homepage -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./UI/css/main_css.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <title>FFF : Home</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="./menu.html">Fast Food. Fast.</a>
+            <nav>
+                <a id="login-link" href="./UI/login.html">Login</a>
+                <a id="register-link" href="./UI/register.html">Register</a>
+            </nav>
+        </div>
+    </header>
+    <section class="container" id="menu-cont">
+        <div id="banner">
+            <h2>
+                Too hungry to go to food?
+            </h2>
+            <p>
+                No worries, food will come to you!
+                Login or Register to order anything that's on our menu, 
+                and we'll deliver it to you oven-fresh!
+            </p>
+            <p>
+                Yes, oven-fresh. Because, as advertised, we are an actual Fast Food!
+            </p>
+    
+        </div>
+        <ul id="food-items">
+           <!-- Li items dynamically attached -->
+        </ul>
+    </section>
+    <footer>
+        <div class="container">
+            <p class="social-media"></p>
+            <p class="designer-link">
+                Designed and Developed by <a href="https://github.com/dmithamo">  dmithamo </a>
+            </p>
+            <p class="copyright">&copy2018 </p>
+        </div>
+    </footer>
+
+    <!-- Attach fetch_api.js -->
+    <script src="liveUI/fetchApi.js"></script>
+</body>
+</html>
