@@ -18,8 +18,8 @@ fetch(`${api_url}/menu`)
     // Convert response object to json object 
     .then((response)=> response.json())
     // Query json object for specific items
-    .then(function(data) {
-        let message = data.message;
+    .then(function(responseJSON) {
+        let message = responseJSON.message;
         if(message === "No food items on the menu yet") {
             // Create and style a special paragraph to report that menu is empty
             let specialPara = document.createElement("p");
@@ -31,7 +31,7 @@ fetch(`${api_url}/menu`)
         }
         else {
             // Create an li for each item on menu and append li to menuUL
-            let menuItems = data.menu;
+            let menuItems = responseJSON.menu;
             menuItems.forEach(foodItem => {
                 // Create the elements that make up each food_item li on the menu
 
@@ -79,3 +79,6 @@ fetch(`${api_url}/menu`)
     .catch(function(err) {
         console.log(err);
     });
+
+
+
