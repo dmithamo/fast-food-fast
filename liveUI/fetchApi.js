@@ -4,9 +4,7 @@
 const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 
 // fetch menu
-fetch(`${api_url}/menu`, {
-    mode: "same-origin",
-})
+fetch(`${api_url}/menu`)
     .then(function(response) {
         console.log(response);
 
