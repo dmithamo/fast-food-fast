@@ -1,0 +1,76 @@
+header {
+    display: block;
+    font-size: 2rem;
+    padding: 3rem;
+}
+section {
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+form {
+    text-align: center;
+    width: 30%;
+    margin: auto;
+    margin-top: 8%;
+    padding: .9%;
+    border-radius: 5px;
+    box-shadow: 0 0 3px 3px rgb(214, 214, 214);
+}
+
+input {
+    font-family: 'Montserrat', cursive;
+    border: none;
+    padding: 3%;
+    width: 60%;
+    border-radius: 5px;
+    margin-bottom: 3%;
+    box-shadow: 0 0 1px 1px rgb(204, 204, 204);
+    transition: all .3s;
+}
+
+::-webkit-input-placeholder {
+    color: rgb(173, 173, 173);
+}
+
+input[type='email']:focus, 
+input[type='password']:focus, 
+input[type='email']:hover, 
+input[type='password']:hover {
+    outline: none;
+    box-shadow: 0 0 3px 3px rgb(204, 204, 204);
+}
+
+input[type='submit'] {
+    display: block;
+    color: white;
+    width: 50%;
+    margin: 8% auto;
+    font-weight: bolder;
+}
+
+input#login-btn {
+    background-color: rgb(119, 255, 8);
+}
+
+input#register-btn {
+    background-color: rgb(16, 135, 247);
+}
+
+input[type='submit']:hover {
+    border: 2px solid black;
+}
+
+#admin-login>a {
+    border: 2px solid rgb(172, 172, 172);
+    border-radius: 12px;
+    padding: 0.56rem;
+    font-weight: 500;
+    color: rgb(172, 172, 172);
+}
+
+#admin-login>a:hover {
+    border: 2px solid rgb(31, 30, 30);
+    color: rgb(31, 30, 30);
+    font-weight: 700;
+}

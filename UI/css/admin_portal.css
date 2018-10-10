@@ -1,0 +1,148 @@
+.admin-portal-title {
+    color: rgb(211, 211, 211);
+}
+
+#add-new-food,
+.accept-order,
+.reject-order,
+.edit-btn,
+.delete-btn {
+    box-shadow: none;
+    padding: 0.6rem 0.8rem;
+    font: inherit;
+    width: 42%;
+    border-radius: 5px;
+    background-color: rgb(230, 230, 230);
+    color: rgb(37, 37, 37);
+    font-weight: 400;
+    font-size: 0.8rem;
+    outline: none;
+    margin: 3px;
+    border: 1px solid rgb(141, 141, 141);
+}
+
+#add-new-food {
+    box-shadow: 0 0 5px 2px rgb(197, 197, 197);
+    width: 85px;
+    height: 40px;
+}
+
+#add-new-food:hover,
+.edit-btn:hover,
+.delete-btn:hover,
+.accept-order:hover,
+.reject-order:hover {
+    border: 2px solid rgb(48, 48, 48);
+    font-weight: bold;
+}
+
+
+.metadata {
+    color: grey;
+    font-weight: bolder;
+    font-size: 0.7rem;
+}
+
+ol>li {
+    transition: all .5s;
+}
+
+ol>li:hover {
+    color: black;
+    padding: 1.3rem;
+}
+
+ol>li:hover ol>li>p>button {
+    display: inline;
+}
+
+ol>li>p>button {
+    color: rgb(36, 36, 36);
+    border: none;
+    outline: none;
+    padding: .5rem;
+    font: inherit;
+    border-radius: 5px;
+}
+
+.hidden-mode {
+    display: none;
+}
+
+div#editing-modal {
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px 2px rgb(61, 61, 61);
+    width: 50%;
+    margin: auto;
+    padding: 3rem;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    transition: all 0.3s;
+}
+
+div#editing-modal:hover {
+    box-shadow: 0 0 5px 3px rgb(19, 19, 19);
+}
+
+
+input.new-modal-input {
+    outline: none;
+    font-family: 'Montserrat', cursive;
+    border: none;
+    padding: 1rem;
+    width: 60%;
+    border-radius: 5px;
+    margin-bottom: 3%;
+    box-shadow: 0 0 1px 1px rgb(204, 204, 204);
+    transition: all .3s;
+}
+
+input.new-modal-input:hover,
+input.new-modal-input:focus {
+    font-family: 'Montserrat', cursive;
+    border: 1px dotted rgba(0, 0, 0, 0.63);
+    box-shadow: none;
+}
+
+#save-new-btn {
+    width: 20%;
+    display: block;
+    margin: auto;    
+    background-color: rgb(255, 208, 0);
+    box-shadow: 0 0 1px 1px rgb(0, 0, 0);
+    transition: all .3s;
+}
+
+#save-new-btn:hover {
+    background-color: rgb(21, 255, 0);
+    border: 1px solid rgb(0, 0, 0);
+}
+
+#confirm-order-btn {
+    display: none;
+}
+
+.accepted-order {
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(68, 233, 27);
+    background-color: rgb(68, 233, 27);
+    font-weight: bold;
+}
+
+.completed-order {
+    background-color: rgb(255, 208, 0);
+    border: 2px solid rgb(255, 208, 0);
+}
+
+.rejected-order {
+    text-decoration: line-through;
+    color: rgb(190, 190, 190);
+    border: none;
+    background-color: rgb(253, 0, 0);
+    font-weight: 400;
+}

@@ -1,11 +1,10 @@
 .vscode/
+__pycache__/
 apiEnv/
-api/__pycache__/
-*.pyc
-.pytest_cache/
-htmlcov/
+.pytest_cache
 .coverage
+htmlcov/
 instance/
-.env
-.coveralls.yml
+*.pyc
 .cache/
+.env
