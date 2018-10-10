@@ -11,6 +11,10 @@ html {
     box-sizing: border-box;
 }
 
+#menu-cont {
+    min-height: 650px;
+}
+
 .container {
     text-align: center;
     width: 80%;
@@ -115,6 +119,15 @@ footer {
     background-color: rgb(238, 238, 238);
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.5);
     grid-template-columns: 3fr 1fr 1fr;
+}
+
+.msg-paragraph {
+    width: 40%;
+    border-radius: 5px;
+    padding: 9rem 3rem;
+    font-size: 1.2rem;
+    margin: 5rem auto;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
 }
 
 
