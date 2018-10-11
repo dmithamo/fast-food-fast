@@ -124,10 +124,15 @@ footer {
 .msg-paragraph {
     width: 40%;
     border-radius: 5px;
-    padding: 9rem 3rem;
     font-size: 1.2rem;
+    padding: 9rem 3rem;
     margin: 5rem auto;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+}
+
+.p-logins-warning {
+    padding: 0.7rem;
+    color: red;
 }
 
 
