@@ -51,6 +51,43 @@ const footer = document.querySelector('footer');
 let foodItemName = document.querySelector("#new-item-name");
 let foodItemPrice = document.querySelector("#new-item-price");
 
+
+// On clicking add-new-btn or save btn
+for(let btn of [addNewBtn, saveNewBtn, cancelBtn, closeBtn]){
+   btn.addEventListener('click', () => {
+    if(adminToken){
+        // Hide or reveal on function call
+        for (let tag of [editingForm, section, footer]) {
+            tag.classList.toggle('hidden-mode');
+        }
+        if(btn.value === "Save"){
+            // Make POST request to server
+            addToMenu();
+        }
+        else if(btn.innerHTML === "Close" || btn.value === "Cancel") {
+            window.location.replace("adm_menu.html");
+        }
+    }
+    else {
+        showMessageIfError(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+    }
+   });
+}
+
+// On page load
+document.addEventListener('DOMContentLoaded', () => {
+    if(!adminToken) {
+        errorDiv.lastChild.remove();
+        showMessageIfError(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+    }
+    else {
+        // Wait a while for all menu to load
+        setTimeout(() => {
+            addAdminBtns();
+        }, 1500);
+    }
+});
+
 // Remove admin token on logout 
 logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("adminToken");
@@ -99,33 +136,106 @@ function addToMenu() {
     });
 }
 
-// On clicking add-new-btn or save btn
-for(let btn of [addNewBtn, saveNewBtn, cancelBtn, closeBtn]){
-   btn.addEventListener('click', () => {
-    if(adminToken){
-        // Hide or reveal on function call
-        for (let tag of [editingForm, section, footer]) {
-            tag.classList.toggle('hidden-mode');
+function updateMenuItem(foodId) {
+    let data = {
+        "food_item_name": foodItemName.value,
+        "food_item_price": +foodItemPrice.value
+    };
+    // POST menu item
+    fetch(`${api_url}/menu/${foodId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${adminToken}`
         }
-        if(btn.value === "Save"){
-            // Make POST request to server
-            addToMenu();
-        }
-        else if(btn.innerHTML === "Close" || btn.value === "Cancel") {
+    })
+    .then((response) => response.json())
+    .then(function(responseJSON) {
+        message = responseJSON.message;
+        if(message === "Food item added succesfully.") {
+            // Reload menu page
             window.location.replace("adm_menu.html");
         }
-    }
-    else {
-        showMessageIfError(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
-    }
-   });
+        else {
+            // Show message
+            showMessageIfError(message);
+        }
+
+        })
+    .catch(function(error) {
+        console.log(error);
+    });
 }
 
-// On page load
-document.addEventListener('DOMContentLoaded', () => {
-    if(!adminToken) {
-        errorDiv.lastChild.remove();
-        showMessageIfError(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
-    }
-});
+function deleteMenuItem(foodId) {
+    let data = {
+        "food_item_name": foodItemName.value,
+        "food_item_price": +foodItemPrice.value
+    };
+    // POST menu item
+    fetch(`${api_url}/menu/${foodId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${adminToken}`
+        }
+    })
+    .then((response) => response.json())
+    .then(function(responseJSON) {
+        message = responseJSON.message;
+        if(message === "Food item added succesfully.") {
+            // Reload menu page
+            window.location.replace("adm_menu.html");
+        }
+        else {
+            // Show message
+            showMessageIfError(message);
+        }
 
+        })
+    .catch(function(error) {
+        console.log(error);
+    });
+}
+
+
+function addAdminBtns() {
+
+    // Select all menu item figcaptions
+    let menuItemCaptions = document.querySelectorAll("figcaption");
+    for(let item of menuItemCaptions) {
+        // Appedn to each menu item a Modify and a Delete btn
+        // Modify btn
+        let modifyBtn = document.createElement("button");
+        modifyBtn.classList.add("edit-btn");
+        modifyBtn.innerHTML = "Modify";
+
+        // Delete btn
+        let deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.innerHTML = "Delete";
+
+        for(let btn of [modifyBtn, deleteBtn]) {
+            btn.classList.add("admin-btn");
+            // Listen for click event
+            btn.addEventListener("click", (event) => {
+                // Extract foodId of item whose btn was clicked
+                let clickedMenuItem = event.target.parentNode.parentNode.parentNode;
+                let clickedItemId = clickedMenuItem.firstChild.innerHTML.split("#")[1];
+                
+                //Call update or delete fucntions a s appropriate 
+                if(event.target.innerHTML === "Modify") {
+                    updateMenuItem(clickedItemId);
+                }
+                else if(event.target.innerHTML === "Delete") {
+                    deleteMenuItem(clickedItemId);
+                }
+            });
+        }
+        // Attach btns
+        item.appendChild(modifyBtn);
+        item.appendChild(deleteBtn);
+    }
+}

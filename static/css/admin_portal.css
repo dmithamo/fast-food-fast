@@ -263,9 +263,3 @@ div#menu-header {
 .close-btn:hover {
     width: 40%;
 }
-
-.food-id {
-    color: slategrey;
-    font-weight: bold;
-    font-size: 8px;
-}

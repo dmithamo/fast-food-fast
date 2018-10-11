@@ -45,7 +45,7 @@ function fetchMenu() {
                     // Each li has a p tag for the food_item_id
                     let liFoodId = document.createElement("p");
                     liFoodId.classList.add("food-id");
-                    liFoodId.innerHTML = foodItem.food_item_id;
+                    liFoodId.innerHTML = `foodId#${foodItem.food_item_id}`;
                     
                     // Each li contains a figure
                     let liFigure = document.createElement("figure");

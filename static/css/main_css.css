@@ -82,19 +82,19 @@ a:hover, a:active {
 
 #food-items {
     list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     width: 99%;
     margin: auto;
 }
 
 
 .food-item{
-    width: 220px;
-    height: 320px;
+    margin: 1.2em;
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
     text-align: center;
     transition: all .3s;
-    float: left;
 }
 
 .food-item:hover {
@@ -107,6 +107,11 @@ a:hover, a:active {
     color: rgb(51, 207, 3);
 }
 
+figure {
+    width: 95%;
+    text-align: center;
+    margin: auto;
+}
 
 figure>img {
     width: 180px;
@@ -133,6 +138,13 @@ footer {
 .p-logins-warning {
     padding: 0.7rem;
     color: red;
+}
+
+
+.food-id {
+    color: rgb(187, 187, 187);
+    font-weight: 700;
+    font-size: 10px;
 }
 
 
