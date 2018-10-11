@@ -9,11 +9,9 @@ const loginForm = document.querySelector("#login-form");
 const loginEmailInput = document.querySelector("#login-email-input");
 const loginPasswordInput = document.querySelector("#login-password-input");
 
-
 // Create and style a p tag for error message on login
 let warningWrongLogins = document.createElement("p");
 warningWrongLogins.classList.add("p-logins-warning");
-
 
 // Helper function
 const appendToparent = (element, parent) => {
@@ -63,14 +61,19 @@ function loginAdmin() {
     });
 }
 
-// Call function when login btn is clicked
+// If email and password fields have values
+// Call loginAdmin when login btn is clicked 
 loginBtn.addEventListener('click', () => {
-    loginAdmin();
+    if(loginEmailInput.value && loginPasswordInput.value) {
+        loginAdmin();
+    }
 });
 
 // Also call loginAdmin when Enter key is pressed
 document.addEventListener("keypress", (event) => {
-    if(event.keyCode === 13) {
-        loginAdmin();
+    if(loginEmailInput.value && loginPasswordInput.value) {
+        if(event.keyCode === 13) {
+            loginAdmin();
+        }
     }
 });
