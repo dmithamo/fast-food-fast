@@ -6,7 +6,6 @@ section {
 }
 
 .container {
-    width: 90%;
     margin: auto;
 }
 
@@ -29,7 +28,7 @@ button {
     outline: none;
 }
 
-#shopping-cart, #admin-list {
+#shopping-cart {
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
     font-size: 0.8rem;
@@ -64,14 +63,6 @@ ol>li{
     border-bottom: 1px dashed rgb(114, 114, 114);
 }
 
-ol>li>.li-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-}
-
-ol>li:last-child {
-    border-bottom: 2px solid rgb(114, 114, 114);
- }
 
 .order-btn, 
 .confirm-btn-full,
