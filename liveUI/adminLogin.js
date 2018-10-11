@@ -64,6 +64,13 @@ function loginAdmin() {
 }
 
 // Call function when login btn is clicked
-loginForm.addEventListener('submit', () => {
+loginBtn.addEventListener('click', () => {
     loginAdmin();
+});
+
+// Also call loginAdmin when Enter key is pressed
+document.addEventListener("keypress", (event) => {
+    if(event.keyCode === 13) {
+        loginAdmin();
+    }
 });
