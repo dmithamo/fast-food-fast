@@ -11,7 +11,8 @@ html {
     box-sizing: border-box;
 }
 
-#menu-cont {
+#menu-cont,
+#order-cont {
     min-height: 650px;
 }
 

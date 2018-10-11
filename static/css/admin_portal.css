@@ -2,9 +2,13 @@
     color: rgb(211, 211, 211);
 }
 
+#order-cont {
+    display: block;
+    width: 70%;
+    margin: auto;
+}
+
 #add-new-food,
-.accept-order,
-.reject-order,
 .edit-btn,
 .delete-btn {
     box-shadow: none;
@@ -29,9 +33,7 @@
 
 #add-new-food:hover,
 .edit-btn:hover,
-.delete-btn:hover,
-.accept-order:hover,
-.reject-order:hover {
+.delete-btn:hover{
     border: 2px solid rgb(48, 48, 48);
     font-weight: bold;
 }
@@ -145,4 +147,67 @@ input.new-modal-input:focus {
     border: none;
     background-color: rgb(253, 0, 0);
     font-weight: 400;
+}
+
+div#admin-list>h1 {
+    margin: 1em auto;
+}
+
+ol#in-cart {
+    list-style: none;
+    padding: 0;
+}
+
+.order-rxn-btns {
+    margin: 1em auto;
+    width: 30%;
+    border: 1px dashed lightgrey;
+    text-align: center;
+    background-color: none;
+}
+.order-reactions {
+    padding: .5em;
+    border-radius: 1%;
+    text-align: center;
+    background-color: white;
+    margin: 0 2em;
+    font-size: 2em;
+    outline: none;
+}
+
+.ordered-item {
+    border: 1px solid lightgray;
+    margin-bottom: 2em;
+    font-size: 10px;
+}
+
+
+.the-order {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+}
+
+.the-order>span {
+    padding: .3em;
+    height: 15px;
+}
+
+.timestamp {
+    text-align: right;
+}
+.timestamp,
+.meta-info,
+.order-status {
+    font-weight: bolder;
+    color: rgba(4, 22, 0, 0.507);
+}
+
+.ordered-by {
+    margin-left: 15px;
+}
+
+.order-info,
+.order-total {
+    font-weight: bolder;
+    text-align: center;
 }
