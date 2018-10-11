@@ -82,13 +82,23 @@ a:hover, a:active {
 
 #food-items {
     list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     width: 99%;
     margin: auto;
 }
 
 
 .food-item{
-    float: left;
+    margin: 1.2em;
+    border-radius: 5px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    transition: all .3s;
+}
+
+.food-item:hover {
+    box-shadow: 0 0 5px 2px rgb(0, 0, 0);
 }
 
 .item-price {
@@ -98,21 +108,14 @@ a:hover, a:active {
 }
 
 figure {
-    width: 220px;
-    height: 320px;
-    border-radius: 5px;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
+    width: 95%;
     text-align: center;
-    transition: all .3s;
+    margin: auto;
 }
 
 figure>img {
     width: 180px;
     height: 180px;
-}
-
-figure:hover {
-    box-shadow: 0 0 5px 2px rgb(0, 0, 0);
 }
 
 footer {
@@ -135,6 +138,13 @@ footer {
 .p-logins-warning {
     padding: 0.7rem;
     color: red;
+}
+
+
+.food-id {
+    color: rgb(187, 187, 187);
+    font-weight: 700;
+    font-size: 10px;
 }
 
 

@@ -37,8 +37,6 @@ function loginAdmin() {
     .then((response) => response.json())
     .then(function(responseJSON) {
         let message = responseJSON.message;
-        alert(message);
-
         if(message === "Admin logged in") {
             // Store admin_token in localStorage
             localStorage.adminToken = responseJSON.admin.token;

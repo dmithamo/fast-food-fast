@@ -41,6 +41,11 @@ function fetchMenu() {
                     let foodLi = document.createElement("li");
                     // Style li by adding class
                     foodLi.classList.add("food-item");
+
+                    // Each li has a p tag for the food_item_id
+                    let liFoodId = document.createElement("p");
+                    liFoodId.classList.add("food-id");
+                    liFoodId.innerHTML = `foodId#${foodItem.food_item_id}`;
                     
                     // Each li contains a figure
                     let liFigure = document.createElement("figure");
@@ -57,6 +62,7 @@ function fetchMenu() {
                     // Each figcaption has a p tag to contain the name of the food_item
                     let liCapNameP = document.createElement("p");
                     liCapNameP.innerHTML = foodItem.food_item_name;
+                    liCapNameP.classList.add("item-name");
                     
                     // Each figcaption has a p tag to contain the price of the food_item
                     let liCapPriceP = document.createElement("p");
@@ -72,7 +78,10 @@ function fetchMenu() {
                     });
 
                     appendToparent(liFigCaption, liFigure);
-                    appendToparent(liFigure, foodLi);
+                    
+                    for(let tag of [liFoodId, liFigure]) {
+                        appendToparent(tag, foodLi);
+                    }
 
                     // Append li to list of food items (the menu)
                     appendToparent(foodLi, menuUL);
