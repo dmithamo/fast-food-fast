@@ -211,3 +211,7 @@ ol#in-cart {
     font-weight: bolder;
     text-align: center;
 }
+
+.adm-login-link {
+    color: blue;
+}
