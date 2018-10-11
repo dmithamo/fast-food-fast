@@ -48,7 +48,7 @@ function fetchMenu() {
                     // Each figure contains an img
                     let img = document.createElement("img");
                     // Set img to a default img src for starters
-                    img.src = "http://s1.1zoom.me/b4248/957/Fast_food_Pizza_Pepper_Tomatoes_Olive_White_515874_3840x2160.jpg";
+                    img.src = "https://15logo.net/wp-content/uploads/2017/05/fast-food-800x800.jpg";
                     img.alt = "Food Item";
                     
                     // Each figure contains a figcaption
