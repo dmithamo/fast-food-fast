@@ -36,11 +36,12 @@ errorDiv.classList.add("hidden-mode");
 let addNewBtn = document.querySelector("#add-new-btn");
 let editingModal = document.querySelector("#editing-modal");
 let saveNewBtn = document.querySelector("#save-new-btn");
+let updateBtn = document.querySelector("#update-btn");
 let cancelBtn = document.querySelector("#cancel-btn");
 closeBtn = document.querySelector("#close-btn");
 
 // collect btns in an array
-let pageBtns = [addNewBtn, saveNewBtn, cancelBtn, closeBtn];
+let pageBtns = [addNewBtn, saveNewBtn, updateBtn, cancelBtn, closeBtn];
 
 // select logout button
 let logoutBtn = document.querySelector("#logout-link");
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             addAdminBtns();
             for(let btn of pageBtns){
-                addClickListeners(btn);
+                addBtnCliclListeners(btn);
             }
         }, 1500);
     }
@@ -137,7 +138,6 @@ function updateMenuItem(foodId) {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        alert(message);
         if(message === "Food item modified succesfully.") {
             // Reload menu page
             window.location.replace("adm_menu.html");
@@ -220,15 +220,24 @@ function addAdminBtns() {
     }
 }
 
-function addClickListeners(btn) {
-
-    let clickedItemId = "";
+function addBtnCliclListeners(btn) {
+    // Extract foodId, foodName and foodPrice of item whose btn was clicked
+    let clickedMenuItem = btn.parentNode.parentNode.parentNode;
+    let clickedItemId = +clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
 
     // On clicking add-new-btn, save btn, cancel btn or close btn
 
     // Add new btn
     if(btn.innerHTML === "Add Food Item") {
         btn.addEventListener("click", () => {
+            // Display editing modal with no food item attributes
+            document.querySelector("#new-item-name").value = "";
+            document.querySelector("#new-item-price").value = "";
+            
+            // Hide update btn and show save btn
+            updateBtn.style.display = "None";
+            saveNewBtn.style.display = "inline-block";
+
             // Reveal editing modal on function call
             showEditModal();
         });
@@ -248,7 +257,6 @@ function addClickListeners(btn) {
     // Close or Cancel btn
     else if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            alert(btn.innerHTML);
             window.location.replace("adm_menu.html");
         });
     }
@@ -256,16 +264,9 @@ function addClickListeners(btn) {
     // Modify btn
     else if(btn.innerHTML === "Modify") {
         btn.addEventListener("click", () => {
-            alert(btn.innerHTML);
-            
             showEditModal();
 
             // Extract foodId, foodName and foodPrice of item whose btn was clicked
-            // Menu item
-            let clickedMenuItem = btn.parentNode.parentNode.parentNode;
-
-            // id
-            clickedItemId = clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
             // Name
             let clickedItemName = clickedMenuItem.querySelector("p.item-name").innerHTML;
             // Price
@@ -275,18 +276,19 @@ function addClickListeners(btn) {
             document.querySelector("#new-item-name").value = clickedItemName;
             document.querySelector("#new-item-price").value = +(clickedItemPrice.split(" ")[1]);
 
-            // Change value of Save btn to allow for calling of different function on click
-            saveNewBtn.value = "Update";
+            // Show Update btn and hide Save btn
+            saveNewBtn.style.display = "None";
+            updateBtn.style.display = "inline-block";
+
         });
     }
 
     // Update btn
     else if(btn.value === "Update") {
         btn.addEventListener("click", () => {
-            // Restore value of btn
-            btn.value = "Save";
             // Update item
             updateMenuItem(clickedItemId);
+            
             hideEditModal();
         });
     }

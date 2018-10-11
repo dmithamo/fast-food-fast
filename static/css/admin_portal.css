@@ -119,10 +119,11 @@ input.new-modal-input:focus {
 }
 
 #save-new-btn,
+#update-btn,
 #cancel-btn {
     width: 20%;
     display: inline-block;
-    margin: auto;    
+    margin: 5px;    
     background-color: rgb(255, 208, 0);
     box-shadow: 0 0 1px 1px rgb(0, 0, 0);
     transition: all .3s;
@@ -134,10 +135,12 @@ input.new-modal-input:focus {
 }
 
 #save-new-btn:hover,
+#update-btn:hover,
 #cancel-btn:hover {
     background-color: rgb(21, 255, 0);
     border: 1px solid rgb(0, 0, 0);
 }
+
 
 #confirm-order-btn {
     display: none;
