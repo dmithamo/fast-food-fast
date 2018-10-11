@@ -62,6 +62,7 @@ function fetchMenu() {
                     // Each figcaption has a p tag to contain the name of the food_item
                     let liCapNameP = document.createElement("p");
                     liCapNameP.innerHTML = foodItem.food_item_name;
+                    liCapNameP.classList.add("item-name");
                     
                     // Each figcaption has a p tag to contain the price of the food_item
                     let liCapPriceP = document.createElement("p");
