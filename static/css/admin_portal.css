@@ -2,7 +2,7 @@
     color: rgb(211, 211, 211);
 }
 
-#order-cont {
+section>.container{
     display: block;
     width: 70%;
     margin: auto;
@@ -214,4 +214,30 @@ ol#in-cart {
 
 .adm-login-link {
     color: blue;
+}
+
+div#menu-header {
+    margin-top: 1em;
+}
+
+#add-new-btn {
+    font: inherit;
+    padding: 0.3rem;
+    width: 15%;
+    height: 50px;
+    background: none;
+    border: 2px solid rgb(185, 185, 185);
+    border-radius: 20px;
+    transition: all .3s;
+}
+
+#add-new-btn:hover {
+    font: inherit;
+    padding: 0.6rem;
+    width: 16%;
+    height: 50px;
+    font-weight: bold;
+    background: none;
+    border: 2.2px solid rgb(0, 0, 0);
+    border-radius: 20px;
 }

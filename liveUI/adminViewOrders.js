@@ -22,7 +22,6 @@ let logoutBtn = document.querySelector("#logout-link");
 // Remove admin token on logout 
 logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("adminToken");
-    message = "Please login";
 });
 
 

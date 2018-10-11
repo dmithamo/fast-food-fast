@@ -6,13 +6,13 @@ const listOfOrdersInHistory = document.getElementById('in-history');
 const confirmOrderBtn = document.getElementById('confirm-order-btn');
 const numberDisplay = document.getElementById('number-items');
 const orderHistoryLink = document.querySelector('#history-link');
-const addNewFoodBtn = document.querySelector('#add-new-food');
+const addNewFoodBtn = document.querySelector('#add-new-btn');
 const saveNewFood = document.querySelector('#save-new-btn')
 
 document.addEventListener('DOMContentLoaded', () => {
     // Add click listeners to all order btns
     addBtnClickListeners();
-    addConfirmOrderClickListener();
+    // addConfirmOrderClickListener();
 });
 
 
@@ -30,32 +30,10 @@ function addBtnClickListeners() {
         orderHistoryLink.addEventListener('click', () =>{
             showOrderHistory();
         });
-    };
+    }
 
-    if (addNewFoodBtn) {
-        addNewFoodBtn.addEventListener('click', () => {
-            addNewFoodItem();
-        });
-    };
-
-    if (saveNewFood) {
-        saveNewFood.addEventListener('click', () => {
-            saveFoodItem();
-        });
-    };
-};
-
-function addConfirmOrderClickListener() {
-    confirmOrderBtn.addEventListener('click', () => {
-        const number = listOfOrdersInCart.querySelectorAll('li').length;
-        if (number > 0) {
-            confirmOrder();
-        }
-        else {
-            alert('You have not placed any orders yet.');
-        }
-    });
 }
+
 
 function appendOrderToCart(order) {
     // Extract order information
@@ -80,7 +58,7 @@ function appendOrderToCart(order) {
 
     // Update number in cart
     updateNumberInCart();
-};
+}
 
 function updateNumberInCart() {
     const numberInCart = listOfOrdersInCart.querySelectorAll('li').length;
@@ -92,7 +70,7 @@ function updateNumberInCart() {
         // Activate confirm-order btn
         confirmOrderBtn.classList.remove('confirm-btn-empty');
     }
-};
+}
 
 function confirmOrder() {
     alert('Your order has been recieved!');
@@ -102,7 +80,7 @@ function confirmOrder() {
     numberDisplay.innerHTML = 0;
     // Deactivate confirm-order btn
     confirmOrderBtn.classList.add('confirm-btn-empty');
-};
+}
 
 // Admin functions
 addClickListenersToAdminBtns();
@@ -122,7 +100,7 @@ function addClickListenersToAdminBtns() {
             }
         });
     }
-};
+}
 
 function adminModifyItem(item) {
     // Modify an item on the list
@@ -131,7 +109,7 @@ function adminModifyItem(item) {
     const newImgSrc = prompt('Update image url to?', imgSrc);
     if (newImgSrc && newImgSrc !== imgSrc) {
         item.querySelector('img').setAttribute('src', newImgSrc);
-    };
+    }
 
     // Edit Name
     const nameOfItem = item.querySelector('figcaption').querySelector('.item-name').innerHTML;
@@ -212,66 +190,4 @@ function showOrderHistory() {
         // Show footer
         footer.style.display = 'block';
     }
-};
-
-function addNewFoodItem() {
-    // Respond to click event on add-new-food btn
-    // Display editing form and hide other items
-    toggleEditingMode();
-
-    // Create and style new food item as li
-    window.newFoodItem = document.createElement('LI');
-    newFoodItem.classList.add('food-item');
-
-    const foodItemMarkUp = '<figure>' +
-            '<img src="" alt="new-item">' +
-            '<figcaption>' +
-                '<p class="item-name"></p>' +
-                '<p class="item-price"></p>' +
-                '<button class="admin-btn edit-btn">Modify</button>' +
-                '<button class="admin-btn delete-btn">Delete</button>' +
-            '</figcaption>' +
-        '</figure>'
-    
-    newFoodItem.innerHTML = foodItemMarkUp
-};
-
-function saveFoodItem() {
-    // Save on btn click
-    // Modify img src
-    // Retrieve value of the img url input
-    const newItemSrc = document.querySelector('#new-img-url').value;
-    // Update food item img
-    newFoodItem.querySelector('figure').querySelector('img').setAttribute('src', newItemSrc);
-    // Modify food name
-    // Retrieve value of the food name from input
-    const newItemName = document.querySelector('#new-item-name').value;
-    // Update food item name
-    newFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-name').innerHTML = newItemName;
-    // Modify food price
-    // Retrieve value of the food price from input
-    const newItemPrice = document.querySelector('#new-item-price').value;
-    // Update food item name
-    newFoodItem.querySelector('figure').querySelector('figcaption').querySelector('.item-price').innerHTML = `Ksh. ${newItemPrice}.00`;
-    
-    // Append newFoodItem
-    const foodItemsList = document.querySelector('#food-items');
-    foodItemsList.appendChild(newFoodItem);
-    addClickListenersToAdminBtns();
-
-    // Hide editing form and reveal rest of page
-    toggleEditingMode();
 }
-
-
-function toggleEditingMode() {
-    const editingForm = document.querySelector('#editing-modal');
-    const section = document.querySelector('section');
-    const footer = document.querySelector('footer');
-
-    const elements = [editingForm, section, footer];
-
-    for (let elem of elements) {
-        elem.classList.toggle('hidden-mode');
-    }
-};

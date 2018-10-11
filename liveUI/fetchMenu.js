@@ -48,7 +48,8 @@ function fetchMenu() {
                     // Each figure contains an img
                     let img = document.createElement("img");
                     // Set img to a default img src for starters
-                    img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjsKdlV5_ESG9QT4-fJh7GD5Y093aplAuLIFTk8uW32AGsNYJ1mA";
+                    img.src = "http://s1.1zoom.me/b4248/957/Fast_food_Pizza_Pepper_Tomatoes_Olive_White_515874_3840x2160.jpg";
+                    img.alt = "Food Item";
                     
                     // Each figure contains a figcaption
                     let liFigCaption = document.createElement("figcaption");
