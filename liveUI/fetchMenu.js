@@ -4,9 +4,9 @@
 const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 
 // Select elements usable accross fucntions
+// Menu
 const menuUL = document.querySelector("#food-items");
 const menuContainer = document.querySelector("#menu-cont");
-
 
 // Helper function
 const appendToparent = (element, parent) => {
@@ -83,10 +83,8 @@ function fetchMenu() {
         });
 }
 
+
 // Call function when DOM content is finished loading
 document.addEventListener('DOMContentLoaded', () => {
     fetchMenu();
 });
-
-
-
