@@ -2,7 +2,7 @@
     color: rgb(211, 211, 211);
 }
 
-#order-cont {
+section>.container{
     display: block;
     width: 70%;
     margin: auto;
@@ -43,6 +43,11 @@
     color: grey;
     font-weight: bolder;
     font-size: 0.7rem;
+}
+
+ul#food-items {
+    width: 80%;
+    margin: auto;
 }
 
 ol>li {
@@ -96,8 +101,10 @@ input.new-modal-input {
     outline: none;
     font-family: 'Montserrat', cursive;
     border: none;
+    display: block;
     padding: 1rem;
     width: 60%;
+    margin: auto;
     border-radius: 5px;
     margin-bottom: 3%;
     box-shadow: 0 0 1px 1px rgb(204, 204, 204);
@@ -111,16 +118,23 @@ input.new-modal-input:focus {
     box-shadow: none;
 }
 
-#save-new-btn {
+#save-new-btn,
+#cancel-btn {
     width: 20%;
-    display: block;
+    display: inline-block;
     margin: auto;    
     background-color: rgb(255, 208, 0);
     box-shadow: 0 0 1px 1px rgb(0, 0, 0);
     transition: all .3s;
 }
 
-#save-new-btn:hover {
+#cancel-btn {
+    background-color: rgb(255, 51, 0);
+    margin-left: 5px;
+}
+
+#save-new-btn:hover,
+#cancel-btn:hover {
     background-color: rgb(21, 255, 0);
     border: 1px solid rgb(0, 0, 0);
 }
@@ -214,4 +228,38 @@ ol#in-cart {
 
 .adm-login-link {
     color: blue;
+}
+
+div#menu-header {
+    margin-top: 1em;
+}
+
+#add-new-btn,
+.close-btn {
+    font: inherit;
+    padding: 0.3rem;
+    width: 15%;
+    height: 50px;
+    background: none;
+    border: 2px solid rgb(185, 185, 185);
+    border-radius: 10px;
+    transition: all .3s;
+}
+
+#add-new-btn:hover,
+.close-btn:hover {
+    font: inherit;
+    padding: 0.6rem;
+    width: 16%;
+    font-weight: bold;
+    border: 2.2px solid rgb(0, 0, 0);
+}
+
+
+.close-btn {
+    width: 40%;
+}
+
+.close-btn:hover {
+    width: 40%;
 }

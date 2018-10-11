@@ -48,7 +48,8 @@ function fetchMenu() {
                     // Each figure contains an img
                     let img = document.createElement("img");
                     // Set img to a default img src for starters
-                    img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjsKdlV5_ESG9QT4-fJh7GD5Y093aplAuLIFTk8uW32AGsNYJ1mA";
+                    img.src = "https://15logo.net/wp-content/uploads/2017/05/fast-food-800x800.jpg";
+                    img.alt = "Food Item";
                     
                     // Each figure contains a figcaption
                     let liFigCaption = document.createElement("figcaption");

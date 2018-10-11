@@ -19,13 +19,10 @@ const appendToparent = (element, parent) => {
 };
 
 function loginAdmin() {
-    // Retrieve login credentials
-    let email = loginEmailInput.value;
-    let password = loginPasswordInput.value;
     // collect credentials into an object
     let data = {
-        email: email,
-        password: password
+        "email": loginEmailInput.value,
+        "password": loginPasswordInput.value
     };
 
     // Send POST request to admin login page
@@ -40,6 +37,7 @@ function loginAdmin() {
     .then((response) => response.json())
     .then(function(responseJSON) {
         let message = responseJSON.message;
+        alert(message);
 
         if(message === "Admin logged in") {
             // Store admin_token in localStorage
@@ -63,8 +61,9 @@ function loginAdmin() {
 
 // If email and password fields have values
 // Call loginAdmin when login btn is clicked 
-loginBtn.addEventListener('click', () => {
+loginBtn.addEventListener('click', (event) => {
     if(loginEmailInput.value && loginPasswordInput.value) {
+        event.preventDefault();
         loginAdmin();
     }
 });
@@ -73,6 +72,7 @@ loginBtn.addEventListener('click', () => {
 document.addEventListener("keypress", (event) => {
     if(loginEmailInput.value && loginPasswordInput.value) {
         if(event.keyCode === 13) {
+            event.preventDefault();
             loginAdmin();
         }
     }

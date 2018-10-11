@@ -1,9 +1,3 @@
-section {
-    width: 90%;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-}
 
 .container {
     margin: auto;
@@ -86,6 +80,8 @@ ol>li{
 .confirm-btn-full:hover, 
 #history-link:hover, 
 #logout-link:hover,
+#orders-link:hover,
+#edit-menu-link:hover,
 .q-input-btn:hover  {
     color: white;
     box-shadow: none;
