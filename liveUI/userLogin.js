@@ -40,7 +40,7 @@ function loginUser() {
         if(message === "Login successful.") {
             // Store user_token in localStorage
             localStorage.userToken = responseJSON.user.auth_token;
-            localStorage.userName = responseJSON.user.username;
+            localStorage.loggedInAs = responseJSON.user.username;
             // Redirect to orders page
             window.location.replace("../users/orders.html");
 
