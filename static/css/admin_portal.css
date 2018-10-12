@@ -50,11 +50,6 @@ ul#food-items {
     margin: auto;
 }
 
-ol>li {
-    list-style-type: none;
-    transition: all .5s;
-    height: 80px;
-}
 
 ol>li:hover {
     color: black;
@@ -184,6 +179,12 @@ ol#in-cart {
     border: 1px dashed lightgrey;
     text-align: center;
     background-color: none;
+    transition: all .3s;
+}
+
+.order-rxn-btns:hover {
+    width: 32%;
+    border: 2px dashed rgb(7, 7, 7);
 }
 .order-reactions {
     padding: .5em;
@@ -193,6 +194,14 @@ ol#in-cart {
     margin: 0 2em;
     font-size: 2em;
     outline: none;
+    transition: all .3s;
+}
+
+.order-reactions:hover {
+    padding: .8em;
+    margin: 0 2em;
+    font-size: 3em;
+    color: blue;
 }
 
 .ordered-item {
