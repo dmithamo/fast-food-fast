@@ -12,6 +12,13 @@ const section = document.querySelector('section');
 const footer = document.querySelector('footer');
 let quantityModal = document.querySelector("#quantity-modal");
 
+// Select history link
+let historyLink = document.querySelector("#history-link");
+// on click, navigate to history page
+historyLink.addEventListener("click", () => {
+    window.location.replace("view_orders.html");
+});
+
 
 // Div to display errors
 let errorDiv = document.createElement("div");
@@ -130,7 +137,7 @@ function addClickListener(btn) {
     // Close or Cancel btn
     if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            window.location.replace("orders.html");
+            window.location.replace("place_order.html");
         });
     }
 }
@@ -187,33 +194,6 @@ function placeOrder(foodId, quantity) {
             let orderedBy = responseJSON.order.ordered_by;
             // Show order info
             showMessageIfError(`${message}<br><br><p class="order-summary">Your order <br><br> order ID: ${orderId}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Your name: ${orderedBy}</p>`);
-        }
-        else {
-            // Show message
-            showMessageIfError(message);
-        }
-
-        })
-    .catch(function(error) {
-        console.log(error);
-    });
-}
-
-function getOrderHistory(foodId) {
-    // POST menu item
-    fetch(`${api_url}/users/orders`, {
-        method: 'GET',
-        headers: {
-            "Authorization": `Bearer ${adminToken}`
-        }
-    })
-    .then((response) => response.json())
-    .then(function(responseJSON) {
-        message = responseJSON.message;
-        alert(message);
-        if(message === "Orders found") {
-            // Reload menu page
-            window.location.replace("orders.html");
         }
         else {
             // Show message
