@@ -10,6 +10,7 @@ let loggedInSince = localStorage.loggedInSince;
 
 // Reusable variable
 let message = '';
+const footer = document.querySelector('footer');
 
 
 // Select ol with order items
@@ -76,22 +77,28 @@ function fetchOrders() {
                 let orderInfoDiv = document.createElement("div");
                 orderInfoDiv.classList.add("the-order");
 
-                // meta-info span with 2 p tags
+                // meta-info span with 3 p tags
                 let metaInfoSpan = document.createElement("span");
                 metaInfoSpan.classList.add("meta-info");
 
                 // meta info: first p-tag
-                let orderStatusP = document.createElement("p");
-                orderStatusP.classList.add("order-status");
-                orderStatusP.innerHTML = `[ #${order.order_status} ]`;
+                let orderIdP = document.createElement("p");
+                orderIdP.classList.add("order-status");
+                orderIdP.classList.add("order-id");
+                orderIdP.innerHTML = `orderID#${order.order_id}`;
 
                 // meta info: second p-tag
+                let orderStatusP = document.createElement("p");
+                orderStatusP.classList.add("order-status");
+                orderStatusP.innerHTML = `[ status: ${order.order_status} ]`;
+
+                // meta info: third p-tag
                 let orderByP = document.createElement("p");
-                orderByP.classList.add("ordered-by");
+                orderByP.classList.add("order-status");
                 orderByP.innerHTML = order.ordered_by;
                 
                 // Attach p's to parent
-                [orderStatusP, orderByP].forEach(orderP => {
+                [orderIdP, orderStatusP, orderByP].forEach(orderP => {
                     appendToparent(orderP, metaInfoSpan);
                 });
 
@@ -158,6 +165,9 @@ function fetchOrders() {
                 [acceptBtn, rejectBtn].forEach(btn => {
                     btn.classList.add("order-reactions");
                     appendToparent(btn, reactionsP);
+
+                    // Add click listeners
+                    addClickListener(btn);
                 });
 
                 // Append all the things to parent li
@@ -177,7 +187,99 @@ function fetchOrders() {
     });
 }
 
-function updateOrderStatus(orderId){
+function addClickListener(btn) {
+    let orderStatus;
+    btn.addEventListener("click", (event) => {
+        // Find id of clicked order
+        let clickedOrder = btn.parentNode.parentNode;
+        let clickedOrderID = clickedOrder.querySelector("p.order-id").innerHTML.split("#")[1];
 
+        // Set status as appropriate
+        if(btn.innerHTML === `<i class="far fa-check-circle"></i>`){
+            // Send order status
+            orderStatus = "Processing";
+        }
+        else if(btn.innerHTML === `<i class="far fa-times-circle"></i>`) {
+            orderStatus = "Cancelled";
+        }
+        else if(btn.innerHTML === "Close") {
+            // Refresh page
+            window.location.replace("orders.html");
+        }
+
+        // Call update order fn with params
+        updateOrderStatus(clickedOrderID, orderStatus);
+
+    });
 }
 
+function updateOrderStatus(orderId, orderStatus){
+    fetch(`${api_url}/orders/${orderId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            "order_status": orderStatus
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+        }
+    })
+    .then(response => response.json())
+    .then(function(responseJSON) {
+        message = responseJSON.message;
+        if(message !== "Order found.") {
+            showMessageIfError(message);
+        }
+        else {            
+            let orderInfo = responseJSON.order.order_info;
+            orderId = responseJSON.order.order_id;
+            orderStatus = responseJSON.order.order_status;
+            let orderCost = responseJSON.order.total_order_cost;
+            let orderedBy = responseJSON.order.ordered_by;
+            showMessageIfError(`${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+        }
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+
+// 
+
+// Div to display errors
+let errorDiv = document.createElement("div");
+errorDiv.classList.add("msg-paragraph");
+
+// p tag with error
+let specialPara = document.createElement("p");
+
+// append to errorDiv
+errorDiv.appendChild(specialPara);
+
+// button to close error div
+let closeBtn = document.createElement("button");
+closeBtn.classList.add("close-btn");
+closeBtn.innerHTML = "Close";
+closeBtn.id = "close-btn";
+
+// appedn to errorDiv
+errorDiv.appendChild(closeBtn);
+// Add click listener
+addClickListener(closeBtn);
+
+// Append to page
+ordersOL.parentNode.insertBefore(errorDiv, ordersOL);
+// Hide since it currently is empty
+errorDiv.classList.add("hidden-mode");
+
+const showMessageIfError = (message) => {
+    // Show error message
+    specialPara.innerHTML = message;
+    // Hide everything else
+    for(let tag of [ordersOL, footer]) {
+        tag.classList.add("hidden-mode");
+    }
+    // Reveal errorDiv
+    errorDiv.classList.remove("hidden-mode");
+};

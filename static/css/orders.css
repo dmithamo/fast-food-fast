@@ -150,8 +150,8 @@ ol>li{
 .order-summary {
     text-align: start;
     padding: 2rem;
-    border: 1px dotted rgb(223, 223, 223);
-    box-shadow: 0 0 2px 2px rgb(224, 224, 224);
-    font-weight: 700;
-    font-size: 0.8em;
+    box-shadow: 0 0 2px 2px rgb(56, 56, 56);
+    font-weight: bolder;
+    font-size: 0.7em;
+    color: rgb(100, 100, 100);
 }
