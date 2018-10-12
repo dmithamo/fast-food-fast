@@ -154,14 +154,9 @@ function updateMenuItem(foodId) {
 }
 
 function deleteMenuItem(foodId) {
-    let data = {
-        "food_item_name": foodItemName.value,
-        "food_item_price": +foodItemPrice.value
-    };
     // POST menu item
     fetch(`${api_url}/menu/${foodId}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
+        method: 'DELETE',
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${adminToken}`
@@ -170,7 +165,7 @@ function deleteMenuItem(foodId) {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        if(message === "Food item added succesfully.") {
+        if(message === "Delete successful.") {
             // Reload menu page
             window.location.replace("adm_menu.html");
         }
@@ -209,6 +204,8 @@ function addAdminBtns() {
 
             // id
             let clickedItemId = clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
+            // Call delete function
+            deleteMenuItem(clickedItemId);
         });
 
         for(let btn of [modifyBtn, deleteBtn]) {
