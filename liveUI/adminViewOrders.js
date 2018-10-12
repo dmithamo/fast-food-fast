@@ -244,8 +244,8 @@ function updateOrderStatus(orderId, orderStatus){
             // Reload to reflect new styling
             setTimeout(() => {
                 window.location.replace("orders.html");
-            }, 3000);
-        }
+            }, 5000);
+        } 
     })
     .catch(error => {
         console.log(error);
@@ -294,6 +294,7 @@ const showMessageIfError = (message) => {
 
 function styleByStatus(order, orderStatus){
     if(orderStatus === "New") {
+        // Style order
         order.classList.add("new-order");
     }
     else if(orderStatus === "Processing") {
