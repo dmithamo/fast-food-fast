@@ -11,13 +11,10 @@ warningWrongLogins.classList.add("p-logins-warning");
 
 // Register Btn and forms
 let registerBtn = document.querySelector("#register-btn");
-let registerForm = document.querySelector("#register-form");
 let registerUsernameInput = document.querySelector("#register-username-input");
 let registerEmailInput = document.querySelector("#register-email-input");
 let registerPasswordInput = document.querySelector("#register-password-input");
 let confirmPasswordInput = document.querySelector("#confirm-password-input");
-
-
 
 
 // Helper function
@@ -46,16 +43,23 @@ function registerUser() {
     .then(function(responseJSON) {
         let message = responseJSON.message;
         if(message === "Registration successful") {
-            // Store admin_token in localStorage
-            console.log(responseJSON);
-            // Redirect to orders page
-            window.location.replace("login.html");
+            // Add message to warning paragrapgh
+            warningWrongLogins.innerHTML = `${message}. Login to continue. Redirecting ...`;
+            // Style green for success
+            warningWrongLogins.classList.add("msg-success");
+            // Append message to login form
+            registerBtn.parentNode.insertBefore(warningWrongLogins, registerBtn);
+
+            // Redirect to login page
+            setTimeout(() => {
+                window.location.replace("login.html");
+            }, 3000);
 
         }
         else {
             // Add message to warning paragrapgh
             warningWrongLogins.innerHTML = message;
-            // Append message to login form
+            // Append message to registration form
             registerBtn.parentNode.insertBefore(warningWrongLogins, registerBtn);
         }
     })
@@ -74,6 +78,7 @@ registerBtn.addEventListener('click', (event) => {
             registerUser();
         }
         else {
+            event.preventDefault();
             warningWrongLogins.innerHTML = "Passwords do not match!";
             confirmPasswordInput.parentNode.insertBefore(warningWrongLogins, confirmPasswordInput);
         }
@@ -89,6 +94,7 @@ registerBtn.addEventListener('keypress', (event) => {
                 registerUser();
             }
             else {
+                event.preventDefault();
                 warningWrongLogins.innerHTML = "Passwords do not match!";
                 confirmPasswordInput.parentNode.insertBefore(warningWrongLogins, confirmPasswordInput);
             }

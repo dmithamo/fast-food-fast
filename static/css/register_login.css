@@ -75,3 +75,9 @@ input[type='submit']:hover {
     color: rgb(31, 30, 30);
     font-weight: 700;
 }
+
+
+.msg-success {
+    color: rgb(122, 201, 3);
+    font-weight: bold;
+}
