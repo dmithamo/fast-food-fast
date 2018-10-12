@@ -148,24 +148,25 @@ input.new-modal-input:focus {
     display: none;
 }
 
-.accepted-order {
-    color: rgb(0, 0, 0);
-    border: 2px solid rgb(68, 233, 27);
-    background-color: rgb(68, 233, 27);
+.new-order {
+    border-left: 10px solid rgb(219, 219, 219);
+}
+
+.processing-order {
+    border-left: 10px solid rgb(255, 208, 0);
     font-weight: bold;
 }
 
-.completed-order {
-    background-color: rgb(255, 208, 0);
-    border: 2px solid rgb(255, 208, 0);
+.complete-order {
+    border-left: 10px solid rgb(68, 233, 27);
+    font-weight: bold;
 }
 
-.rejected-order {
+.cancelled-order {
     text-decoration: line-through;
     color: rgb(190, 190, 190);
-    border: none;
-    background-color: rgb(253, 0, 0);
-    font-weight: 400;
+    border-left: 10px solid red;
+    font-weight: bold;
 }
 
 div#admin-list>h1 {
@@ -195,10 +196,9 @@ ol#in-cart {
 }
 
 .ordered-item {
-    border: 1px solid lightgray;
     margin-bottom: 2em;
     font-size: 10px;
-    box-shadow: 0 0 1px 1px rgb(224, 224, 224);
+    box-shadow: 0 0 2px 2px rgb(189, 189, 189);
 }
 
 

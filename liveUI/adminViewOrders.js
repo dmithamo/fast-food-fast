@@ -90,7 +90,11 @@ function fetchOrders() {
                 // meta info: second p-tag
                 let orderStatusP = document.createElement("p");
                 orderStatusP.classList.add("order-status");
-                orderStatusP.innerHTML = `[ status: ${order.order_status} ]`;
+                let orderStatus = order.order_status;
+                orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
+
+                // Style each order depending on status
+                styleByStatus(orderLi, orderStatus);
 
                 // meta info: third p-tag
                 let orderByP = document.createElement("p");
@@ -237,6 +241,10 @@ function updateOrderStatus(orderId, orderStatus){
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
             showMessageIfError(`${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+            // Reload to reflect new styling
+            setTimeout(() => {
+                window.location.replace("orders.html");
+            }, 3000);
         }
     })
     .catch(error => {
@@ -283,3 +291,18 @@ const showMessageIfError = (message) => {
     // Reveal errorDiv
     errorDiv.classList.remove("hidden-mode");
 };
+
+function styleByStatus(order, orderStatus){
+    if(orderStatus === "New") {
+        order.classList.add("new-order");
+    }
+    else if(orderStatus === "Processing") {
+        order.classList.add("processing-order");
+    }
+    else if(orderStatus === "Complete") {
+        order.classList.add("complete-order");
+    }
+    else if(orderStatus === "Cancelled") {
+        order.classList.add("cancelled-order");
+    }
+}
