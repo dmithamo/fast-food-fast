@@ -42,7 +42,7 @@ function loginUser() {
             localStorage.userToken = responseJSON.user.auth_token;
             localStorage.loggedInAs = responseJSON.user.username;
             // Redirect to orders page
-            window.location.replace("../users/orders.html");
+            window.location.replace("../users/place_order.html");
 
         }
         else {

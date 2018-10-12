@@ -76,7 +76,8 @@ ol>li{
 }
 
 
-.order-btn:hover, 
+.order-btn:hover,
+#place-order-link:hover,
 .confirm-btn-full:hover, 
 #history-link:hover, 
 #logout-link:hover,
