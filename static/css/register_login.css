@@ -33,6 +33,7 @@ input {
     color: rgb(173, 173, 173);
 }
 
+input[type='text']:focus, 
 input[type='email']:focus, 
 input[type='password']:focus, 
 input[type='email']:hover, 

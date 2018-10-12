@@ -14,14 +14,17 @@
         <a href="../menu.html">Fast Food. Fast</a>
     </header>
     <section>
-        <form action="../users/orders.html" method="">
+        <form id="register-form" autocomplete="off">
             <p>Create an Account</p>
-            <input type="email" name="email-form" placeholder="Enter an email address">
-            <input minlength="8" type="password" name="password-form" placeholder="Enter a strong password" >
-            <input minlength="8" type="password" name="password-form" placeholder="Reenter the password" >
-            <input id="register-btn" type="submit" value="Register">
+            <input required id="register-username-input" type="text" placeholder="Enter a username">
+            <input required id="register-email-input" type="email" placeholder="Enter an email address">
+            <input required id="register-password-input" minlength="8" type="password" placeholder="Enter a strong password" >
+            <input required id="confirm-password-input" minlength="8" type="password" placeholder="Reenter the password" >
+            <input required id="register-btn" type="submit" value="Register">
             <p>Registered? <a href="login.html">Login here</a></p>
         </form>
     </section>
+
+    <script src="../liveUI/userAccounts.js"></script>
 </body>
 </html>
