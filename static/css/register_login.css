@@ -33,6 +33,7 @@ input {
     color: rgb(173, 173, 173);
 }
 
+input[type='text']:focus, 
 input[type='email']:focus, 
 input[type='password']:focus, 
 input[type='email']:hover, 
@@ -73,4 +74,10 @@ input[type='submit']:hover {
     border: 2px solid rgb(31, 30, 30);
     color: rgb(31, 30, 30);
     font-weight: 700;
+}
+
+
+.msg-success {
+    color: rgb(122, 201, 3);
+    font-weight: bold;
 }
