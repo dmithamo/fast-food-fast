@@ -24,6 +24,17 @@ logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("adminToken");
 });
 
+// On document ready
+document.addEventListener('DOMContentLoaded', () => {
+    if(adminToken){
+        fetchOrders();
+    }
+    else {
+        showMessageIfNoOrders(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+        logoutBtn.style.display = "None";
+        document.querySelector("#edit-menu-link").style.display = "None";
+    }
+});
 
 // Helper function
 const appendToparent = (element, parent) => {
@@ -166,13 +177,7 @@ function fetchOrders() {
     });
 }
 
+function updateOrderStatus(orderId){
 
-// On document ready
-document.addEventListener('DOMContentLoaded', () => {
-    if(adminToken){
-        fetchOrders();
-    }
-    else {
-        showMessageIfNoOrders(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
-    }
-});
+}
+
