@@ -222,8 +222,8 @@ function addAdminBtns() {
 
 function addBtnCliclListeners(btn) {
     // Extract foodId, foodName and foodPrice of item whose btn was clicked
-    let clickedMenuItem = btn.parentNode.parentNode.parentNode;
-    let clickedItemId = +clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
+    let clickedMenuItem ;
+    let clickedItemId;
 
     // On clicking add-new-btn, save btn, cancel btn or close btn
 
@@ -267,6 +267,9 @@ function addBtnCliclListeners(btn) {
             showEditModal();
 
             // Extract foodId, foodName and foodPrice of item whose btn was clicked
+            clickedMenuItem = btn.parentNode.parentNode.parentNode;
+            // id
+            window.clickedItemId = +clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
             // Name
             let clickedItemName = clickedMenuItem.querySelector("p.item-name").innerHTML;
             // Price
@@ -287,7 +290,7 @@ function addBtnCliclListeners(btn) {
     else if(btn.value === "Update") {
         btn.addEventListener("click", () => {
             // Update item
-            updateMenuItem(clickedItemId);
+            updateMenuItem(window.clickedItemId);
             
             hideEditModal();
         });
