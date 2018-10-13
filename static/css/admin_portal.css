@@ -143,8 +143,16 @@ input.new-modal-input:focus {
     display: none;
 }
 
+
+.delete-order {
+    color: red;
+}
+
+.mark-complete {
+    color: rgb(5, 206, 5);
+}
 .new-order {
-    border-left: 10px solid rgb(219, 219, 219);
+    border-left: 10px solid rgb(0, 0, 0);
 }
 
 .processing-order {
@@ -163,6 +171,7 @@ input.new-modal-input:focus {
     border-left: 10px solid red;
     font-weight: bold;
 }
+
 
 div#admin-list>h1 {
     margin: 1em auto;
@@ -205,6 +214,7 @@ ol#in-cart {
 }
 
 .ordered-item {
+    list-style-type: none;
     margin-bottom: 2em;
     font-size: 10px;
     box-shadow: 0 0 2px 2px rgb(189, 189, 189);
@@ -214,11 +224,6 @@ ol#in-cart {
 .the-order {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr;
-}
-
-.the-order>span {
-    padding: .3em;
-    height: 15px;
 }
 
 .timestamp {

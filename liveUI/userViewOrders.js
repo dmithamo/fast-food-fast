@@ -113,7 +113,8 @@ function fetchOrders() {
                 // meta info: second p-tag
                 let orderStatusP = document.createElement("p");
                 orderStatusP.classList.add("order-status");
-                orderStatusP.innerHTML = `[ status: ${order.order_status} ]`;
+                let orderStatus = order.order_status;
+                orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
 
                 // meta info: third p-tag
                 let orderByP = document.createElement("p");
@@ -176,6 +177,9 @@ function fetchOrders() {
                 // Append li to parent ol
                 appendToparent(orderLi, ordersOL);
 
+                // Style by order status
+                styleByStatus(orderLi, orderStatus);
+
             });
 
         }
@@ -222,3 +226,20 @@ function addClickListener(btn) {
         });
     }
 }
+
+function styleByStatus(order, orderStatus){
+    if(orderStatus === "New") {
+        // Style order
+        order.classList.add("new-order");
+    }
+    else if(orderStatus === "Processing") {
+        order.classList.add("processing-order");
+    }
+    else if(orderStatus === "Complete") {
+        order.classList.add("complete-order");
+    }
+    else if(orderStatus === "Cancelled") {
+        order.classList.add("cancelled-order");
+    }
+}
+

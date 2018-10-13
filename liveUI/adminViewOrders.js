@@ -8,9 +8,15 @@ const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 let adminToken = localStorage.adminToken;
 let loggedInSince = localStorage.loggedInSince;
 
-// Reusable variable
+// Reusable variables
 let message = '';
 const footer = document.querySelector('footer');
+
+// Icons
+let acceptIcon = `<i class="far fa-check-circle"></i>`;
+let rejectIcon = `<i class="far fa-times-circle"></i>`;
+let deleteIcon = `<i class="fas fa-trash-alt"></i>`;
+let completeIcon = `<i class="fas fa-check-double"></i>`;
 
 
 // Select ol with order items
@@ -155,15 +161,19 @@ function fetchOrders() {
                 let reactionsP = document.createElement("p");
                 reactionsP.classList.add("order-rxn-btns");
 
-                // Accept btn
+                // Accept or Complete btn
                 let acceptBtn = document.createElement("button");
                 acceptBtn.classList.add("accept-order");
-                acceptBtn.innerHTML = `<i class="far fa-check-circle"></i>`;
+                // Append a default icon
+                acceptBtn.innerHTML = acceptIcon;
+                // Add an appropriate tootlip
+                acceptBtn.setAttribute("title", "Accept Order");
 
-                // Reject btn
+                // Reject or Delete btn
                 let rejectBtn = document.createElement("button");
                 rejectBtn.classList.add("reject-order");
-                rejectBtn.innerHTML = `<i class="far fa-times-circle"></i>`;
+                rejectBtn.innerHTML = rejectIcon;
+                rejectBtn.setAttribute("title", "Reject Order");
 
                 // Attach btns to parent p
                 [acceptBtn, rejectBtn].forEach(btn => {
@@ -172,7 +182,10 @@ function fetchOrders() {
 
                     // Add click listeners
                     addClickListener(btn);
+
                 });
+                // Assign right icon depending on status
+                assignIconByStatus([acceptBtn, rejectBtn], orderStatus);
 
                 // Append all the things to parent li
                 [orderInfoDiv, reactionsP].forEach(tag => {
@@ -198,21 +211,34 @@ function addClickListener(btn) {
         let clickedOrder = btn.parentNode.parentNode;
         let clickedOrderID = clickedOrder.querySelector("p.order-id").innerHTML.split("#")[1];
 
-        // Set status as appropriate
-        if(btn.innerHTML === `<i class="far fa-check-circle"></i>`){
-            // Send order status
-            orderStatus = "Processing";
+        if([acceptIcon, rejectIcon, completeIcon].indexOf(btn.innerHTML) > -1) {
+
+            // Set status as appropriate
+            if(btn.innerHTML === acceptIcon){
+                // Send order status
+                orderStatus = "Processing";
+            }
+            else if(btn.innerHTML === rejectIcon) {
+                orderStatus = "Cancelled";
+            }
+            else if(btn.innerHTML === completeIcon) {
+                orderStatus = "Complete";
+            }
+
+            // Call update order fn with params
+            updateOrderStatus(clickedOrderID, orderStatus);
         }
-        else if(btn.innerHTML === `<i class="far fa-times-circle"></i>`) {
-            orderStatus = "Cancelled";
-        }
+
         else if(btn.innerHTML === "Close") {
             // Refresh page
             window.location.replace("orders.html");
         }
 
-        // Call update order fn with params
-        updateOrderStatus(clickedOrderID, orderStatus);
+        else if(btn.innerHTML === deleteIcon) {
+            // Call delete function
+            alert("Delete coming soon");
+        }
+        
 
     });
 }
@@ -305,5 +331,24 @@ function styleByStatus(order, orderStatus){
     }
     else if(orderStatus === "Cancelled") {
         order.classList.add("cancelled-order");
+    }
+}
+
+
+function assignIconByStatus(buttons, orderStatus) {
+    if(["Cancelled", "Complete"].indexOf(orderStatus) > -1) {
+        // If order was cancelled or completed, provide only Delete icon
+        buttons[0].style.display = "None";
+        buttons[1].classList.add("delete-order");
+        buttons[1].innerHTML = deleteIcon;
+        // Assign an appropriate tooltip
+        buttons[1].setAttribute("title", "Delete order");
+    }
+    else if(orderStatus === "Processing") {
+        // For accepted order, provide only option to Mark Complete
+        buttons[1].style.display = "None";
+        buttons[0].classList.add("mark-complete");
+        buttons[0].innerHTML = completeIcon;
+        buttons[0].setAttribute("title", "Mark Complete");
     }
 }
