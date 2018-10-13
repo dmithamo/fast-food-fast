@@ -89,6 +89,10 @@ const showMessageIfError = (message) => {
 };
 
 
+// Create and style a p tag for error message on quantity < 0
+let warningWrongQuantity = document.createElement("p");
+warningWrongQuantity.classList.add("p-logins-warning");
+
 function addOrderBtns() {
     // Select all menu item figcaptions
     let menuItemCaptions = document.querySelectorAll("figcaption");
@@ -126,11 +130,19 @@ function addClickListener(btn) {
 
         btn.addEventListener("click", () => {
             // Extract quantity
-            let quantity = +quantityModal.querySelector("#q-input-number").value;
-            // Make POST request to server
-            placeOrder(foodId, quantity);
-            // Hide editing modal
-            hideQuantityModal();
+            let quantityInput = quantityModal.querySelector("#q-input-number");
+            let quantity = +quantityInput.value;
+            if(quantity){
+                // Make POST request to server, if quantity is > 0
+                placeOrder(foodId, quantity);
+                // Hide editing modal
+                hideQuantityModal();
+            }
+            else {
+                // Show error
+                warningWrongQuantity.innerHTML = "Quantity cannot be 0 or greater that 5!";
+                quantityInput.parentNode.insertBefore(warningWrongQuantity, btn);
+            }
         });
     }
 
