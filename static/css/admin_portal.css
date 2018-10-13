@@ -166,12 +166,16 @@ input.new-modal-input:focus {
 }
 
 .cancelled-order {
-    text-decoration: line-through;
     color: rgb(190, 190, 190);
     border-left: 10px solid red;
     font-weight: bold;
 }
 
+
+.cancelled-order>div>span:nth-of-type(2),
+.cancelled-order>div>span:nth-of-type(3) {
+    text-decoration: line-through;
+}
 
 div#admin-list>h1 {
     margin: 1em auto;

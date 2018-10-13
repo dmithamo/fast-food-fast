@@ -108,6 +108,7 @@ function fetchOrders() {
                 // meta info: first p-tag
                 let orderIdP = document.createElement("p");
                 orderIdP.classList.add("order-status");
+                orderIdP.classList.add("order-id");
                 orderIdP.innerHTML = `orderID#${order.order_id}`;
 
                 // meta info: second p-tag
@@ -116,13 +117,16 @@ function fetchOrders() {
                 let orderStatus = order.order_status;
                 orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
 
+                // Style each order depending on status
+                styleByStatus(orderLi, orderStatus);
+
                 // meta info: third p-tag
-                let orderByP = document.createElement("p");
-                orderByP.classList.add("order-status");
-                orderByP.innerHTML = order.ordered_by;
+                let statusAsAt = document.createElement("p");
+                statusAsAt.classList.add("order-status");
+                statusAsAt.innerHTML = `[ as at: ${order.status_update_on} ]`;
                 
                 // Attach p's to parent
-                [orderIdP, orderStatusP, orderByP].forEach(orderP => {
+                [orderIdP, orderStatusP, statusAsAt].forEach(orderP => {
                     appendToparent(orderP, metaInfoSpan);
                 });
 
@@ -154,16 +158,16 @@ function fetchOrders() {
                 // timestamp: first p-tag
                 let orderedOnP = document.createElement("p");
                 orderedOnP.classList.add("timestamp");
-                orderedOnP.innerHTML = "Placed On";
+                orderedOnP.innerHTML = `Placed On<br>${order.ordered_on}`;
 
                 // meta info: second p-tag
-                let timeP = document.createElement("p");
-                timeP.classList.add("timestamp");
-                timeP.innerHTML = order.ordered_on;
+                let orderByP = document.createElement("p");
+                orderByP.classList.add("timestamp");
+                orderByP.innerHTML = order.ordered_by;
                 
                 // Attach p's to parent
-                [orderedOnP, timeP].forEach(timesP => {
-                    appendToparent(timesP, timestampSpan);
+                [orderedOnP, orderByP].forEach(infoP => {
+                    appendToparent(infoP, timestampSpan);
                 });
 
                 // Attach spans to parent div
