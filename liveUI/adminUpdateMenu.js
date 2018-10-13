@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!adminToken) {
         errorDiv.lastChild.remove();
         showMessageIfError(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+        logoutBtn.style.display = "None";
+        document.querySelector("#orders-link").style.display = "None";
     }
     else {
         // Wait a while for all menu to load

@@ -50,11 +50,6 @@ ul#food-items {
     margin: auto;
 }
 
-ol>li {
-    list-style-type: none;
-    transition: all .5s;
-    height: 80px;
-}
 
 ol>li:hover {
     color: black;
@@ -148,25 +143,35 @@ input.new-modal-input:focus {
     display: none;
 }
 
-.accepted-order {
-    color: rgb(0, 0, 0);
-    border: 2px solid rgb(68, 233, 27);
-    background-color: rgb(68, 233, 27);
+
+.delete-order {
+    color: red;
+}
+
+.mark-complete {
+    color: rgb(5, 206, 5);
+}
+.new-order {
+    border-left: 10px solid rgb(0, 0, 0);
+}
+
+.processing-order {
+    border-left: 10px solid rgb(255, 208, 0);
     font-weight: bold;
 }
 
-.completed-order {
-    background-color: rgb(255, 208, 0);
-    border: 2px solid rgb(255, 208, 0);
+.complete-order {
+    border-left: 10px solid rgb(68, 233, 27);
+    font-weight: bold;
 }
 
-.rejected-order {
+.cancelled-order {
     text-decoration: line-through;
     color: rgb(190, 190, 190);
-    border: none;
-    background-color: rgb(253, 0, 0);
-    font-weight: 400;
+    border-left: 10px solid red;
+    font-weight: bold;
 }
+
 
 div#admin-list>h1 {
     margin: 1em auto;
@@ -183,6 +188,12 @@ ol#in-cart {
     border: 1px dashed lightgrey;
     text-align: center;
     background-color: none;
+    transition: all .3s;
+}
+
+.order-rxn-btns:hover {
+    width: 32%;
+    border: 2px dashed rgb(7, 7, 7);
 }
 .order-reactions {
     padding: .5em;
@@ -192,24 +203,27 @@ ol#in-cart {
     margin: 0 2em;
     font-size: 2em;
     outline: none;
+    transition: all .3s;
+}
+
+.order-reactions:hover {
+    padding: .8em;
+    margin: 0 2em;
+    font-size: 3em;
+    color: rgb(243, 208, 11);
 }
 
 .ordered-item {
-    border: 1px solid lightgray;
+    list-style-type: none;
     margin-bottom: 2em;
     font-size: 10px;
-    box-shadow: 0 0 1px 1px rgb(224, 224, 224);
+    box-shadow: 0 0 2px 2px rgb(189, 189, 189);
 }
 
 
 .the-order {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr;
-}
-
-.the-order>span {
-    padding: .3em;
-    height: 15px;
 }
 
 .timestamp {

@@ -187,13 +187,13 @@ function placeOrder(foodId, quantity) {
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message === "Order posted successfully") {
-            console.log(responseJSON);
             let orderInfo = responseJSON.order.order_info;
             let orderId = responseJSON.order.order_id;
+            let orderStatus = responseJSON.order.order_status;
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
             // Show order info
-            showMessageIfError(`${message}<br><br><p class="order-summary">Your order <br><br> order ID: ${orderId}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Your name: ${orderedBy}</p>`);
+            showMessageIfError(`${message}<br><br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
         }
         else {
             // Show message

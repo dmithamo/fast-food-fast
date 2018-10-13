@@ -8,8 +8,15 @@ const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 let adminToken = localStorage.adminToken;
 let loggedInSince = localStorage.loggedInSince;
 
-// Reusable variable
+// Reusable variables
 let message = '';
+const footer = document.querySelector('footer');
+
+// Icons
+let acceptIcon = `<i class="far fa-check-circle"></i>`;
+let rejectIcon = `<i class="far fa-times-circle"></i>`;
+let deleteIcon = `<i class="fas fa-trash-alt"></i>`;
+let completeIcon = `<i class="fas fa-check-double"></i>`;
 
 
 // Select ol with order items
@@ -24,6 +31,17 @@ logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("adminToken");
 });
 
+// On document ready
+document.addEventListener('DOMContentLoaded', () => {
+    if(adminToken){
+        fetchOrders();
+    }
+    else {
+        showMessageIfNoOrders(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+        logoutBtn.style.display = "None";
+        document.querySelector("#edit-menu-link").style.display = "None";
+    }
+});
 
 // Helper function
 const appendToparent = (element, parent) => {
@@ -65,22 +83,32 @@ function fetchOrders() {
                 let orderInfoDiv = document.createElement("div");
                 orderInfoDiv.classList.add("the-order");
 
-                // meta-info span with 2 p tags
+                // meta-info span with 3 p tags
                 let metaInfoSpan = document.createElement("span");
                 metaInfoSpan.classList.add("meta-info");
 
                 // meta info: first p-tag
-                let orderStatusP = document.createElement("p");
-                orderStatusP.classList.add("order-status");
-                orderStatusP.innerHTML = `[ #${order.order_status} ]`;
+                let orderIdP = document.createElement("p");
+                orderIdP.classList.add("order-status");
+                orderIdP.classList.add("order-id");
+                orderIdP.innerHTML = `orderID#${order.order_id}`;
 
                 // meta info: second p-tag
+                let orderStatusP = document.createElement("p");
+                orderStatusP.classList.add("order-status");
+                let orderStatus = order.order_status;
+                orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
+
+                // Style each order depending on status
+                styleByStatus(orderLi, orderStatus);
+
+                // meta info: third p-tag
                 let orderByP = document.createElement("p");
-                orderByP.classList.add("ordered-by");
+                orderByP.classList.add("order-status");
                 orderByP.innerHTML = order.ordered_by;
                 
                 // Attach p's to parent
-                [orderStatusP, orderByP].forEach(orderP => {
+                [orderIdP, orderStatusP, orderByP].forEach(orderP => {
                     appendToparent(orderP, metaInfoSpan);
                 });
 
@@ -133,21 +161,31 @@ function fetchOrders() {
                 let reactionsP = document.createElement("p");
                 reactionsP.classList.add("order-rxn-btns");
 
-                // Accept btn
+                // Accept or Complete btn
                 let acceptBtn = document.createElement("button");
                 acceptBtn.classList.add("accept-order");
-                acceptBtn.innerHTML = `<i class="far fa-check-circle"></i>`;
+                // Append a default icon
+                acceptBtn.innerHTML = acceptIcon;
+                // Add an appropriate tootlip
+                acceptBtn.setAttribute("title", "Accept Order");
 
-                // Reject btn
+                // Reject or Delete btn
                 let rejectBtn = document.createElement("button");
                 rejectBtn.classList.add("reject-order");
-                rejectBtn.innerHTML = `<i class="far fa-times-circle"></i>`;
+                rejectBtn.innerHTML = rejectIcon;
+                rejectBtn.setAttribute("title", "Reject Order");
 
                 // Attach btns to parent p
                 [acceptBtn, rejectBtn].forEach(btn => {
                     btn.classList.add("order-reactions");
                     appendToparent(btn, reactionsP);
+
+                    // Add click listeners
+                    addClickListener(btn);
+
                 });
+                // Assign right icon depending on status
+                assignIconByStatus([acceptBtn, rejectBtn], orderStatus);
 
                 // Append all the things to parent li
                 [orderInfoDiv, reactionsP].forEach(tag => {
@@ -166,13 +204,151 @@ function fetchOrders() {
     });
 }
 
+function addClickListener(btn) {
+    let orderStatus;
+    btn.addEventListener("click", (event) => {
+        // Find id of clicked order
+        let clickedOrder = btn.parentNode.parentNode;
+        let clickedOrderID = clickedOrder.querySelector("p.order-id").innerHTML.split("#")[1];
 
-// On document ready
-document.addEventListener('DOMContentLoaded', () => {
-    if(adminToken){
-        fetchOrders();
+        if([acceptIcon, rejectIcon, completeIcon].indexOf(btn.innerHTML) > -1) {
+
+            // Set status as appropriate
+            if(btn.innerHTML === acceptIcon){
+                // Send order status
+                orderStatus = "Processing";
+            }
+            else if(btn.innerHTML === rejectIcon) {
+                orderStatus = "Cancelled";
+            }
+            else if(btn.innerHTML === completeIcon) {
+                orderStatus = "Complete";
+            }
+
+            // Call update order fn with params
+            updateOrderStatus(clickedOrderID, orderStatus);
+        }
+
+        else if(btn.innerHTML === "Close") {
+            // Refresh page
+            window.location.replace("orders.html");
+        }
+
+        else if(btn.innerHTML === deleteIcon) {
+            // Call delete function
+            alert("Delete coming soon");
+        }
+        
+
+    });
+}
+
+function updateOrderStatus(orderId, orderStatus){
+    fetch(`${api_url}/orders/${orderId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            "order_status": orderStatus
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+        }
+    })
+    .then(response => response.json())
+    .then(function(responseJSON) {
+        message = responseJSON.message;
+        if(message !== "Order found.") {
+            showMessageIfError(message);
+        }
+        else {            
+            let orderInfo = responseJSON.order.order_info;
+            orderId = responseJSON.order.order_id;
+            orderStatus = responseJSON.order.order_status;
+            let orderCost = responseJSON.order.total_order_cost;
+            let orderedBy = responseJSON.order.ordered_by;
+            showMessageIfError(`${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+            // Reload to reflect new styling
+            setTimeout(() => {
+                window.location.replace("orders.html");
+            }, 5000);
+        } 
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+
+// 
+
+// Div to display errors
+let errorDiv = document.createElement("div");
+errorDiv.classList.add("msg-paragraph");
+
+// p tag with error
+let specialPara = document.createElement("p");
+
+// append to errorDiv
+errorDiv.appendChild(specialPara);
+
+// button to close error div
+let closeBtn = document.createElement("button");
+closeBtn.classList.add("close-btn");
+closeBtn.innerHTML = "Close";
+closeBtn.id = "close-btn";
+
+// appedn to errorDiv
+errorDiv.appendChild(closeBtn);
+// Add click listener
+addClickListener(closeBtn);
+
+// Append to page
+ordersOL.parentNode.insertBefore(errorDiv, ordersOL);
+// Hide since it currently is empty
+errorDiv.classList.add("hidden-mode");
+
+const showMessageIfError = (message) => {
+    // Show error message
+    specialPara.innerHTML = message;
+    // Hide everything else
+    for(let tag of [ordersOL, footer]) {
+        tag.classList.add("hidden-mode");
     }
-    else {
-        showMessageIfNoOrders(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+    // Reveal errorDiv
+    errorDiv.classList.remove("hidden-mode");
+};
+
+function styleByStatus(order, orderStatus){
+    if(orderStatus === "New") {
+        // Style order
+        order.classList.add("new-order");
     }
-});
+    else if(orderStatus === "Processing") {
+        order.classList.add("processing-order");
+    }
+    else if(orderStatus === "Complete") {
+        order.classList.add("complete-order");
+    }
+    else if(orderStatus === "Cancelled") {
+        order.classList.add("cancelled-order");
+    }
+}
+
+
+function assignIconByStatus(buttons, orderStatus) {
+    if(["Cancelled", "Complete"].indexOf(orderStatus) > -1) {
+        // If order was cancelled or completed, provide only Delete icon
+        buttons[0].style.display = "None";
+        buttons[1].classList.add("delete-order");
+        buttons[1].innerHTML = deleteIcon;
+        // Assign an appropriate tooltip
+        buttons[1].setAttribute("title", "Delete order");
+    }
+    else if(orderStatus === "Processing") {
+        // For accepted order, provide only option to Mark Complete
+        buttons[1].style.display = "None";
+        buttons[0].classList.add("mark-complete");
+        buttons[0].innerHTML = completeIcon;
+        buttons[0].setAttribute("title", "Mark Complete");
+    }
+}

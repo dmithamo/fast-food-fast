@@ -101,22 +101,28 @@ function fetchOrders() {
                 let orderInfoDiv = document.createElement("div");
                 orderInfoDiv.classList.add("the-order");
 
-                // meta-info span with 2 p tags
+                // meta-info span with 3 p tags
                 let metaInfoSpan = document.createElement("span");
                 metaInfoSpan.classList.add("meta-info");
 
                 // meta info: first p-tag
-                let orderStatusP = document.createElement("p");
-                orderStatusP.classList.add("order-status");
-                orderStatusP.innerHTML = `[ orderID#${order.order_id} ]<br>[ status: ${order.order_status} ]`;
+                let orderIdP = document.createElement("p");
+                orderIdP.classList.add("order-status");
+                orderIdP.innerHTML = `orderID#${order.order_id}`;
 
                 // meta info: second p-tag
+                let orderStatusP = document.createElement("p");
+                orderStatusP.classList.add("order-status");
+                let orderStatus = order.order_status;
+                orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
+
+                // meta info: third p-tag
                 let orderByP = document.createElement("p");
-                orderByP.classList.add("ordered-by");
+                orderByP.classList.add("order-status");
                 orderByP.innerHTML = order.ordered_by;
                 
                 // Attach p's to parent
-                [orderStatusP, orderByP].forEach(orderP => {
+                [orderIdP, orderStatusP, orderByP].forEach(orderP => {
                     appendToparent(orderP, metaInfoSpan);
                 });
 
@@ -171,6 +177,9 @@ function fetchOrders() {
                 // Append li to parent ol
                 appendToparent(orderLi, ordersOL);
 
+                // Style by order status
+                styleByStatus(orderLi, orderStatus);
+
             });
 
         }
@@ -217,3 +226,20 @@ function addClickListener(btn) {
         });
     }
 }
+
+function styleByStatus(order, orderStatus){
+    if(orderStatus === "New") {
+        // Style order
+        order.classList.add("new-order");
+    }
+    else if(orderStatus === "Processing") {
+        order.classList.add("processing-order");
+    }
+    else if(orderStatus === "Complete") {
+        order.classList.add("complete-order");
+    }
+    else if(orderStatus === "Cancelled") {
+        order.classList.add("cancelled-order");
+    }
+}
+
