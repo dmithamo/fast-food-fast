@@ -50,24 +50,16 @@ ul#food-items {
     margin: auto;
 }
 
+ol>li {
+    transition: all .3s;
+}
 
 ol>li:hover {
     color: black;
     padding: 1.3rem;
+    opacity: 1;
 }
 
-ol>li:hover ol>li>p>button {
-    display: inline;
-}
-
-ol>li>p>button {
-    color: rgb(36, 36, 36);
-    border: none;
-    outline: none;
-    padding: .5rem;
-    font: inherit;
-    border-radius: 5px;
-}
 
 .hidden-mode {
     display: none;
@@ -177,6 +169,14 @@ input.new-modal-input:focus {
     text-decoration: line-through;
 }
 
+.deleted-order {
+    opacity: 0.5;
+    border: none;
+    background-color: rgb(221, 221, 221);
+    color: rgb(175, 175, 175);
+}
+
+
 div#admin-list>h1 {
     margin: 1em auto;
 }
@@ -207,6 +207,7 @@ ol#in-cart {
     margin: 0 2em;
     font-size: 2em;
     outline: none;
+    border: none;
     transition: all .3s;
 }
 

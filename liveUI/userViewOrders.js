@@ -245,5 +245,8 @@ function styleByStatus(order, orderStatus){
     else if(orderStatus === "Cancelled") {
         order.classList.add("cancelled-order");
     }
+    else if(orderStatus === "Deleted") {
+        order.classList.add("deleted-order");
+    }
 }
 

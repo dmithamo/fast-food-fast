@@ -204,6 +204,59 @@ function fetchOrders() {
     });
 }
 
+
+function updateOrderStatus(orderId, orderStatus){
+    fetch(`${api_url}/orders/${orderId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            "order_status": orderStatus
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+        }
+    })
+    .then(response => response.json())
+    .then(function(responseJSON) {
+        message = responseJSON.message;
+        if(message !== "Order found.") {
+            showMessageIfError(message);
+        }
+        else {            
+            let orderInfo = responseJSON.order.order_info;
+            orderId = responseJSON.order.order_id;
+            orderStatus = responseJSON.order.order_status;
+            let orderCost = responseJSON.order.total_order_cost;
+            let orderedBy = responseJSON.order.ordered_by;
+            showMessageIfError(`${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+        } 
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+
+function deleteOrder(orderId) {
+    // Delete Order
+    fetch(`${api_url}/orders/${orderId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${adminToken}`
+        }
+    })
+    .then(response => response.json())
+    .then(responseJSON => {
+        let message = responseJSON.message;
+        showMessageIfError(message);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+
+
 function addClickListener(btn) {
     let orderStatus;
     btn.addEventListener("click", (event) => {
@@ -236,49 +289,11 @@ function addClickListener(btn) {
 
         else if(btn.innerHTML === deleteIcon) {
             // Call delete function
-            alert("Delete coming soon");
+            deleteOrder(clickedOrderID);
         }
-        
 
     });
 }
-
-function updateOrderStatus(orderId, orderStatus){
-    fetch(`${api_url}/orders/${orderId}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            "order_status": orderStatus
-        }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    })
-    .then(response => response.json())
-    .then(function(responseJSON) {
-        message = responseJSON.message;
-        if(message !== "Order found.") {
-            showMessageIfError(message);
-        }
-        else {            
-            let orderInfo = responseJSON.order.order_info;
-            orderId = responseJSON.order.order_id;
-            orderStatus = responseJSON.order.order_status;
-            let orderCost = responseJSON.order.total_order_cost;
-            let orderedBy = responseJSON.order.ordered_by;
-            showMessageIfError(`${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
-            // Reload to reflect new styling
-            setTimeout(() => {
-                window.location.replace("orders.html");
-            }, 5000);
-        } 
-    })
-    .catch(error => {
-        console.log(error);
-    });
-}
-
-
 // 
 
 // Div to display errors
@@ -332,6 +347,9 @@ function styleByStatus(order, orderStatus){
     else if(orderStatus === "Cancelled") {
         order.classList.add("cancelled-order");
     }
+    else if(orderStatus === "Deleted") {
+        order.classList.add("deleted-order");
+    }
 }
 
 
@@ -350,5 +368,10 @@ function assignIconByStatus(buttons, orderStatus) {
         buttons[0].classList.add("mark-complete");
         buttons[0].innerHTML = completeIcon;
         buttons[0].setAttribute("title", "Mark Complete");
+    }
+    else if(orderStatus === "Deleted") {
+        // Hide action btns for a deleted order
+        buttons[0].style.display = "None";
+        buttons[1].style.display = "None";
     }
 }
