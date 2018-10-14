@@ -47,14 +47,14 @@ class AllOrders(Resource):
     @jwt_required
     def get(self):
         """
-            GET users/orders endpoint
+            GET /orders endpoint
         """
         validate.abort_if_user_role_not_appropriate("admin")
 
         # if user_role confirmed ok
 
         query = """
-        SELECT * FROM orders"""
+        SELECT * FROM orders ORDER BY orders.order_id"""
 
         orders = database.select_from_db(query)
 

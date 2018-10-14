@@ -149,7 +149,7 @@ class Menu(Resource):
             Retrieve the menu
         """
         query = """
-        SELECT * FROM menu"""
+        SELECT * FROM menu ORDER BY menu.food_item_id"""
         menu = database.select_from_db(query)
 
         if not menu:

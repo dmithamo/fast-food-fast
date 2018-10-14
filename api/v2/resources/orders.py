@@ -45,7 +45,8 @@ class ShoppingCart(Resource):
         username = get_jwt_identity()[0]
         query = """
         SELECT * FROM orders
-        WHERE orders.ordered_by = '{}'""".format(username)
+        WHERE orders.ordered_by = '{}'
+        ORDER BY orders.order_id""".format(username)
 
         orders = database.select_from_db(query)
 
