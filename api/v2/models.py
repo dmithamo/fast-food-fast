@@ -106,7 +106,8 @@ class Order:
         query = """
         SELECT * FROM orders
         WHERE orders.food_item_name = '{}'
-        AND orders.ordered_by = '{}'""".format(
+        AND orders.ordered_by = '{}'
+        AND orders.order_status = 'New'""".format(
             food_item_name, ordered_by)
 
         order = database.select_from_db(query)

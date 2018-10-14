@@ -62,11 +62,11 @@ class TestEndpoints(base_test_class.TestClassBase):
             response_json["order"]["total_order_cost"],
             1000 * food_item["quantity"])
 
-    def test_cannot_duplicate_order_while_unserviced(self):
+    def test_post_a_second_order(self):
         """
-            3. Test that authorised (logged in) user CANNOT
-            place an order while a similar uncomplete or uncancelled order
-            exists
+            3. Test that authorised (logged in) user can place
+            another order for same meal
+            And get correct order in rsponse message
         """
         # Login admin and post food item on menu
         adm_token = self.login_test_admin()
@@ -76,36 +76,41 @@ class TestEndpoints(base_test_class.TestClassBase):
 
         # Register and login user
         token = self.login_test_user()
-
         food_item = {
             "food_item_id": 1,
             "quantity": 2
         }
 
-        response_1 = self.client.post("{}/users/orders".format(
+        # Post first Order
+        self.client.post("{}/users/orders".format(
             self.base_url), json=food_item, headers={
                 "Content-Type": "application/json",
                 "Authorization": "Bearer {}".format(token)
             })
 
-        response_2 = self.client.post("{}/users/orders".format(
+        # Admin marks first order 'Complete'
+        self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Complete"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        # Repost the Order (same food item, different quantity)
+        response = self.client.post("{}/users/orders".format(
             self.base_url), json=food_item, headers={
                 "Content-Type": "application/json",
                 "Authorization": "Bearer {}".format(token)
             })
-        response_1_json = base_test_class.helper_functions.response_as_json(
-            response_1)
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
 
-        response_2_json = base_test_class.helper_functions.response_as_json(
-            response_2)
-
-        self.assertEqual(response_2.status_code, 400)
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(
-            response_2_json["message"], "Similar unserviced order exists. \
-New order not placed")
+            response_json["message"], "Order posted successfully")
         self.assertEqual(
-            response_1_json["order"]["order_id"],
-            response_2_json["order"]["order_id"])
+            response_json["order"]["order_status"],
+            "New")
 
     def test_user_cannot_order_non_existent_food(self):
         """

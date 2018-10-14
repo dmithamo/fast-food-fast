@@ -650,10 +650,10 @@ Status must be 'Cancelled' to delete")
         self.assertEqual(
             response_json["message"], "Delete successful.")
 
-    def test_admin_cannot_orders_unless_cancelled_or_complete(self):
+    def test_admin_cannot_delete_new_order(self):
         """
             22. Test that logged in admin cannot delete
-            orders whose status is not 'Cancelled' or 'Complete'
+            orders whose status is 'New'
         """
         # Login admin
         adm_token = self.login_test_admin()
