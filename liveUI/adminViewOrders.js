@@ -354,8 +354,8 @@ function styleByStatus(order, orderStatus){
 
 
 function assignIconByStatus(buttons, orderStatus) {
-    if(["Cancelled", "Complete"].indexOf(orderStatus) > -1) {
-        // If order was cancelled or completed, provide only Delete icon
+    if(orderStatus === "Cancelled") {
+        // If order was Cancelled, provide only Delete icon
         buttons[0].style.display = "None";
         buttons[1].classList.add("delete-order");
         buttons[1].innerHTML = deleteIcon;
@@ -369,8 +369,8 @@ function assignIconByStatus(buttons, orderStatus) {
         buttons[0].innerHTML = completeIcon;
         buttons[0].setAttribute("title", "Mark Complete");
     }
-    else if(orderStatus === "Deleted") {
-        // Hide action btns for a deleted order
+    else if(["Complete", "Deleted"].indexOf(orderStatus) > -1) {
+        // Hide action btns for a deleted order or completed order
         buttons[0].style.display = "None";
         buttons[1].style.display = "None";
     }
