@@ -3,7 +3,7 @@
 
 
 // Append to page
-menuUL.parentNode.parentNode.insertBefore(errorDiv, menuUL.parentNode);
+menuUL.parentNode.insertBefore(errorDiv, menuUL);
 // Hide since it currently is empty
 errorDiv.classList.add("hidden-mode");
 
@@ -107,8 +107,8 @@ function updateMenuItem(foodId) {
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message === "Food item modified succesfully.") {
-            // Reload menu page
-            window.location.replace("adm_menu.html");
+            // Show message
+            showResponseMessage(menuUL, message);
         }
         else {
             // Show message
@@ -133,7 +133,7 @@ function deleteMenuItem(foodId) {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        showResponseMessage(section, message);
+        showResponseMessage(menuUL, message);
     })
     .catch(function(error) {
         console.log(error);

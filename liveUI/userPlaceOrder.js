@@ -24,7 +24,7 @@ addClickListener(closeBtn);
 
 
 // Append to page
-menuUL.parentNode.parentNode.insertBefore(errorDiv, menuUL.parentNode);
+menuUL.parentNode.insertBefore(errorDiv, menuUL);
 // Hide since it currently is empty
 errorDiv.classList.add("hidden-mode");
 
