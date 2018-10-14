@@ -1,22 +1,7 @@
 // Consume API here
 'use strict'; // Use ES6
 
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
-
-// Create and style a p tag for error message on login
-let warningWrongLogins = document.createElement("p");
-warningWrongLogins.classList.add("p-logins-warning");
-
-// Login Btn and forms
-let loginBtn = document.querySelector("#login-btn");
-let loginEmailInput = document.querySelector("#login-email-input");
-let loginPasswordInput = document.querySelector("#login-password-input");
-
-// Helper function
-const appendToparent = (element, parent) => {
-    parent.appendChild(element);
-};
-
+// Some variables defined in common_funcs.js
 
 function loginUser() {
     // collect credentials into an object
@@ -57,22 +42,6 @@ function loginUser() {
     });
 }
 
-
-// If email and password fields have values
-// Call loginUser when login btn is clicked 
-loginBtn.addEventListener('click', (event) => {
-    if(loginEmailInput.value && loginPasswordInput.value) {
-        event.preventDefault();
-        loginUser();
-    }
-});
-
-// Also call loginUser when Enter key is pressed
-document.addEventListener("keypress", (event) => {
-    if(event.keyCode === 13) {
-        if(loginEmailInput.value && loginPasswordInput.value) {
-            event.preventDefault();
-            loginUser();
-        }
-    }
-});
+// Click listener for login btn
+// Defined in common_funcs.js
+addListenersToLoginBtns(loginUser);

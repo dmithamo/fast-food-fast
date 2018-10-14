@@ -7,9 +7,8 @@ let userToken = localStorage.userToken;
 let loggedInAs = localStorage.loggedInAs;
 
 // Reusable variables
-let message = '';
 const section = document.querySelector('section');
-const footer = document.querySelector('footer');
+// const footer = document.querySelector('footer');
 let quantityModal = document.querySelector("#quantity-modal");
 
 // Select history link
@@ -20,22 +19,6 @@ historyLink.addEventListener("click", () => {
 });
 
 
-// Div to display errors
-let errorDiv = document.createElement("div");
-errorDiv.classList.add("msg-paragraph");
-
-// p tag with error
-let specialPara = document.createElement("p");
-// append to errorDiv
-errorDiv.appendChild(specialPara);
-
-// button to close error div
-let closeBtn = document.createElement("button");
-closeBtn.classList.add("close-btn");
-closeBtn.innerHTML = "Close";
-closeBtn.id = "close-btn";
-// appedn to errorDiv
-errorDiv.appendChild(closeBtn);
 // Add click listener
 addClickListener(closeBtn);
 
@@ -59,11 +42,14 @@ logoutBtn.addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showMessageIfError(`Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
+        showMessageIfNoItems(menuUL, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
-        document.querySelector("#logout-link").innerHTML = "See Menu";
+        document.querySelector("#logout-link").innerHTML = "Homepage";
         // Hide order history button
         document.querySelector("#history-link").style.display = "None";
+        // Hide menu and menu header
+        document.querySelector("h2").style.display = "None";
+        menuUL.style.display = "None";
     }
     else {
         // Wait a while for all menu to load
@@ -75,18 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 });
-
-
-const showMessageIfError = (message) => {
-    // Show error message
-    specialPara.innerHTML = message;
-    // Hide everything else
-    for(let tag of [section, footer]) {
-        tag.classList.add("hidden-mode");
-    }
-    // Reveal errorDiv
-    errorDiv.classList.remove("hidden-mode");
-};
 
 
 // Create and style a p tag for error message on quantity < 0
@@ -205,11 +179,11 @@ function placeOrder(foodId, quantity) {
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
             // Show order info
-            showMessageIfError(`${message}<br><br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+            showResponseMessage(menuUL, `${message}<br><br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
         }
         else {
             // Show message
-            showMessageIfError(message);
+            showResponseMessage(menuUL, message);
         }
 
         })

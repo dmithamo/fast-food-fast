@@ -1,14 +1,6 @@
 // Consume API here
 'use strict'; // Use ES6
 
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
-
-// Create and style a p tag for error message on login
-let warningWrongLogins = document.createElement("p");
-warningWrongLogins.classList.add("p-logins-warning");
-
-
-
 // Register Btn and forms
 let registerBtn = document.querySelector("#register-btn");
 let registerUsernameInput = document.querySelector("#register-username-input");
@@ -16,11 +8,6 @@ let registerEmailInput = document.querySelector("#register-email-input");
 let registerPasswordInput = document.querySelector("#register-password-input");
 let confirmPasswordInput = document.querySelector("#confirm-password-input");
 
-
-// Helper function
-const appendToparent = (element, parent) => {
-    parent.appendChild(element);
-};
 
 function registerUser() {
     // collect credentials into an object

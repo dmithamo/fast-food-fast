@@ -33,7 +33,7 @@
     <!-- Quantity modal. Shown on clicking add to cart -->
     <div class="hidden-mode" id="quantity-modal">
         <p>How many <span id="q-food-name"></span> would you like?</p>
-        <input placeholder="1" type="number" max="5" min="1" id="q-input-number"> <br>
+        <input placeholder="0" type="number" max="5" min="1" id="q-input-number"> <br>
         <input class="q-input-btn" id="cancel-q-btn"  type="submit" value="Cancel">
         <input class="q-input-btn" id="add-q-btn"  type="submit" value="Add to Cart">
     </div>
@@ -48,6 +48,7 @@
     </footer>
 
     <script src="../static/js/orders.js"></script>
+    <script src="../liveUI/common_funcs.js"></script>
     <script src="../liveUI/fetchMenu.js"></script>
     <script src="../liveUI/userPlaceOrder.js"></script>
 </body>

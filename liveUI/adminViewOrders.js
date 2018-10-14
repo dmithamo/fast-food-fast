@@ -1,17 +1,6 @@
 // Consume API here
 'use strict'; // Use ES6
 
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
-
-
-// loginResp
-let adminToken = localStorage.adminToken;
-let loggedInSince = localStorage.loggedInSince;
-
-// Reusable variables
-let message = '';
-const footer = document.querySelector('footer');
-
 // Icons
 let acceptIcon = `<i class="far fa-check-circle"></i>`;
 let rejectIcon = `<i class="far fa-times-circle"></i>`;
@@ -37,26 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchOrders();
     }
     else {
-        showMessageIfNoOrders(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+        showMessageIfNoOrders(ordersOL, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#edit-menu-link").style.display = "None";
     }
 });
 
-// Helper function
-const appendToparent = (element, parent) => {
-    parent.appendChild(element);
-};
 
-const showMessageIfNoOrders = (message) => {
-    // Create and style a special paragraph to report that menu is empty
-    let specialPara = document.createElement("p");
-    specialPara.classList.add("msg-paragraph");
-    specialPara.innerHTML = message;
+// Append errorDiv to page
+// Defined in common_funcs.js
+ordersOL.parentNode.insertBefore(errorDiv, ordersOL);
+// Hide since it currently is empty
+errorDiv.classList.add("hidden-mode");
 
-    // Append to page
-    ordersOL.parentNode.insertBefore(specialPara, ordersOL);
-};
+// Add click listener
+addClickListener(closeBtn);
 
 function fetchOrders() {
     fetch(`${api_url}/orders`, {
@@ -67,11 +51,11 @@ function fetchOrders() {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        if(message !== "Orders found.") {
+        if(message === "No orders yet.") {
             // Show message
-            showMessageIfNoOrders(message);
+            showMessageIfNoItems(ordersOL, message);
         }
-        else {
+        else if(message === "Orders found.") {
             let orders = responseJSON.orders;
             orders.forEach(order => {
                 // Create and style an li
@@ -197,8 +181,12 @@ function fetchOrders() {
 
             });
         }
+        else {
+            // Show message
+            showResponseMessage(ordersOL, message); 
+        }
 
-        })
+    })
     .catch(function(error) {
         console.log(error);
     });
@@ -220,7 +208,7 @@ function updateOrderStatus(orderId, orderStatus){
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message !== "Order found.") {
-            showMessageIfError(message);
+            showResponseMessage(ordersOL, message);
         }
         else {            
             let orderInfo = responseJSON.order.order_info;
@@ -228,7 +216,7 @@ function updateOrderStatus(orderId, orderStatus){
             orderStatus = responseJSON.order.order_status;
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
-            showMessageIfError(`${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+            showResponseMessage(ordersOL, `${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
         } 
     })
     .catch(error => {
@@ -248,7 +236,7 @@ function deleteOrder(orderId) {
     .then(response => response.json())
     .then(responseJSON => {
         let message = responseJSON.message;
-        showMessageIfError(message);
+        showResponseMessage(ordersOL, message);
     })
     .catch(error => {
         console.log(error);
@@ -293,63 +281,6 @@ function addClickListener(btn) {
         }
 
     });
-}
-// 
-
-// Div to display errors
-let errorDiv = document.createElement("div");
-errorDiv.classList.add("msg-paragraph");
-
-// p tag with error
-let specialPara = document.createElement("p");
-
-// append to errorDiv
-errorDiv.appendChild(specialPara);
-
-// button to close error div
-let closeBtn = document.createElement("button");
-closeBtn.classList.add("close-btn");
-closeBtn.innerHTML = "Close";
-closeBtn.id = "close-btn";
-
-// appedn to errorDiv
-errorDiv.appendChild(closeBtn);
-// Add click listener
-addClickListener(closeBtn);
-
-// Append to page
-ordersOL.parentNode.insertBefore(errorDiv, ordersOL);
-// Hide since it currently is empty
-errorDiv.classList.add("hidden-mode");
-
-const showMessageIfError = (message) => {
-    // Show error message
-    specialPara.innerHTML = message;
-    // Hide everything else
-    for(let tag of [ordersOL, footer]) {
-        tag.classList.add("hidden-mode");
-    }
-    // Reveal errorDiv
-    errorDiv.classList.remove("hidden-mode");
-};
-
-function styleByStatus(order, orderStatus){
-    if(orderStatus === "New") {
-        // Style order
-        order.classList.add("new-order");
-    }
-    else if(orderStatus === "Processing") {
-        order.classList.add("processing-order");
-    }
-    else if(orderStatus === "Complete") {
-        order.classList.add("complete-order");
-    }
-    else if(orderStatus === "Cancelled") {
-        order.classList.add("cancelled-order");
-    }
-    else if(orderStatus === "Deleted") {
-        order.classList.add("deleted-order");
-    }
 }
 
 

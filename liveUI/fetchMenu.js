@@ -1,17 +1,10 @@
-// Consume API here
 'use strict'; // Use ES6
 
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 
 // Select elements usable accross fucntions
 // Menu
 const menuUL = document.querySelector("#food-items");
 const menuContainer = document.querySelector("#menu-cont");
-
-// Helper function
-const appendToparent = (element, parent) => {
-    parent.appendChild(element);
-};
 
 
 function fetchMenu() {
@@ -24,12 +17,7 @@ function fetchMenu() {
             let message = responseJSON.message;
             if(message === "No food items on the menu yet") {
                 // Create and style a special paragraph to report that menu is empty
-                let specialPara = document.createElement("p");
-                specialPara.innerHTML = message;
-                specialPara.classList.add("msg-paragraph");
-
-                // Append to page
-                menuUL.parentNode.insertBefore(specialPara, menuUL);
+                showMessageIfNoItems(menuUL, message);
             }
             else {
                 // Create an li for each item on menu and append li to menuUL
@@ -92,7 +80,6 @@ function fetchMenu() {
             console.log(err);
         });
 }
-
 
 // Call function when DOM content is finished loading
 document.addEventListener('DOMContentLoaded', () => {

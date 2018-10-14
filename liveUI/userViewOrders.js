@@ -2,16 +2,11 @@
 'use strict'; // Use ES6
 
 
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
-
 // loginResp
 let userToken = localStorage.userToken;
 let loggedInAs = localStorage.loggedInAs;
 
-// Reusable variables
-let message = '';
 const section = document.querySelector('section');
-const footer = document.querySelector('footer');
 
 
 // Select history link and history Div and menu Div
@@ -21,30 +16,6 @@ addClickListener(placeOrderLink);
 // Select ol with order items
 let ordersOL = document.querySelector("#in-history");
 
-
-// Helper function
-const appendToparent = (element, parent) => {
-    parent.appendChild(element);
-};
-
-// Div to display errors
-let errorDiv = document.createElement("div");
-errorDiv.classList.add("msg-paragraph");
-
-// p tag with error
-let specialPara = document.createElement("p");
-
-// append to errorDiv
-errorDiv.appendChild(specialPara);
-
-// button to close error div
-let closeBtn = document.createElement("button");
-closeBtn.classList.add("close-btn");
-closeBtn.innerHTML = "Close";
-closeBtn.id = "close-btn";
-
-// appedn to errorDiv
-errorDiv.appendChild(closeBtn);
 // Add click listener
 addClickListener(closeBtn);
 
@@ -62,7 +33,7 @@ addClickListener(logoutBtn);
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showMessageIfError(`Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
+        showMessageIfError(ordersOL, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         logoutBtn.innerHTML = "See Menu";
         // Hide order history button
@@ -85,11 +56,11 @@ function fetchOrders() {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        if(message !== "Orders found.") {
-            // Show message
-            showMessageIfError(message);
+        if(message === `No orders yet for user '${loggedInAs}'`) {
+            showMessageIfNoItems(ordersOL, message);
+
         }
-        else {
+        else if(message === "Orders found.") {
             let orders = responseJSON.orders;
             orders.forEach(order => {
                 // Create and style an li
@@ -187,6 +158,10 @@ function fetchOrders() {
             });
 
         }
+        else {
+            // Show message
+            showMessageIfError(ordersOL, message);
+        }
 
         })
     .catch(function(error) {
@@ -194,17 +169,6 @@ function fetchOrders() {
     });
 }
 
-
-const showMessageIfError = (message) => {
-    // Show error message
-    specialPara.innerHTML = message;
-    // Hide everything else
-    for(let tag of [ordersOL, footer]) {
-        tag.classList.add("hidden-mode");
-    }
-    // Reveal errorDiv
-    errorDiv.classList.remove("hidden-mode");
-};
 
 function addClickListener(btn) {
 
@@ -228,25 +192,6 @@ function addClickListener(btn) {
         btn.addEventListener("click", () => {
             window.location.replace("view_orders.html");
         });
-    }
-}
-
-function styleByStatus(order, orderStatus){
-    if(orderStatus === "New") {
-        // Style order
-        order.classList.add("new-order");
-    }
-    else if(orderStatus === "Processing") {
-        order.classList.add("processing-order");
-    }
-    else if(orderStatus === "Complete") {
-        order.classList.add("complete-order");
-    }
-    else if(orderStatus === "Cancelled") {
-        order.classList.add("cancelled-order");
-    }
-    else if(orderStatus === "Deleted") {
-        order.classList.add("deleted-order");
     }
 }
 

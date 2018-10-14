@@ -2,31 +2,6 @@
 'use strict'; // Use ES6
 
 
-// loginResp
-let adminToken = localStorage.adminToken;
-let loggedInSince = localStorage.loggedInSince;
-
-// Reusable variables
-let message = '';
-
-// Div to display errors
-let errorDiv = document.createElement("div");
-errorDiv.classList.add("msg-paragraph");
-
-// p tag with error
-let specialPara = document.createElement("p");
-// append to errorDiv
-errorDiv.appendChild(specialPara);
-
-// button to close error div
-let closeBtn = document.createElement("button");
-closeBtn.classList.add("close-btn");
-closeBtn.innerHTML = "Close";
-closeBtn.id = "close-btn";
-// appedn to errorDiv
-errorDiv.appendChild(closeBtn);
-
-
 // Append to page
 menuUL.parentNode.parentNode.insertBefore(errorDiv, menuUL.parentNode);
 // Hide since it currently is empty
@@ -49,7 +24,7 @@ let logoutBtn = document.querySelector("#logout-link");
 // Select footer, section, editing-modal to hide and show as necessary
 const editingForm = document.querySelector('#editing-modal');
 const section = document.querySelector('section');
-const footer = document.querySelector('footer');
+// const footer = document.querySelector('footer');
 
 // Collect new food item attributes
 let foodItemName = document.querySelector("#new-item-name");
@@ -60,7 +35,8 @@ let foodItemPrice = document.querySelector("#new-item-price");
 document.addEventListener('DOMContentLoaded', () => {
     if(!adminToken) {
         errorDiv.lastChild.remove();
-        showMessageIfError(`Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+        showResponseMessage(section, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
+        <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#orders-link").style.display = "None";
     }
@@ -80,16 +56,6 @@ logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("adminToken");
 });
 
-const showMessageIfError = (message) => {
-    // Show error message
-    specialPara.innerHTML = message;
-    // Hide everything else
-    for(let tag of [section, footer, editingModal]) {
-        tag.classList.add("hidden-mode");
-    }
-    // Reveal errorDiv
-    errorDiv.classList.remove("hidden-mode");
-};
 
 function addToMenu() {
     let data = {
@@ -114,7 +80,7 @@ function addToMenu() {
         }
         else {
             // Show message
-            showMessageIfError(message);
+            showResponseMessage(menuUL, message);
         }
 
         })
@@ -146,7 +112,7 @@ function updateMenuItem(foodId) {
         }
         else {
             // Show message
-            showMessageIfError(message);
+            showResponseMessage(menuUL, message);
         }
 
         })
@@ -167,16 +133,8 @@ function deleteMenuItem(foodId) {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        if(message === "Delete successful.") {
-            // Reload menu page
-            window.location.replace("adm_menu.html");
-        }
-        else {
-            // Show message
-            showMessageIfError(message);
-        }
-
-        })
+        showResponseMessage(section, message);
+    })
     .catch(function(error) {
         console.log(error);
     });

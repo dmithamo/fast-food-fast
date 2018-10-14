@@ -8,6 +8,12 @@ section>.container{
     margin: auto;
 }
 
+
+section {
+    min-height: 450px;
+}
+
+
 #add-new-food,
 .edit-btn,
 .delete-btn {
