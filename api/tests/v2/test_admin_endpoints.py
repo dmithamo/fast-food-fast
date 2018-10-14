@@ -259,11 +259,139 @@ class TestEndpoints(base_test_class.TestClassBase):
             "'what have you' is an invalid order status. \
 Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
+    def test_put_order_when_order_was_already_cancelled(self):
+        """
+            10. Test that logged in admin cannot update
+            order status when order has already been Cancelled
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Add item to menu
+        self.logged_in_admin_post_to_menu(
+            {"food_item_name": "Njugu Karanga",
+             "food_item_price": 20}, adm_token)
+
+        # Register and login user
+        token = self.login_test_user()
+        # Make POST request
+        self.logged_in_user_post_order({"food_item_id": 1,
+                                        "quantity": 2}, token)
+
+        self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Cancelled"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response = self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Cancelled"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response_json["message"],
+            "Not allowed. This order is already 'Cancelled'")
+
+    def test_put_order_when_order_status_is_complete(self):
+        """
+            11. Test that logged in admin cannot update
+            order status when order has already been marked Complete
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Add item to menu
+        self.logged_in_admin_post_to_menu(
+            {"food_item_name": "Njugu Karanga",
+             "food_item_price": 20}, adm_token)
+
+        # Register and login user
+        token = self.login_test_user()
+        # Make POST request
+        self.logged_in_user_post_order({"food_item_id": 1,
+                                        "quantity": 2}, token)
+
+        self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Complete"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response = self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Cancelled"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response_json["message"],
+            "Not allowed. This order is already 'Complete'")
+
+    def test_put_order_when_order_was_already_deleted(self):
+        """
+            12. Test that logged in admin cannot update
+            order status when order has already been Deleted
+        """
+        # Login admin
+        adm_token = self.login_test_admin()
+        # Add item to menu
+        self.logged_in_admin_post_to_menu(
+            {"food_item_name": "Njugu Karanga",
+             "food_item_price": 20}, adm_token)
+
+        # Register and login user
+        token = self.login_test_user()
+        # Make POST request
+        self.logged_in_user_post_order({"food_item_id": 1,
+                                        "quantity": 2}, token)
+
+        # Change status to Cancelled to allow for Delete
+        self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Cancelled"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        # DELETE order
+        self.client.delete("{}/orders/1".format(
+            self.base_url), headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        # Try to Change status again to to Cancelled
+        response = self.client.put("{}/orders/1".format(
+            self.base_url), json={
+                "order_status": "Cancelled"
+            }, headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer {}".format(adm_token)})
+
+        response_json = base_test_class.helper_functions.response_as_json(
+            response)
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response_json["message"],
+            "Not allowed. This order is already 'Deleted'")
+
     # GET /menu
 
     def test_get_menu_when_no_items(self):
         """
-            10. Test that users can access
+            13. Test that users can access
             the menu when menu is empty
         """
         response = self.client.get("{}/menu".format(
@@ -279,7 +407,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_get_menu(self):
         """
-            11. Test that users can get items on the menu
+            14. Test that users can get items on the menu
             without needing authorization
         """
         # Login admin
@@ -316,7 +444,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_post_menu(self):
         """
-            12. Test that logged in admin can add
+            15. Test that logged in admin can add
             items to the menu
         """
         # Login admin
@@ -341,7 +469,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_post_menu_cannot_duplicate(self):
         """
-            13. Test that logged in admin cannot
+            16. Test that logged in admin cannot
             add duplicate items on the menu
         """
         # Login admin
@@ -367,7 +495,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_admin_can_modify_items_on_menu(self):
         """
-            14. Test that logged in admin can modify
+            17. Test that logged in admin can modify
             items on menu
         """
         # Login admin
@@ -394,7 +522,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_admin_cannot_modify_items_on_menu_if_no_change(self):
         """
-            15. Test that logged in admin cannot modify
+            18. Test that logged in admin cannot modify
             items on menu if request contains no change
         """
         # Login admin
@@ -424,7 +552,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_admin_can_delete_items_on_menu(self):
         """
-            16. Test that logged in admin can delete
+            19. Test that logged in admin can delete
             items on menu
         """
         # Login admin
@@ -447,9 +575,9 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         self.assertEqual(
             response_json["message"], "Delete successful.")
 
-    def test_admin_can_delete_completed_orders(self):
+    def test_admin_cannot_delete_completed_orders(self):
         """
-            17. Test that logged in admin can delete
+            20. Test that logged in admin cannot delete
             completed orders
         """
         # Login admin
@@ -480,13 +608,14 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         response_json = base_test_class.helper_functions.response_as_json(
             response)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            response_json["message"], "Delete successful.")
+            response_json["message"], "Not deleted. Status is 'Complete'. \
+Status must be 'Cancelled' to delete")
 
     def test_admin_can_delete_cancelled_orders(self):
         """
-            18. Test that logged in admin can delete
+            21. Test that logged in admin can delete
             cancelled orders
         """
         # Login admin
@@ -523,7 +652,7 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
     def test_admin_cannot_orders_unless_cancelled_or_complete(self):
         """
-            19. Test that logged in admin cannot delete
+            22. Test that logged in admin cannot delete
             orders whose status is not 'Cancelled' or 'Complete'
         """
         # Login admin
@@ -551,4 +680,4 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response_json["message"], "Not deleted. Status is 'New'. \
-Status must be 'Cancelled' or 'Complete' to delete")
+Status must be 'Cancelled' to delete")

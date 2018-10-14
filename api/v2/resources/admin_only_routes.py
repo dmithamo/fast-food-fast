@@ -123,10 +123,10 @@ class Order(Resource):
         if not order:
             validate.abort_order_not_found(order_id)
 
-        if order[0][3] in ["Complete", "Deleted"]:
-            # if order was already Deleted or marked Complete
+        if order[0][3] in ["Complete", "Cancelled", "Deleted"]:
+            # if order was already marked Complete, Cancelled or Deleted
             abort(make_response(
-                jsonify(message="Error. This order is already '{}'".format(order[0][3])), 400))
+                jsonify(message="Not allowed. This order is already '{}'".format(order[0][3])), 401))
 
         # Check that supplied status is valid
         order_status = validate.check_order_status_validity(data)
@@ -153,11 +153,10 @@ class Order(Resource):
         return response
 
     @jwt_required
-    def delete(self, order_id=None):
+    def delete(self, order_id):
         """
             DELETE /orders/order_id and
-            DELETE /orders endpoint
-            : can only delete where status is 'Complete' or 'Cancelled'
+            : can only delete where status is 'Cancelled'
         """
         validate.abort_if_user_role_not_appropriate("admin")
 
@@ -171,11 +170,11 @@ class Order(Resource):
         if not order:
             validate.abort_order_not_found(order_id)
 
-        # if order_status not 'Cancelled' or 'Complete'
-        if order[0][3] not in ["Complete", "Cancelled"]:
+        # if order_status not 'Cancelled'
+        if order[0][3] != "Cancelled":
             abort(make_response(jsonify(
                 message="Not deleted. Status is '{}'. \
-Status must be 'Cancelled' or 'Complete' to delete".format(order[0][3])
+Status must be 'Cancelled' to delete".format(order[0][3])
             ), 401))
 
         # if order_status already 'Deleted'
@@ -184,15 +183,14 @@ Status must be 'Cancelled' or 'Complete' to delete".format(order[0][3])
                 message="Error. This was already deleted."
             ), 400))
 
-
+        # Do a 'soft-delete',,,i.e, only change the status, 
+        # don't remove order from DB
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         delete_single_order = """
         UPDATE orders
         SET order_status = 'Deleted',
             status_update_on = '{}'
         WHERE orders.order_id = '{}'
-        AND orders.order_status = 'Cancelled'
-        OR orders.order_status = 'Complete' 
         """.format(timestamp, order_id)
 
         database.query_db_no_return(delete_single_order)
