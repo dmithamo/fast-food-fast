@@ -370,7 +370,7 @@ function assignIconByStatus(buttons, orderStatus) {
         buttons[0].setAttribute("title", "Mark Complete");
     }
     else if(["Complete", "Deleted"].indexOf(orderStatus) > -1) {
-        // Hide action btns for a deleted order or completed order
+        // Hide action btns for a deleted or completed order
         buttons[0].style.display = "None";
         buttons[1].style.display = "None";
     }
