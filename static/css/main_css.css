@@ -80,7 +80,7 @@ a:hover, a:active {
 }
 
 
-#food-items {
+.food-items {
     list-style-type: none;
     display: grid;
     grid-template-columns: repeat(4, 1fr);

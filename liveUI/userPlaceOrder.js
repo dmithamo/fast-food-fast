@@ -48,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide order history button
         document.querySelector("#history-link").style.display = "None";
         // Hide menu and menu header
-        document.querySelector("h2").style.display = "None";
-        menuUL.style.display = "None";
+        menuUL.classList.add("hidden-mode");
     }
     else {
         // Wait a while for all menu to load
