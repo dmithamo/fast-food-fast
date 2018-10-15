@@ -53,15 +53,16 @@ function fetchOrders() {
     .then((response) => response.json())
     .then(function(responseJSON) {
         
-        // Add every user here to be used as filter option
-        let filterOptions = [];
-        
         message = responseJSON.message;
         if(message === "No orders yet.") {
             // Show message
             showMessageIfNoItems(ordersDiv, message);
         }
         else if(message === "Orders found.") {
+            
+            // Add every user here to be used as filter option
+            let filterOptions = [];
+
             let orders = responseJSON.orders;
             orders.forEach(order => {
                 // Create and style an li
@@ -198,14 +199,14 @@ function fetchOrders() {
                 appendToparent(orderLi, ordersOL);
 
             });
+            // Add filter options on order history page
+            addFilterOptions(filterOptions);
         }
         else {
             // Show message
             showResponseMessage(ordersDiv, message); 
         }
 
-        // Add filter options on history page
-        addFilterOptions(filterOptions);
 
     })
     .catch(function(error) {

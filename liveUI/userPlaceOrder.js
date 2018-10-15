@@ -97,7 +97,7 @@ function addClickListener(btn) {
     }
 
     // Save btn
-    if(btn.value === "Add to Cart") {
+    if(btn.value === "Place order") {
         // Extract foodId of clicked menu item
         let foodId = +window.clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
 

@@ -62,7 +62,7 @@ function fetchOrders() {
 
         }
         else if(message === "Orders found.") {
-            // List to be used to populate the filterBy menu
+            // Add every status here to be used as filter option
             let filterOptions = [];
 
             let orders = responseJSON.orders;
@@ -167,8 +167,8 @@ function fetchOrders() {
                 styleByStatus(orderLi, orderStatus);
 
             });
-            // Add listener to options list after orders load
-            addListenersOnOptions();
+            // Add filter options on order history page
+            addFilterOptions(filterOptions);
 
         }
         else {
