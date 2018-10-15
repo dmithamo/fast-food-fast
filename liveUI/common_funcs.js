@@ -138,10 +138,20 @@ function addFilterOptions(optionsList) {
     // Select the select tag from page
     let selectTag = document.querySelector("select");
 
+    // Sort optionsList, to start with statuses then usernames
+    optionsList = optionsList.sort();
+
     // Append each option to select tag...
     for(let filterOption of optionsList){
-        // filterOption is username
-        filterOption = `user: ${filterOption}`;
+        // If filterOption is status
+        let statuses = ["New", "Processing", "Complete", "Cancelled", "Deleted"];
+        if(statuses.indexOf(filterOption) > -1){
+            filterOption = `status: ${filterOption}`;
+        }
+        else {
+            // filterOption is username
+            filterOption = `user: ${filterOption}`;
+        }
 
         // Append to 'select' element on page
         let option = document.createElement("option");
@@ -190,10 +200,6 @@ function filterByOption(option){
             else {
                 order.classList.remove("hidden-mode");
             }
-
-            // Show message if no orders are displayed
-            // Thinking about the how to check that no orders are displayed
-            // ...
         }
     }
 }

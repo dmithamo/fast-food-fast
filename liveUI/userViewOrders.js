@@ -62,6 +62,9 @@ function fetchOrders() {
 
         }
         else if(message === "Orders found.") {
+            // List to be used to populate the filterBy menu
+            let filterOptions = [];
+
             let orders = responseJSON.orders;
             orders.forEach(order => {
                 // Create and style an li
@@ -87,6 +90,12 @@ function fetchOrders() {
                 orderStatusP.classList.add("order-status");
                 let orderStatus = order.order_status;
                 orderStatusP.innerHTML = `status: ${orderStatus}`;
+          
+                // Add ordered_by to filter options, if not already there
+                if(filterOptions.indexOf(orderStatus) < 0) {
+                  filterOptions.push(orderStatus);
+                }
+    
 
                 // Style each order depending on status
                 styleByStatus(orderLi, orderStatus);
