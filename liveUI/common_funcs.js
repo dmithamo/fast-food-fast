@@ -132,3 +132,60 @@ function correctTime(timestamp){
     let correctTimestamp = `${date} ${correctedHrs}:${mins}:${secs}`;
     return correctTimestamp;
 }
+
+
+function addFilterOptions(optionsList) {
+    // Select the select tag from page
+    let selectTag = document.querySelector("select");
+
+    // Append each option to select tag...
+    for(let filterOption of optionsList){
+        // filterOption is username
+        filterOption = `user: ${filterOption}`;
+
+        // Append to 'select' element on page
+        let option = document.createElement("option");
+        option.value = filterOption;
+        option.innerHTML = filterOption;
+        // Append
+        selectTag.appendChild(option);
+    }
+    addListenersOnOptions();
+}
+
+function addListenersOnOptions() {
+    // Listen for change
+    // Select the select tag from page
+    let selectTag = document.querySelector("select");
+    selectTag.addEventListener("change",() => {
+        // extract value of change
+        let filter = selectTag.value.split(": ")[1];
+        // Call function that filters
+        filterByOption(filter);
+    });
+}
+
+
+function filterByOption(option){
+    // Hide orders where Status or Username does not match filter
+    let allOrders = document.querySelectorAll(".ordered-item");
+    for(let order of allOrders){
+        let orderStatus = order.querySelector(".order-status").innerHTML.split(": ")[1];
+        let orderedBy = order.querySelector(".ordered-by").innerHTML;
+
+        // See if option matches either username or status
+        // Show only orders where condition is met
+        if(option === "All orders") {
+            order.classList.remove("hidden-mode");
+        }
+        else if(orderStatus === option || orderedBy === option) {
+            order.classList.remove("hidden-mode");
+        }
+        else {
+            order.classList.add("hidden-mode");
+        }
+
+        // Show message if no orders are displayed
+        // ?
+    }
+}

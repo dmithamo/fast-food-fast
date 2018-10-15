@@ -14,13 +14,14 @@ let placeOrderLink = document.querySelector("#place-order-link");
 addClickListener(placeOrderLink);
 
 // Select ol with order items
-let ordersOL = document.querySelector("#in-history");
+let ordersOL = document.querySelector("#in-cart");
+let ordersDiv = document.querySelector("#orders-div");
 
 // Add click listener
 addClickListener(closeBtn);
 
 // Append to page
-ordersOL.parentNode.insertBefore(errorDiv, ordersOL);
+ordersDiv.parentNode.insertBefore(errorDiv, ordersDiv);
 // Hide since it currently is empty
 errorDiv.classList.add("hidden-mode");
 
@@ -33,7 +34,7 @@ addClickListener(logoutBtn);
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showMessageIfError(ordersOL, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
+        showMessageIfError(ordersDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         logoutBtn.innerHTML = "See Menu";
         // Hide order history button
@@ -57,7 +58,7 @@ function fetchOrders() {
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message === `No orders yet for user '${loggedInAs}'`) {
-            showMessageIfNoItems(ordersOL, message);
+            showMessageIfNoItems(ordersDiv, message);
 
         }
         else if(message === "Orders found.") {
@@ -78,7 +79,6 @@ function fetchOrders() {
 
                 // meta info: first p-tag
                 let orderIdP = document.createElement("p");
-                orderIdP.classList.add("order-status");
                 orderIdP.classList.add("order-id");
                 orderIdP.innerHTML = `orderID#${order.order_id}`;
 
@@ -86,7 +86,7 @@ function fetchOrders() {
                 let orderStatusP = document.createElement("p");
                 orderStatusP.classList.add("order-status");
                 let orderStatus = order.order_status;
-                orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
+                orderStatusP.innerHTML = `status: ${orderStatus}`;
 
                 // Style each order depending on status
                 styleByStatus(orderLi, orderStatus);
@@ -135,7 +135,7 @@ function fetchOrders() {
 
                 // meta info: second p-tag
                 let orderByP = document.createElement("p");
-                orderByP.classList.add("timestamp");
+                orderByP.classList.add("ordered-by");
                 orderByP.innerHTML = order.ordered_by;
                 
                 // Attach p's to parent
@@ -158,11 +158,13 @@ function fetchOrders() {
                 styleByStatus(orderLi, orderStatus);
 
             });
+            // Add listener to options list after orders load
+            addListenersOnOptions();
 
         }
         else {
             // Show message
-            showMessageIfError(ordersOL, message);
+            showMessageIfError(ordersDiv, message);
         }
 
         })

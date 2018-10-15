@@ -25,10 +25,24 @@
         </div>
     </header>
     <section id="menu-cont" class="container user-menu">
-        <h1><i class="fas fa-shopping-basket"></i> | Order History </h1>
-        <ol id="in-history">
-            <!-- Items added dynamically -->
-        </ol>
+        <div id="orders-div">
+            <!-- Orders div -->
+            <label for="filter-options">
+                <h2><i class="fas fa-shopping-basket"></i> Orders | Filter by</h2>
+                <select id="filter-orders">
+                    <option value="all/all_orders">All orders</option>
+                    <option value="status: New">status: New</option>
+                    <option value="status: Processing">status: Processing</option>
+                    <option value="status: Complete">status: Complete</option>
+                    <option value="status: Cancelled">status: Cancelled</option>
+                    <option value="status: Deleted">status: Deleted</option>
+                    <!-- other options (usernames) added dynamically -->
+                </select>
+            </label>
+            <ol id="in-cart">
+                <!-- Items added dynamically -->
+            </ol>
+        </div>
     </section>
     <footer>
         <div class="container">

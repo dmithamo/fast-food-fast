@@ -10,6 +10,7 @@ let completeIcon = `<i class="fas fa-check-double"></i>`;
 
 // Select ol with order items
 let ordersOL = document.querySelector("#in-cart");
+let ordersDiv = document.querySelector("#orders-div");
 
 // select logout button
 let logoutBtn = document.querySelector("#logout-link");
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchOrders();
     }
     else {
-        showResponseMessage(ordersOL, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
+        showResponseMessage(ordersDiv, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
         <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#edit-menu-link").style.display = "None";
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Append errorDiv to page
 // Defined in common_funcs.js
-ordersOL.parentNode.insertBefore(errorDiv, ordersOL);
+ordersDiv.parentNode.insertBefore(errorDiv, ordersDiv);
 // Hide since it currently is empty
 errorDiv.classList.add("hidden-mode");
 
@@ -51,10 +52,14 @@ function fetchOrders() {
     })
     .then((response) => response.json())
     .then(function(responseJSON) {
+        
+        // Add every user here to be used as filter option
+        let filterOptions = [];
+        
         message = responseJSON.message;
         if(message === "No orders yet.") {
             // Show message
-            showMessageIfNoItems(ordersOL, message);
+            showMessageIfNoItems(ordersDiv, message);
         }
         else if(message === "Orders found.") {
             let orders = responseJSON.orders;
@@ -74,7 +79,6 @@ function fetchOrders() {
 
                 // meta info: first p-tag
                 let orderIdP = document.createElement("p");
-                orderIdP.classList.add("order-status");
                 orderIdP.classList.add("order-id");
                 orderIdP.innerHTML = `orderID#${order.order_id}`;
 
@@ -82,8 +86,8 @@ function fetchOrders() {
                 let orderStatusP = document.createElement("p");
                 orderStatusP.classList.add("order-status");
                 let orderStatus = order.order_status;
-                orderStatusP.innerHTML = `[ status: ${orderStatus} ]`;
-
+                orderStatusP.innerHTML = `status: ${orderStatus}`;
+    
                 // Style each order depending on status
                 styleByStatus(orderLi, orderStatus);
 
@@ -131,8 +135,14 @@ function fetchOrders() {
 
                 // meta info: second p-tag
                 let orderByP = document.createElement("p");
-                orderByP.classList.add("timestamp");
-                orderByP.innerHTML = order.ordered_by;
+                orderByP.classList.add("ordered-by");
+                let orderedBy = order.ordered_by;
+                orderByP.innerHTML = orderedBy;
+          
+                // Add ordered_by to filter options, if not already there
+                if(filterOptions.indexOf(orderedBy) < 0) {
+                  filterOptions.push(orderedBy);
+                }
                 
                 // Attach p's to parent
                 [orderedOnP, orderByP].forEach(infoP => {
@@ -186,8 +196,11 @@ function fetchOrders() {
         }
         else {
             // Show message
-            showResponseMessage(ordersOL, message); 
+            showResponseMessage(ordersDiv, message); 
         }
+
+        // Add filter options on history page
+        addFilterOptions(filterOptions);
 
     })
     .catch(function(error) {
@@ -211,7 +224,7 @@ function updateOrderStatus(orderId, orderStatus){
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message !== "Order found.") {
-            showResponseMessage(ordersOL, message);
+            showResponseMessage(ordersDiv, message);
         }
         else {            
             let orderInfo = responseJSON.order.order_info;
@@ -219,7 +232,7 @@ function updateOrderStatus(orderId, orderStatus){
             orderStatus = responseJSON.order.order_status;
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
-            showResponseMessage(ordersOL, `${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+            showResponseMessage(ordersDiv, `${message}<br>Status Updated Successfully<br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
         } 
     })
     .catch(error => {
@@ -239,7 +252,7 @@ function deleteOrder(orderId) {
     .then(response => response.json())
     .then(responseJSON => {
         let message = responseJSON.message;
-        showResponseMessage(ordersOL, message);
+        showResponseMessage(ordersDiv, message);
     })
     .catch(error => {
         console.log(error);

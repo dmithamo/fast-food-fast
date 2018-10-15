@@ -243,19 +243,19 @@ ol#in-cart {
     grid-template-columns: 1fr 2fr 1fr 1fr;
 }
 
-.timestamp {
+.timestamp,
+.ordered-by {
     text-align: right;
 }
 .timestamp,
+.ordered-by,
+.order-id,
 .meta-info,
 .order-status {
     font-weight: bolder;
     color: rgba(4, 22, 0, 0.507);
 }
 
-.ordered-by {
-    margin-left: 15px;
-}
 
 .order-info,
 .order-total {
