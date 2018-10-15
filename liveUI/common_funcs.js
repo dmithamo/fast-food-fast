@@ -158,7 +158,7 @@ function addListenersOnOptions() {
     // Select the select tag from page
     let selectTag = document.querySelector("select");
     selectTag.addEventListener("change",() => {
-        // extract value of change
+        // extract value on change
         let filter = selectTag.value.split(": ")[1];
         // Call function that filters
         filterByOption(filter);
@@ -169,23 +169,31 @@ function addListenersOnOptions() {
 function filterByOption(option){
     // Hide orders where Status or Username does not match filter
     let allOrders = document.querySelectorAll(".ordered-item");
-    for(let order of allOrders){
-        let orderStatus = order.querySelector(".order-status").innerHTML.split(": ")[1];
-        let orderedBy = order.querySelector(".ordered-by").innerHTML;
-
-        // See if option matches either username or status
-        // Show only orders where condition is met
-        if(option === "All orders") {
+    
+    // if option is All orders, show all
+    if(option === "All orders") {
+        for(let order of allOrders){
             order.classList.remove("hidden-mode");
         }
-        else if(orderStatus === option || orderedBy === option) {
-            order.classList.remove("hidden-mode");
-        }
-        else {
-            order.classList.add("hidden-mode");
-        }
+    }
+    else {
+        // for other filter options...
+        for(let order of allOrders){
+            let orderStatus = order.querySelector(".order-status").innerHTML.split(": ")[1];
+            let orderedBy = order.querySelector(".ordered-by").innerHTML;
 
-        // Show message if no orders are displayed
-        // ?
+            // See if option matches either username or status
+            // Show only orders where condition is met
+            if(orderStatus !== option && orderedBy !== option) {
+                order.classList.add("hidden-mode");
+            }
+            else {
+                order.classList.remove("hidden-mode");
+            }
+
+            // Show message if no orders are displayed
+            // Thinking about the how to check that no orders are displayed
+            // ...
+        }
     }
 }
