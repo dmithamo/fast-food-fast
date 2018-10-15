@@ -1,3 +1,8 @@
+body,
+html {
+    font-family: 'IBM Plex Sans', sans-serif;  /* Default font */
+}
+
 .admin-portal-title {
     color: rgb(211, 211, 211);
 }

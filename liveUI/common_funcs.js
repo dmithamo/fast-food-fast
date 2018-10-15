@@ -115,3 +115,20 @@ function styleByStatus(order, orderStatus){
         order.classList.add("deleted-order");
     }
 }
+
+function correctTime(timestamp){
+    // Add 03:00:00hrs to every timestamp.
+    // GMT tings
+    let date = timestamp.split(" ")[0];
+    let time = timestamp.split(" ")[1];
+    let hours = time.split(":")[0];
+    let mins = time.split(":")[1];
+    let secs = time.split(":")[2];
+
+    
+    // Correct time
+    let correctedHrs = +hours + 3;
+    
+    let correctTimestamp = `${date} ${correctedHrs}:${mins}:${secs}`;
+    return correctTimestamp;
+}

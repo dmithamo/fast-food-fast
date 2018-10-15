@@ -90,7 +90,8 @@ function fetchOrders() {
                 // meta info: third p-tag
                 let statusAsAt = document.createElement("p");
                 statusAsAt.classList.add("order-status");
-                statusAsAt.innerHTML = `[ as at: ${order.status_update_on} ]`;
+                let correctedStatusTime = correctTime(order.status_update_on);
+                statusAsAt.innerHTML = `[ as at: ${correctedStatusTime} ]`;
                 
                 // Attach p's to parent
                 [orderIdP, orderStatusP, statusAsAt].forEach(orderP => {
@@ -125,7 +126,8 @@ function fetchOrders() {
                 // timestamp: first p-tag
                 let orderedOnP = document.createElement("p");
                 orderedOnP.classList.add("timestamp");
-                orderedOnP.innerHTML = `Placed On<br>${order.ordered_on}`;
+                let correctedOrderTime = correctTime(order.ordered_on);
+                orderedOnP.innerHTML = `Placed On<br>${correctedOrderTime}`;
 
                 // meta info: second p-tag
                 let orderByP = document.createElement("p");
