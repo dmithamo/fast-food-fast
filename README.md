@@ -33,7 +33,6 @@ The API contains the endpoints below:
 | `GET /orders`             | Fetch all orders                 | Needs Auth - Admin Only Access     |
 | `GET /orders/id`          | Fetch a single order             | Needs Auth - Admin Only Access     |
 | `PUT /orders/id`          | Update order status              | Needs Auth - Admin Only Access     |
-| `DELETE /orders`          | Delete multiple orders           | Needs Auth - Admin Only Access     |
 | `DELETE /orders/id`       | Delete an order                  | Needs Auth - Admin Only Access     |
 
 ## Manual testing of the API
@@ -69,6 +68,6 @@ To run the tests written for the API's endpoints:
 
 [Pytest documentation](http://pytest-flask.readthedocs.io/en/latest/).
 
-## Languages
+### Languages
 
 1. `Python 3.6.5`
