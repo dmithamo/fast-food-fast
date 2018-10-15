@@ -85,10 +85,10 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(
             response_json["orders"][0]["order_id"], 1)
 
-        self.assertIn("Orange Juices",
+        self.assertIn("Orange Juice",
                       response_json["orders"][1]["order_info"])
 
-        self.assertIn("Watermelons",
+        self.assertIn("Watermelon",
                       response_json["orders"][0]["order_info"])
 
     # GET /orders/order_id
@@ -165,7 +165,7 @@ class TestEndpoints(base_test_class.TestClassBase):
         self.assertEqual(
             response_json["order"]["order_id"], 1)
         self.assertEqual(
-            response_json["order"]["order_info"], "2 Sembe Motos at 70 each")
+            response_json["order"]["order_info"], "2 x Sembe Moto @ Ksh. 70")
 
     def test_put_order_when_order_does_not_exists(self):
         """
