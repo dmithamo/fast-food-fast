@@ -23,7 +23,7 @@ def configure_response(order):
         "ordered_on": order[2],
         "order_status": order[3],
         "status_update_on": order[4],
-        "order_info": "{} {}s at {} each".format(
+        "order_info": "{} x {} @ Ksh. {}".format(
             order[7], order[5], order[6]),
         "total_order_cost": order[8]
     }
