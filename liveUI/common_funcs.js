@@ -12,6 +12,11 @@ let loginPasswordInput = document.querySelector("#login-password-input");
 // // Reusable variables
 let message = '';
 
+// Create and style a p tag for error message on invalid params
+let warningWrongValue = document.createElement("p");
+warningWrongValue.classList.add("p-logins-warning");
+let warningWrongVal = warningWrongValue.cloneNode();
+
 // Select footer
 const footer = document.querySelector('footer');
 

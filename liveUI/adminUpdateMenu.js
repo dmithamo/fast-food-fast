@@ -3,7 +3,7 @@
 
 
 // Append to page
-menuUL.parentNode.insertBefore(errorDiv, menuUL);
+menuDiv.parentNode.insertBefore(errorDiv, menuDiv);
 // Hide since it currently is empty
 errorDiv.classList.add("hidden-mode");
 
@@ -35,7 +35,7 @@ let foodItemPrice = document.querySelector("#new-item-price");
 document.addEventListener('DOMContentLoaded', () => {
     if(!adminToken) {
         errorDiv.lastChild.remove();
-        showResponseMessage(menuUL, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
+        showResponseMessage(menuDiv, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
         <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#orders-link").style.display = "None";
@@ -77,11 +77,11 @@ function addToMenu() {
         let food = responseJSON.food;
         if(message === "Food item added succesfully.") {
             // Show message
-            showResponseMessage(menuUL, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
+            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
         }
         else {
             // Show message
-            showResponseMessage(menuUL, message);
+            showResponseMessage(menuDiv, message);
         }
 
         })
@@ -110,12 +110,12 @@ function updateMenuItem(foodId) {
         let food = responseJSON.food;
         if(message === "Food item modified succesfully.") {
             // Show message
-            showResponseMessage(menuUL, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
+            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
 
         }
         else {
             // Show message
-            showResponseMessage(menuUL, message);
+            showResponseMessage(menuDiv, message);
         }
 
         })
@@ -136,7 +136,7 @@ function deleteMenuItem(foodId) {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
-        showResponseMessage(menuUL, message);
+        showResponseMessage(menuDiv, message);
     })
     .catch(function(error) {
         console.log(error);
@@ -191,8 +191,8 @@ function addBtnCliclListeners(btn) {
     if(btn.innerHTML === "Add Food Item") {
         btn.addEventListener("click", () => {
             // Display editing modal with no food item attributes
-            document.querySelector("#new-item-name").value = "";
-            document.querySelector("#new-item-price").value = "";
+            foodItemName.value = "";
+            foodItemPrice.value = 0;
             
             // Hide update btn and show save btn
             updateBtn.style.display = "None";
@@ -206,12 +206,8 @@ function addBtnCliclListeners(btn) {
     // Save btn
     else if(btn.value === "Save") {
         btn.addEventListener("click", () => {
-            // Make POST request to server
-            addToMenu();
-
-            // Hide editing modal
-            hideEditModal();
-        });
+            checkParams(addToMenu, null);
+         });
     }
 
     // Close or Cancel btn
@@ -249,10 +245,8 @@ function addBtnCliclListeners(btn) {
     // Update btn
     else if(btn.value === "Update") {
         btn.addEventListener("click", () => {
-            // Update item
-            updateMenuItem(window.clickedItemId);
-            
-            hideEditModal();
+            // // Update item
+            checkParams(updateMenuItem, window.clickedItemId);
         });
     }
 }
@@ -269,4 +263,30 @@ function hideEditModal() {
         tag.classList.remove('hidden-mode');
     }
     editingForm.classList.add("hidden-mode");
+}
+
+function checkParams(funcToCall, arg) {
+    if(!foodItemName.value){
+        // If no name
+        warningWrongValue.innerHTML = "Food item name cannot be blank!";
+        foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
+    }
+
+    if(+foodItemPrice.value < 1 ){
+        // If no price
+        warningWrongVal.innerHTML = "Food item price cannot be less than 1!";
+        foodItemName.parentNode.insertBefore(warningWrongVal, foodItemPrice.nextSibling);
+    }
+
+    if(foodItemName.value && foodItemPrice.value > 0 ){
+        // Make POST / PUT request to server
+        if(arg){
+            funcToCall(arg);
+        }
+        else {
+            funcToCall();
+        }
+        // Hide editing modal
+        hideEditModal();
+    }
 }

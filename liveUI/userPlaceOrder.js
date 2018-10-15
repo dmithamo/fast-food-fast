@@ -24,7 +24,7 @@ addClickListener(closeBtn);
 
 
 // Append to page
-menuUL.parentNode.insertBefore(errorDiv, menuUL);
+menuDiv.parentNode.insertBefore(errorDiv, menuDiv);
 // Hide since it currently is empty
 errorDiv.classList.add("hidden-mode");
 
@@ -42,7 +42,7 @@ logoutBtn.addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showMessageIfNoItems(menuUL, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
+        showMessageIfNoItems(menuDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         document.querySelector("#logout-link").innerHTML = "Homepage";
         // Hide order history button
@@ -61,10 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-// Create and style a p tag for error message on quantity < 0
-let warningWrongQuantity = document.createElement("p");
-warningWrongQuantity.classList.add("p-logins-warning");
 
 function addOrderBtns() {
     // Select all menu item figcaptions
@@ -113,8 +109,8 @@ function addClickListener(btn) {
             }
             else {
                 // Show error
-                warningWrongQuantity.innerHTML = "Quantity cannot be 0 or greater that 5!";
-                quantityInput.parentNode.insertBefore(warningWrongQuantity, btn);
+                warningWrongValue.innerHTML = "Quantity cannot be 0 or greater that 5!";
+                quantityInput.parentNode.insertBefore(warningWrongValue, btn);
             }
         });
     }
@@ -178,11 +174,11 @@ function placeOrder(foodId, quantity) {
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
             // Show order info
-            showResponseMessage(menuUL, `${message}<br><br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
+            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
         }
         else {
             // Show message
-            showResponseMessage(menuUL, message);
+            showResponseMessage(menuDiv, message);
         }
 
         })
