@@ -30,7 +30,7 @@ class AdminLogin(Resource):
         response = make_response(jsonify({
             "message": "Admin logged in",
             "admin": {
-                "logged_in_at": datetime.datetime.now().strftime(
+                "logged_in_at": datetime.datetime.utcnow().strftime(
                     "%Y-%m-%d %H:%M:%S"),
                 "token": create_access_token(
                     identity=(data["email"], "admin"),
@@ -131,7 +131,7 @@ class Order(Resource):
         # Check that supplied status is valid
         order_status = validate.check_order_status_validity(data)
 
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
         update_query = """
         UPDATE orders
@@ -185,7 +185,7 @@ Status must be 'Cancelled' to delete".format(order[0][3])
 
         # Do a 'soft-delete',,,i.e, only change the status, 
         # don't remove order from DB
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         delete_single_order = """
         UPDATE orders
         SET order_status = 'Deleted',

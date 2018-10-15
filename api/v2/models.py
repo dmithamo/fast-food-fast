@@ -75,7 +75,7 @@ class Order:
         self.food_item_price = food_item_price
         self.quantity = quantity
         self.total_order_cost = self.food_item_price * self.quantity
-        self.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         self.status_update_on = self.timestamp
 
     def save_order_to_db(self):

@@ -107,7 +107,7 @@ class UserLogin(Resource):
                 "user_id": user_id_from_db,  # first item is user_id
                 "username": username_from_db,  # second item is username
                 "email": email_from_db,  # third item is email
-                "logged_in_at": datetime.datetime.now().strftime(
+                "logged_in_at": datetime.datetime.utcnow().strftime(
                     "%Y-%m-%d %H:%M:%S"),
                 "auth_token": token
                 }
