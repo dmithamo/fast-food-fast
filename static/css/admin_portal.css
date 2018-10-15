@@ -94,7 +94,7 @@ div#editing-modal:hover {
 
 input.new-modal-input {
     outline: none;
-    font-family: 'Montserrat', cursive;
+    font-family: 'IBM Plex Sans', sans-serif;
     border: none;
     display: block;
     padding: 1rem;
@@ -108,7 +108,7 @@ input.new-modal-input {
 
 input.new-modal-input:hover,
 input.new-modal-input:focus {
-    font-family: 'Montserrat', cursive;
+    font-family: 'IBM Plex Sans', sans-serif;
     border: 1px dotted rgba(0, 0, 0, 0.63);
     box-shadow: none;
 }
@@ -147,7 +147,7 @@ input.new-modal-input:focus {
 }
 
 .mark-complete {
-    color: rgb(5, 206, 5);
+    color: #39aa56;
 }
 .new-order {
     border-left: 10px solid rgb(0, 0, 0);
@@ -159,7 +159,8 @@ input.new-modal-input:focus {
 }
 
 .complete-order {
-    border-left: 10px solid rgb(68, 233, 27);
+    color: #39aa56;
+    border-left: 10px solid #39aa56;
     font-weight: bold;
 }
 

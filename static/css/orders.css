@@ -40,7 +40,7 @@ ol {
 ol>li>span>input {
     width: 30px;
     border: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.7rem;
     color: rgb(83, 83, 83);
 }
@@ -124,7 +124,7 @@ ol>li{
     border-radius: 10%;
     border: 1px dotted black;
     outline: none;
-    font-family: 'Montserrat', cursive;
+    font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .q-info {
@@ -134,7 +134,7 @@ ol>li{
 .q-input-btn {
     width: 50%;
     padding: 1em;
-    font-family: 'Montserrat', cursive;
+    font-family: 'IBM Plex Sans', sans-serif;
     margin: 1em .5em;
 }
 
