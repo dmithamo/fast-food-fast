@@ -56,7 +56,9 @@ function fetchOrders() {
         message = responseJSON.message;
         if(message === "No orders yet.") {
             // Show message
-            showMessageIfNoItems(ordersDiv, message);
+            showMessageIfNoItems(ordersOL, message);
+            // Hide orders header
+            document.querySelector("#orders-header").classList.add("hidden-mode");
         }
         else if(message === "Orders found.") {
             
