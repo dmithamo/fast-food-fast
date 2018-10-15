@@ -74,9 +74,10 @@ function addToMenu() {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
+        let food = responseJSON.food;
         if(message === "Food item added succesfully.") {
-            // Reload menu page
-            window.location.replace("adm_menu.html");
+            // Show message
+            showResponseMessage(menuUL, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
         }
         else {
             // Show message
@@ -106,9 +107,11 @@ function updateMenuItem(foodId) {
     .then((response) => response.json())
     .then(function(responseJSON) {
         message = responseJSON.message;
+        let food = responseJSON.food;
         if(message === "Food item modified succesfully.") {
             // Show message
-            showResponseMessage(menuUL, message);
+            showResponseMessage(menuUL, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
+
         }
         else {
             // Show message
