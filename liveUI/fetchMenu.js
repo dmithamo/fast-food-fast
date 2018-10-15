@@ -17,7 +17,7 @@ function fetchMenu() {
             let message = responseJSON.message;
             if(message === "No food items on the menu yet") {
                 // Create and style a special paragraph to report that menu is empty
-                showMessageIfNoItems(menuUL, message);
+                showMessageIfNoItems(menuUL, message);showMessageIfNoItems
             }
             else {
                 // Create an li for each item on menu and append li to menuUL

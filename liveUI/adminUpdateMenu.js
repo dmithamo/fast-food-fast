@@ -35,7 +35,7 @@ let foodItemPrice = document.querySelector("#new-item-price");
 document.addEventListener('DOMContentLoaded', () => {
     if(!adminToken) {
         errorDiv.lastChild.remove();
-        showResponseMessage(section, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
+        showResponseMessage(menuUL, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
         <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#orders-link").style.display = "None";

@@ -13,7 +13,7 @@ let ordersOL = document.querySelector("#in-cart");
 
 // select logout button
 let logoutBtn = document.querySelector("#logout-link");
-
+const section = document.querySelector('section');
 
 // Remove admin token on logout 
 logoutBtn.addEventListener("click", () => {
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchOrders();
     }
     else {
-        showMessageIfNoOrders(ordersOL, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>`);
+        showResponseMessage(ordersOL, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
+        <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#edit-menu-link").style.display = "None";
     }
