@@ -11,13 +11,6 @@ const section = document.querySelector('section');
 // const footer = document.querySelector('footer');
 let quantityModal = document.querySelector("#quantity-modal");
 
-// Select history link
-let historyLink = document.querySelector("#history-link");
-// on click, navigate to history page
-historyLink.addEventListener("click", () => {
-    window.location.replace("view_orders.html");
-});
-
 
 // Add click listener
 addClickListener(closeBtn);
@@ -42,7 +35,7 @@ logoutBtn.addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showMessageIfNoItems(menuDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
+        showResponseMessage(menuDiv, `Please <a class="login-link" href="login">login</a> or <a class="login-link" href="register">register</a>`);
         // Change text in logout link
         document.querySelector("#logout-link").innerHTML = "Homepage";
         // Hide order history button
@@ -118,7 +111,7 @@ function addClickListener(btn) {
     // Close or Cancel btn
     if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            window.location.replace("place_order.html");
+            window.location.replace("place_order");
         });
     }
 }

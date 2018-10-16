@@ -34,7 +34,7 @@ addClickListener(logoutBtn);
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showMessageIfError(ordersDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
+        showResponseMessage(ordersDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         logoutBtn.innerHTML = "See Menu";
         // Hide order history button
@@ -175,7 +175,7 @@ function fetchOrders() {
         }
         else {
             // Show message
-            showMessageIfError(ordersDiv, message);
+            showResponseMessage(ordersDiv, message);
         }
 
         })
@@ -186,13 +186,6 @@ function fetchOrders() {
 
 
 function addClickListener(btn) {
-
-    // Place Order btn
-    if(btn.innerHTML === "Place Order") {
-        btn.addEventListener("click", () => {
-            window.location.replace("place_order.html");
-        });
-    }
 
     // Logout btn
     if(btn.innerHTML === "Logout") {
@@ -205,7 +198,7 @@ function addClickListener(btn) {
     // Close
     if(btn.innerHTML === "Close") {
         btn.addEventListener("click", () => {
-            window.location.replace("view_orders.html");
+            window.location.replace("users/view_orders");
         });
     }
 }

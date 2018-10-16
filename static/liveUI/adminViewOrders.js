@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchOrders();
     }
     else {
-        showResponseMessage(ordersDiv, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
-        <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
+        showResponseMessage(ordersDiv, `Please <a class="adm-login-link" href="admin_login.html">login as admin here.</a>
+        <br><br><a class="adm-login-link" href="/">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#edit-menu-link").style.display = "None";
     }
@@ -296,7 +296,7 @@ function addClickListener(btn) {
 
         else if(btn.innerHTML === "Close") {
             // Refresh page
-            window.location.replace("orders.html");
+            window.location.replace("orders");
         }
 
         else if(btn.innerHTML === deleteIcon) {

@@ -84,6 +84,7 @@ const showResponseMessage = (toHide, message) => {
     specialPara.innerHTML = message;
     // Hide everything else
     for(let tag of [toHide, footer]) {
+        alert(tag.classList[1]);
         tag.classList.add("hidden-mode");
     }
     // Reveal errorDiv

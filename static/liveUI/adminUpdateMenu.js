@@ -35,8 +35,8 @@ let foodItemPrice = document.querySelector("#new-item-price");
 document.addEventListener('DOMContentLoaded', () => {
     if(!adminToken) {
         errorDiv.lastChild.remove();
-        showResponseMessage(menuDiv, `Please <a class="adm-login-link" href="login.html">login as admin here.</a>
-        <br><br><a class="adm-login-link" href="menu.html">Homepage</a>`);
+        showResponseMessage(menuDiv, `Please <a class="adm-login-link" href="admin_login.html">login as admin here.</a>
+        <br><br><a class="adm-login-link" href="/">Homepage</a>`);
         logoutBtn.style.display = "None";
         document.querySelector("#orders-link").style.display = "None";
     }
@@ -213,7 +213,7 @@ function addBtnCliclListeners(btn) {
     // Close or Cancel btn
     else if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            window.location.replace("adm_menu.html");
+            window.location.replace("adm_menu");
         });
     }
 
