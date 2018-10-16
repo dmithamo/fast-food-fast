@@ -8,7 +8,7 @@ from flask import Flask, url_for
 
 APP = Flask(__name__)
 
-@app.route('/')
+@APP.route('/')
 def serve_homepage():
     """
         Render homepage on visiting root url
