@@ -198,7 +198,7 @@ function addClickListener(btn) {
     // Close
     if(btn.innerHTML === "Close") {
         btn.addEventListener("click", () => {
-            window.location.replace("users/view_orders");
+            window.location.replace("view_orders");
         });
     }
 }

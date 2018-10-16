@@ -25,7 +25,7 @@ function loginAdmin() {
             localStorage.adminToken = responseJSON.admin.token;
             localStorage.loggedInSince = responseJSON.admin.logged_in_at;
             // Redirect to orders page
-            window.location.replace("/");
+            window.location.replace("orders.html");
 
         }
         else {

@@ -36,6 +36,7 @@ input {
     margin-bottom: 3%;
     box-shadow: 0 0 1px 1px rgb(204, 204, 204);
     transition: all .3s;
+    -moz-transition: all .3s;
 }
 
 ::-webkit-input-placeholder {

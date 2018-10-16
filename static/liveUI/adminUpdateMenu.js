@@ -213,7 +213,7 @@ function addBtnCliclListeners(btn) {
     // Close or Cancel btn
     else if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            window.location.replace("adm_menu");
+            window.location.replace("adm_menu.html");
         });
     }
 

@@ -111,7 +111,7 @@ function addClickListener(btn) {
     // Close or Cancel btn
     if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            window.location.replace("place_order");
+            window.location.replace("place_order.html");
         });
     }
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-// LINK TO SERVER
+// LINK TO HEROKU API
 const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 
 // Login Btn and forms
@@ -84,7 +84,6 @@ const showResponseMessage = (toHide, message) => {
     specialPara.innerHTML = message;
     // Hide everything else
     for(let tag of [toHide, footer]) {
-        alert(tag.classList[1]);
         tag.classList.add("hidden-mode");
     }
     // Reveal errorDiv

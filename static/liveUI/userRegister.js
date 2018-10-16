@@ -39,7 +39,7 @@ function registerUser() {
 
             // Redirect to login page
             setTimeout(() => {
-                window.location.replace("login");
+                window.location.replace("login.html");
             }, 3000);
 
         }

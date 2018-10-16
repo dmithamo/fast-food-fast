@@ -69,6 +69,7 @@ ol>li{
     font-weight: 700;
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
     transition: all .3s;
+    -moz-transition: all .3s;
     outline: none;
 }
 
@@ -105,7 +106,7 @@ ol>li{
 }
 
 #quantity-modal{
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: white;
     box-shadow: 0 0 5px 2px rgb(61, 61, 61);
     width: 30%;
@@ -118,6 +119,7 @@ ol>li{
     right: 0;
     z-index: 2;
     transition: all 0.3s;
+    -moz-transition: all 0.3s;
 }
 
 #quantity-modal:hover{
@@ -127,7 +129,7 @@ ol>li{
 #q-input-number {
     padding: 1em;
     font-size: 1.3em;
-    border-radius: 10%;
+    border-radius: 5px;
     border: 1px dotted black;
     outline: none;
     font-family: 'IBM Plex Sans', sans-serif;
@@ -162,13 +164,19 @@ select {
     font: inherit;
     outline: none;
     border: none;
-    border-radius: 2%;
+    border-radius: 5px;
     background: none;
     box-shadow: 0 0 2px 2px rgb(199, 199, 199);
     transition: all .4s;
+    -moz-transition: all .4s;
+}
+
+select>option {
+    outline: none;
 }
 
 select:hover {
     padding: 1.2em;
     box-shadow: 0 0 2px 2px rgb(58, 58, 58);
 }
+
