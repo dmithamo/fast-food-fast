@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     else {
         // Remove close btn on error div
         errorDiv.lastChild.remove();
-        showResponseMessage(ordersDiv, `Please <a class="adm-login-link" href="admin_login.html">login as admin here.</a>
+        showResponseMessage(ordersDiv, `Please <a class="adm-login-link" href="auth/login.html">login as admin here.</a>
         <br><br><a class="adm-login-link" href="/">Homepage</a>`);
         logoutBtn.style.display = "None";
-        document.querySelector("#orders-link").style.display = "None";
+        document.querySelector("#edit-menu-link").style.display = "None";
     }
 });
 

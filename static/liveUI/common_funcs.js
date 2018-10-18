@@ -42,7 +42,14 @@ function addListenersToLoginBtns(funcToCall) {
     loginBtn.addEventListener('click', (event) => {
         if(loginEmailInput.value && loginPasswordInput.value) {
             event.preventDefault();
-            funcToCall();
+            if(loginEmailInput.value === "admintest@admin.com"){
+                // if credentials are admin credentials
+                funcToCall[0]();
+            }
+            // funcToCall();
+            else {
+                funcToCall[1]();
+            }
         }
     });
 
@@ -51,7 +58,13 @@ function addListenersToLoginBtns(funcToCall) {
         if(event.keyCode === 13) {
             if(loginEmailInput.value && loginPasswordInput.value) {
                 event.preventDefault();
-                funcToCall();
+                if(loginEmailInput.value === "admintest@admin.com"){
+                    // if credentials are admin credentials
+                    funcToCall[0]();
+                }
+                else {
+                    funcToCall[1]();
+                }
             }
         }
     });
