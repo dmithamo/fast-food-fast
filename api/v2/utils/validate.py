@@ -25,14 +25,14 @@ def abort_missing_required_param(required_params, data):
                 message="Unsuccesful. Missing '{}', which is a required param".format(param)), 400))
 
 
-def abort_invalid_param(param, reason):
+def abort_invalid_param(param, reason=""):
     """
         Checks whether all required params are present
         Aborts if any is missing or is None (e.g, 0 or "" )
     """
     for key, value in param.items():
         abort(make_response(jsonify(
-            message="Bad request. '{}' is an invalid {}. Reason: {}".format(
+            message="Unsuccessful. '{}' is an invalid {}. {}.".format(
                 value, key, reason)), 400))
 
 
@@ -194,9 +194,12 @@ def check_admin_logins(data):
     # Require specific email and password for admin
     email = data["email"]
     password = data["password"]
-    if email != "admintest@admin.com" or password != "admin-pass-10s":
+    if email != "admintest@admin.com":
         abort(make_response(jsonify(
-            message="Unsuccessful. Incorrect admin email or password"), 400))
+            message="Unsuccessful. Incorrect admin email"), 400))
+    if password != "admin-pass-10s":
+        abort(make_response(jsonify(
+            message="Wrong password"), 400))
 
 
 def check_email_validity(email):
@@ -212,10 +215,10 @@ def check_email_validity(email):
         user, domain = str(email).split("@")
     except ValueError:
         abort_invalid_param(
-            {"email": email}, "Email must have domain and user segments")
+            {"email": email})
     if not user or not domain:
         abort_invalid_param(
-            {"email": email}, "Invalid domain or user segment")
+            {"email": email})
 
     # Check that domain is valid
     # valid domain has valid part before and after '.'
@@ -223,10 +226,10 @@ def check_email_validity(email):
         dom_1, dom_2 = domain.split(".")
     except ValueError:
         abort_invalid_param(
-            {"email": email}, "Invalid domain name")
+            {"email": email})
     if not dom_1 or not dom_2:
         abort_invalid_param(
-            {"email": email}, "Invalid domain name")
+            {"email": email})
 
 
 def check_password_validity(password):

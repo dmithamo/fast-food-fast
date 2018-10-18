@@ -119,8 +119,7 @@ which is a required param")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'myemail.andela.com' is an invalid email. \
-Reason: Email must have domain and user segments")
+            "Unsuccessful. 'myemail.andela.com' is an invalid email. .")
 
     def test_user_registration_invalid_username(self):
         """
@@ -140,8 +139,8 @@ Reason: Email must have domain and user segments")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'd' is an invalid username. \
-Reason: 'username' must be an alphabet-only str at least 4 chars long")
+            "Unsuccessful. 'd' is an invalid username. \
+'username' must be an alphabet-only str at least 4 chars long.")
 
     def test_user_registration_invalid_password(self):
         """
@@ -161,9 +160,9 @@ Reason: 'username' must be an alphabet-only str at least 4 chars long")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response_json['message'],
-            "Bad request. 'dmit' is an invalid password. \
-Reason: Password must be at least an 8-char \
-long alphanumeric without any spaces")
+            "Unsuccessful. 'dmit' is an invalid password. \
+Password must be at least an 8-char \
+long alphanumeric without any spaces.")
 
     def test_registered_user_login(self):
         """
