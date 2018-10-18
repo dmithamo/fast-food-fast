@@ -34,7 +34,20 @@ class User:
         database.query_db_no_return(query)
 
     @staticmethod
-    def retrieve_user_from_db(email):
+    def retrieve_user_from_db_by_email(email):
+        """
+            Queries db for user with given email
+            Returns user object
+        """
+        # Query db for user with those params
+        query = """
+        SELECT user_id, username, email, password FROM users
+        WHERE users.email = '{}'""".format(email)
+
+        return database.select_from_db(query)
+
+    @staticmethod
+    def retrieve_user_from_db_by_username(username):
         """
             Queries db for user with given username
             Returns user object
@@ -42,7 +55,7 @@ class User:
         # Query db for user with those params
         query = """
         SELECT user_id, username, email, password FROM users
-        WHERE users.email = '{}'""".format(email)
+        WHERE users.username = '{}'""".format(username)
 
         return database.select_from_db(query)
 

@@ -80,11 +80,17 @@ class UserLogin(Resource):
         data = validate.check_request_validity(request)
         user_data = validate.check_login_params(data)
         try:
-            user = User.retrieve_user_from_db(user_data["email"])
+            # Attempt to find user by email
+            user = User.retrieve_user_from_db_by_email(user_data["username_or_email"])
             if not user:
-                abort(make_response(jsonify(
-                    message="User not found."), 404))
+                # Attempt to find user by username
+                user = User.retrieve_user_from_db_by_username(user_data["username_or_email"])
+                if not user:
+                    # When both fail to find a user, abort
+                    abort(make_response(jsonify(
+                        message="User not found."), 404))
 
+            # If user found
             user_id_from_db = user[0][0]
             username_from_db = user[0][1]
             email_from_db = user[0][2]

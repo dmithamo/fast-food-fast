@@ -159,18 +159,26 @@ def check_registration_params(data):
 
 def check_login_params(data):
     """
-        Carry out all checks necessary on registration data
+        Carry out all checks necessary on login data
         Abort if any is invalid
     """
-    required_params = ["email", "password"]
-
-    # abort if a required param is missing
-    abort_missing_required_param(required_params, data)
-
+    username = data.get("username")
+    if not username:
+        email = data.get("email")
+        if not email:
+            abort(make_response(jsonify(
+                message="Unsuccesful. Provide a 'username' or 'email', to login"), 400))
+    try:
+        password = data["password"]
+    except KeyError:
+        # If no username or email, or not password
+        abort(make_response(jsonify(
+            message="Unsuccesful. Missing 'password', which is required for login"), 400))
+    
     # For valid params
-    email = data["email"]
+    username_or_email = data.get("username") or data.get("email")
     password = data["password"]
-    return {"email": email,
+    return {"username_or_email": username_or_email,
             "password": password}
 
 
