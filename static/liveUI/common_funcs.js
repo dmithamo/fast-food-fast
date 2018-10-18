@@ -221,3 +221,43 @@ function filterByOption(option){
         }
     }
 }
+
+// Login or register form
+let emailInput = document.querySelector("input[type=email]");
+let usernameInput = document.querySelector("input[type=text]");
+let passwordInputs = document.querySelectorAll("input[type=password]");
+
+// Collected in a single list
+let allTheseInputTags = [emailInput, usernameInput];
+for(let passInput of passwordInputs){
+    allTheseInputTags.push(passInput);
+}
+
+function highlightWrongInputOnForm(message) {
+
+    if(message.indexOf("username") > -1){
+        usernameInput.classList.add("wrong-input");
+    }
+    if(message.indexOf("email") > -1){
+        emailInput.classList.add("wrong-input");
+    }
+    else {
+        emailInput.classList.remove("wrong-input");
+    }
+    if(message.indexOf("password") > -1){
+        for(let pInput of passwordInputs){
+            pInput.classList.add("wrong-input");
+        }
+    }
+    // Listen for user corrections
+    listenForCorrections();
+}
+
+// For when user is making corrections
+function listenForCorrections() {
+    for(let inputTag of allTheseInputTags){
+        inputTag.addEventListener("change", () => {
+            inputTag.classList.remove("wrong-input");
+        });
+    }
+}

@@ -48,6 +48,9 @@ function registerUser() {
             warningWrongLogins.innerHTML = message;
             // Append message to registration form
             registerBtn.parentNode.insertBefore(warningWrongLogins, registerBtn);
+            // Highlight the input with wrong value, if any
+            highlightWrongInputOnForm(message);
+
         }
     })
     .catch(function(err) {
@@ -63,11 +66,17 @@ registerBtn.addEventListener('click', (event) => {
         if(registerPasswordInput.value === confirmPasswordInput.value) {
             event.preventDefault();
             registerUser();
+            for(let input of [registerPasswordInput, confirmPasswordInput]) {
+                input.classList.remove("wrong-input");
+            }
         }
         else {
             event.preventDefault();
             warningWrongLogins.innerHTML = "Passwords do not match!";
             confirmPasswordInput.parentNode.insertBefore(warningWrongLogins, confirmPasswordInput);
+            for(let input of [registerPasswordInput, confirmPasswordInput]) {
+                input.classList.add("wrong-input");
+            }
         }
     }
 });

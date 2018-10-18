@@ -35,7 +35,7 @@ logoutBtn.addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
         errorDiv.lastChild.remove();
-        showResponseMessage(menuDiv, `Please <a class="login-link" href="login">login</a> or <a class="login-link" href="register">register</a>`);
+        showResponseMessage(menuDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         document.querySelector("#logout-link").innerHTML = "Homepage";
         // Hide order history button
