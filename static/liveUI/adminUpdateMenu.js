@@ -2,10 +2,11 @@
 'use strict'; // Use ES6
 
 
-// Append to page
-menuDiv.parentNode.insertBefore(errorDiv, menuDiv);
+// Append responseDiv to page
+const section = document.querySelector('section');
+menuDiv.parentNode.insertBefore(responseDiv, menuDiv);
 // Hide since it currently is empty
-errorDiv.classList.add("hidden-mode");
+responseDiv.classList.add("hidden-mode");
 
 // Select add-new-btn, editing-modal, save-btn, cancel-btn
 let addNewBtn = document.querySelector("#add-new-btn");
@@ -23,8 +24,6 @@ let logoutBtn = document.querySelector("#logout-link");
 
 // Select footer, section, editing-modal to hide and show as necessary
 const editingForm = document.querySelector('#editing-modal');
-const section = document.querySelector('section');
-// const footer = document.querySelector('footer');
 
 // Collect new food item attributes
 let foodItemName = document.querySelector("#new-item-name");
@@ -34,7 +33,7 @@ let foodItemPrice = document.querySelector("#new-item-price");
 // On page load
 document.addEventListener('DOMContentLoaded', () => {
     if(!adminToken) {
-        errorDiv.lastChild.remove();
+        responseDiv.lastChild.remove();
         showResponseMessage(menuDiv, `Please <a class="adm-login-link" href="auth/login.html">login as admin here.</a>
         <br><br><a class="adm-login-link" href="/">Homepage</a>`);
         logoutBtn.style.display = "None";
@@ -76,15 +75,20 @@ function addToMenu() {
         message = responseJSON.message;
         let food = responseJSON.food;
         if(message === "Food item added succesfully.") {
+            // Hide editing div
+            hideEditModal();
             // Show message
             showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
         }
         else {
             // Show message
-            showResponseMessage(menuDiv, message);
+            // showResponseMessage(menuDiv, message);
+            warningWrongValue.innerHTML = message;
+            foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
+            highlightWrongInputOnForm(message);
         }
 
-        })
+    })
     .catch(function(error) {
         console.log(error);
     });
@@ -109,16 +113,21 @@ function updateMenuItem(foodId) {
         message = responseJSON.message;
         let food = responseJSON.food;
         if(message === "Food item modified succesfully.") {
+            // Hide editing div
+            hideEditModal();
             // Show message
             showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
 
         }
         else {
             // Show message
-            showResponseMessage(menuDiv, message);
+            // showResponseMessage(menuDiv, message);
+            warningWrongValue.innerHTML = message;
+            foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
+            highlightWrongInputOnForm(message);
         }
 
-        })
+    })
     .catch(function(error) {
         console.log(error);
     });
@@ -153,7 +162,7 @@ function addAdminBtns() {
         let modifyBtn = document.createElement("button");
         modifyBtn.classList.add("edit-btn");
         modifyBtn.innerHTML = "Modify";
-        pageBtns.push(modifyBtn);                    // Extract foodId, foodName and foodPrice of item whose btn was clicked
+        pageBtns.push(modifyBtn);
 
         // Delete btn
         let deleteBtn = document.createElement("button");
@@ -270,15 +279,18 @@ function checkParams(funcToCall, arg) {
         // If no name
         warningWrongValue.innerHTML = "Food item name cannot be blank!";
         foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
+        highlightWrongInputOnForm("Food item name");
     }
 
+    // For invalid price
     if(+foodItemPrice.value < 1 ){
         // If no price
         warningWrongVal.innerHTML = "Food item price cannot be less than 1!";
         foodItemName.parentNode.insertBefore(warningWrongVal, foodItemPrice.nextSibling);
+        highlightWrongInputOnForm("Food item price");
     }
 
-    if(foodItemName.value && foodItemPrice.value > 0 ){
+    if(foodItemName.value && +foodItemPrice.value > 0 ){
         // Make POST / PUT request to server
         if(arg){
             funcToCall(arg);
@@ -286,7 +298,5 @@ function checkParams(funcToCall, arg) {
         else {
             funcToCall();
         }
-        // Hide editing modal
-        hideEditModal();
     }
 }

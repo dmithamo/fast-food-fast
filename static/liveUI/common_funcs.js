@@ -72,15 +72,15 @@ function addListenersToLoginBtns(funcToCall) {
 
 
 
-// Div to display errors
-let errorDiv = document.createElement("div");
-errorDiv.classList.add("msg-paragraph");
+// Div to display response
+let responseDiv = document.createElement("div");
+responseDiv.classList.add("msg-paragraph");
 
 // p tag with error
 let specialPara = document.createElement("p");
 
-// append to errorDiv
-errorDiv.appendChild(specialPara);
+// append to responseDiv
+responseDiv.appendChild(specialPara);
 
 // button to close error div
 let closeBtn = document.createElement("button");
@@ -88,8 +88,8 @@ closeBtn.classList.add("close-btn");
 closeBtn.innerHTML = "Close";
 closeBtn.id = "close-btn";
 
-// appedn to errorDiv
-errorDiv.appendChild(closeBtn);
+// appedn to responseDiv
+responseDiv.appendChild(closeBtn);
 
 // Display error msg
 const showResponseMessage = (toHide, message) => {
@@ -99,8 +99,8 @@ const showResponseMessage = (toHide, message) => {
     for(let tag of [toHide, footer]) {
         tag.classList.add("hidden-mode");
     }
-    // Reveal errorDiv
-    errorDiv.classList.remove("hidden-mode");
+    // Reveal responseDiv
+    responseDiv.classList.remove("hidden-mode");
 };
 
 
@@ -227,28 +227,44 @@ let emailInput = document.querySelector("input[type=email]");
 let usernameInput = document.querySelector("input[type=text]");
 let passwordInputs = document.querySelectorAll("input[type=password]");
 
+// Add food item to menu page
+let foodItemNameInput = document.querySelector("#new-item-name");
+let foodItemPriceInput = document.querySelector("#new-item-price");
+
 // Collected in a single list
-let allTheseInputTags = [emailInput, usernameInput];
+let allTheseInputTags = [emailInput, usernameInput, foodItemNameInput, foodItemPriceInput];
 for(let passInput of passwordInputs){
     allTheseInputTags.push(passInput);
 }
 
 function highlightWrongInputOnForm(message) {
-
+    // Wrong username
     if(message.indexOf("username") > -1){
         usernameInput.classList.add("wrong-input");
     }
+
+    // Wrong email
     if(message.indexOf("email") > -1){
         emailInput.classList.add("wrong-input");
     }
-    else {
-        emailInput.classList.remove("wrong-input");
-    }
-    if(message.indexOf("password") > -1){
+
+    // Wrong password
+    if(message.indexOf("invalid password") > -1){
         for(let pInput of passwordInputs){
             pInput.classList.add("wrong-input");
         }
     }
+
+    // Wrong food item name
+    if(message.indexOf("food_item_name") > -1 || message.indexOf("Food item name") > -1){
+        foodItemNameInput.classList.add("wrong-input");
+    }
+
+    // Wrong food item price
+    if(message.indexOf("food_item_price") > -1 || message.indexOf("Food item price") > -1){
+        foodItemPriceInput.classList.add("wrong-input");
+    }
+
     // Listen for user corrections
     listenForCorrections();
 }
@@ -256,8 +272,11 @@ function highlightWrongInputOnForm(message) {
 // For when user is making corrections
 function listenForCorrections() {
     for(let inputTag of allTheseInputTags){
-        inputTag.addEventListener("change", () => {
-            inputTag.classList.remove("wrong-input");
-        });
+        if(inputTag){
+            // If the input tag exists on current page (is not null)
+            inputTag.addEventListener("change", () => {
+                inputTag.classList.remove("wrong-input");
+            });
+        }
     }
 }

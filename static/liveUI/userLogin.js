@@ -35,6 +35,7 @@ function loginAdmin() {
             warningWrongLogins.innerHTML = message;
             // Append message to login form
             loginBtn.parentNode.insertBefore(warningWrongLogins, loginBtn);
+            highlightWrongInputOnForm(message);
         }
     })
     .catch(function(err) {
@@ -75,6 +76,8 @@ function loginUser() {
             warningWrongLogins.innerHTML = message;
             // Append message to login form
             loginBtn.parentNode.insertBefore(warningWrongLogins, loginBtn);
+            highlightWrongInputOnForm(message);
+
         }
     })
     .catch(function(err) {
