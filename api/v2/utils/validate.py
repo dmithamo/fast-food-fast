@@ -88,7 +88,7 @@ def check_duplication_b(food_item_name, food_item_id):
     if food_item:
         # Abort if it would be a duplication
         abort(make_response(jsonify(
-            message="Error. {} is already in use".format(
+            message="Error. 'food_item_name' {} is already in use".format(
                 food_item_name)), 400))
 
 
