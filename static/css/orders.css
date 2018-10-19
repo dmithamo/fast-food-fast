@@ -18,9 +18,9 @@ figure {
 
 
 figure>img {
-    width: 125px;
-    height: auto;
-    min-height: 100px;
+    width: auto;
+    max-height: 102px;
+    min-height: 102px;
 }
 
 figcaption>button {
