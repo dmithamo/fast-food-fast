@@ -291,12 +291,13 @@ def check_food_item_params(data):
     """
         Check food params before adding to menu
     """
-    required_params = ["food_item_name", "food_item_price"]
+    required_params = ["food_item_name", "food_item_price", "food_item_img"]
     # abort if missing a require param
     abort_missing_required_param(required_params, data)
 
     food_item_name = data["food_item_name"]
     food_item_price = data["food_item_price"]
+    food_item_img = data["food_item_img"]
 
     check_invalid_name("food_item_name", food_item_name)
 
@@ -310,7 +311,8 @@ def check_food_item_params(data):
 
     food_item = {
         "food_item_name": food_item_name,
-        "food_item_price": food_item_price}
+        "food_item_price": food_item_price,
+        "food_item_img": food_item_img}
 
     return food_item
 

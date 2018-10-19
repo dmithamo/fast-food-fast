@@ -29,7 +29,7 @@ class Menu(Resource):
         validate.abort_if_user_role_not_appropriate("admin")
         # Save valid food to db
         new_food = FoodItem(
-            food_item["food_item_name"], food_item["food_item_price"])
+            food_item["food_item_name"], food_item["food_item_price"], food_item["food_item_img"])
         new_food.save_food_item_to_menu()
 
         # Confirm save by querrying db for saved food item
@@ -45,7 +45,8 @@ class Menu(Resource):
             "food": {
                 "food_item_id": saved_food[0][0],
                 "food_item_name": saved_food[0][1],
-                "food_item_price": saved_food[0][2]
+                "food_item_price": saved_food[0][2],
+                "food_item_img": saved_food[0][3]
             }
         }), 201)
 

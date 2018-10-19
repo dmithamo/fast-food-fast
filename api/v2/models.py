@@ -131,22 +131,24 @@ class FoodItem:
     """
         Models a food_item
     """
-    def __init__(self, food_item_name, food_item_price):
+    def __init__(self, food_item_name, food_item_price, food_item_img):
         """"
             Initilize an order, given params
         """
         self.food_item_name = food_item_name
         self.food_item_price = food_item_price
+        self.food_item_img = food_item_img
 
     def save_food_item_to_menu(self):
         """
             Add food item with valid params to db
         """
         query = """
-        INSERT INTO menu(food_item_name, food_item_price) VALUES(
-            '{}', '{}')""".format(
+        INSERT INTO menu(food_item_name, food_item_price, food_item_img) VALUES(
+            '{}', '{}', '{}')""".format(
                 self.food_item_name,
-                self.food_item_price)
+                self.food_item_price,
+                self.food_item_img)
 
         database.query_db_no_return(query)
 
@@ -155,7 +157,7 @@ class FoodItem:
             Add order with valid params to db
         """
         query = """
-        SELECT food_item_id, food_item_name, food_item_price
+        SELECT food_item_id, food_item_name, food_item_price, food_item_img
         FROM menu WHERE menu.food_item_name = '{}'""".format(
             food_item_name)
 

@@ -38,7 +38,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         adm_token = self.login_test_admin()
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Guacamole",
-             "food_item_price": 1000}, adm_token)
+             "food_item_price": 1000,
+             "food_item_img": "Generic image"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -72,7 +73,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         adm_token = self.login_test_admin()
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Guacamole",
-             "food_item_price": 1000}, adm_token)
+             "food_item_price": 1000,
+             "food_item_img": "Generic image"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -203,10 +205,12 @@ class TestEndpoints(base_test_class.TestClassBase):
         adm_token = self.login_test_admin()
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Cassava",
-             "food_item_price": 120}, adm_token)
+             "food_item_price": 120,
+             "food_item_img": "Generic image"}, adm_token)
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Mango Shake",
-             "food_item_price": 400}, adm_token)
+             "food_item_price": 400,
+             "food_item_img": "Generic image"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()

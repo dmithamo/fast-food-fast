@@ -55,10 +55,12 @@ class TestEndpoints(base_test_class.TestClassBase):
         adm_token = self.login_test_admin()
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Watermelon",
-             "food_item_price": 10}, adm_token)
+             "food_item_price": 10,
+             "food_item_img": "Watermelon"}, adm_token)
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Orange Juice",
-             "food_item_price": 70}, adm_token)
+             "food_item_price": 70,
+             "food_item_img": "Juice"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -140,7 +142,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         adm_token = self.login_test_admin()
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Sembe Moto",
-             "food_item_price": 70}, adm_token)
+             "food_item_price": 70,
+             "food_item_img": "Sembe"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -199,7 +202,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Flowerey Things",
-             "food_item_price": 2000}, adm_token)
+             "food_item_price": 2000,
+             "food_item_img": "Things"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -235,7 +239,8 @@ class TestEndpoints(base_test_class.TestClassBase):
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Njugu Karanga",
-             "food_item_price": 20}, adm_token)
+             "food_item_price": 20,
+             "food_item_img": "Njugu"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -269,7 +274,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Njugu Karanga",
-             "food_item_price": 20}, adm_token)
+             "food_item_price": 20,
+             "food_item_img": "Njugu"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -309,7 +315,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Njugu Karanga",
-             "food_item_price": 20}, adm_token)
+             "food_item_price": 20,
+             "food_item_img": "Njugu"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -349,7 +356,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Njugu Karanga",
-             "food_item_price": 20}, adm_token)
+             "food_item_price": 20,
+             "food_item_img": "Njugu"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -415,11 +423,14 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Make POST /menu request
         food_a = {
             "food_item_name": "Vegetable Curry",
-            "food_item_price": 550
+            "food_item_price": 550,
+            "food_item_img": "Curry"
         }
         food_b = {
             "food_item_name": "Meat Balls",
-            "food_item_price": 1550
+            "food_item_price": 1550,
+            "food_item_img": "Meat Balls"
+
         }
         self.logged_in_admin_post_to_menu(food_a, adm_token)
         self.logged_in_admin_post_to_menu(food_b, adm_token)
@@ -453,7 +464,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         response = self.client.post("{}/menu".format(
             self.base_url), json={
                 "food_item_name": "Assorted Nuts",
-                "food_item_price": 1400}, headers={
+                "food_item_price": 1400,
+                "food_item_img": "Nuts"}, headers={
                     "Authorization": "Bearer {}".format(adm_token)})
 
         response_json = base_test_class.helper_functions.response_as_json(
@@ -476,7 +488,9 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         adm_token = self.login_test_admin()
         # Make first POST
         food_item = {"food_item_name": "Mangoes",
-                     "food_item_price": 400}
+                     "food_item_price": 400,
+                     "food_item_img": "Mangoes"
+                    }
         self.logged_in_admin_post_to_menu(food_item, adm_token)
 
         # POST with same food item
@@ -503,7 +517,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Maembe Kubwa",
-             "food_item_price": 2000}, adm_token)
+             "food_item_price": 2000,
+             "food_item_img": "Maembe"}, adm_token)
 
         # Update order status to "Complete"
         response = self.client.put("{}/menu/1".format(
@@ -531,7 +546,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
 
         food_item = {
             "food_item_name": "Maembe Kubwa",
-            "food_item_price": 10
+            "food_item_price": 10,
+            "food_item_img": "Maembe"
         }
         self.logged_in_admin_post_to_menu(food_item, adm_token)
 
@@ -560,7 +576,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Flowerey Things",
-             "food_item_price": 2000}, adm_token)
+             "food_item_price": 2000,
+             "food_item_img": "Things"}, adm_token)
 
         # Update order status to "Complete"
         response = self.client.delete("{}/menu/1".format(
@@ -585,7 +602,8 @@ Valid statuses: '['Processing', 'Cancelled', 'Complete']'")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Flowerey Things",
-             "food_item_price": 2000}, adm_token)
+             "food_item_price": 2000,
+             "food_item_img": "Things"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -623,7 +641,8 @@ Status must be 'Cancelled' to delete")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Flowerey Things",
-             "food_item_price": 2000}, adm_token)
+             "food_item_price": 2000,
+             "food_item_img": "Things"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()
@@ -660,7 +679,8 @@ Status must be 'Cancelled' to delete")
         # Add item to menu
         self.logged_in_admin_post_to_menu(
             {"food_item_name": "Flowerey Things",
-             "food_item_price": 2000}, adm_token)
+             "food_item_price": 2000,
+             "food_item_img": "Things"}, adm_token)
 
         # Register and login user
         token = self.login_test_user()

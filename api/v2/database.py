@@ -46,7 +46,8 @@ def set_up_tables():
     CREATE TABLE menu (
         food_item_id SERIAL PRIMARY KEY,
         food_item_name VARCHAR (24) NOT NULL,
-        food_item_price INTEGER NOT NULL
+        food_item_price INTEGER NOT NULL,
+        food_item_img VARCHAR (24) NOT NULL
     )"""
 
     orders_table_query = """
