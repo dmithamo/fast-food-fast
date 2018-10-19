@@ -117,8 +117,9 @@ figure {
 }
 
 figure>img {
-    width: 180px;
-    height: 180px;
+    width: 125px;
+    height: auto;
+    min-height: 100px;
 }
 
 footer {

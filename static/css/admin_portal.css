@@ -304,3 +304,8 @@ div#menu-header {
 .close-btn:hover {
     width: 40%;
 }
+
+
+#new-item-img{
+    margin-bottom: 1em;
+}

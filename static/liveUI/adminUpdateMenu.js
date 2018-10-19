@@ -28,6 +28,7 @@ const editingForm = document.querySelector('#editing-modal');
 // Collect new food item attributes
 let foodItemName = document.querySelector("#new-item-name");
 let foodItemPrice = document.querySelector("#new-item-price");
+let foodItemImg = document.querySelector("#new-item-img");
 
 
 // On page load
@@ -59,7 +60,8 @@ logoutBtn.addEventListener("click", () => {
 function addToMenu() {
     let data = {
         "food_item_name": foodItemName.value,
-        "food_item_price": +foodItemPrice.value
+        "food_item_price": +foodItemPrice.value,
+        "food_item_img": foodItemImg.value
     };
     // POST menu item
     fetch(`${api_url}/menu`, {
