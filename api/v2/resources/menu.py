@@ -100,7 +100,8 @@ class Menu(Resource):
             "food": {
                 "food_item_id": update_food_item[0],
                 "food_item_name": update_food_item[1],
-                "food_item_price": update_food_item[2]
+                "food_item_price": update_food_item[2],
+                "food_item_img": update_food_item[3]
             }
         }), 201)
 
@@ -164,7 +165,8 @@ class Menu(Resource):
             formatted_item = {
                 "food_item_id": item[0],
                 "food_item_name": item[1],
-                "food_item_price": item[2]
+                "food_item_price": item[2],
+                "food_item_img": item[3]
             }
 
             formatted_menu.append(formatted_item)

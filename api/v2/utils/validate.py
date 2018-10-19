@@ -98,10 +98,12 @@ def check_if_any_change(data, food_item):
     """
     formatted_food_item = {
         "food_item_name": food_item[0][1],
-        "food_item_price": food_item[0][2]
+        "food_item_price": food_item[0][2],
+        "food_item_img": food_item[0][3],
     }
     name_not_changed = True
     price_not_changed = True
+    img_not_changed = True
 
     for key, value in data.items():
         if key == "food_item_name" \
@@ -112,8 +114,12 @@ def check_if_any_change(data, food_item):
           and value != formatted_food_item["food_item_price"]:
             price_not_changed = False
 
-    if name_not_changed and price_not_changed:
-        # If neither param changed, abort
+        if key == "food_item_img" \
+          and value != formatted_food_item["food_item_img"]:
+            img_not_changed = False
+
+    if name_not_changed and price_not_changed and img_not_changed:
+        # If no param changed, abort
         abort(make_response(jsonify(
             message="Not updated. No change detected"), 400))
 
@@ -324,7 +330,7 @@ def check_if_param_updatable(data):
     """
     for key, value in data.items():
         # if either is not a valid food_item_param
-        if key not in ["food_item_name", "food_item_price"]:
+        if key not in ["food_item_name", "food_item_price", "food_item_img"]:
             abort_not_food_item_param(key, "parameter")
 
         if key == "food_item_price" \
