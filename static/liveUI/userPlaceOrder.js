@@ -17,9 +17,9 @@ addClickListener(closeBtn);
 
 
 // Append to page
-menuDiv.parentNode.insertBefore(errorDiv, menuDiv);
+menuDiv.parentNode.insertBefore(responseDiv, menuDiv);
 // Hide since it currently is empty
-errorDiv.classList.add("hidden-mode");
+responseDiv.classList.add("hidden-mode");
 
 
 // select logout button
@@ -34,7 +34,7 @@ logoutBtn.addEventListener("click", () => {
 // On page load
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
-        errorDiv.lastChild.remove();
+        responseDiv.lastChild.remove();
         showResponseMessage(menuDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         document.querySelector("#logout-link").innerHTML = "Homepage";
@@ -97,13 +97,13 @@ function addClickListener(btn) {
             if(quantity){
                 // Make POST request to server, if quantity is > 0
                 placeOrder(foodId, quantity);
-                // Hide editing modal
-                hideQuantityModal();
             }
             else {
                 // Show error
                 warningWrongValue.innerHTML = "Quantity cannot be 0 or greater that 5!";
                 quantityInput.parentNode.insertBefore(warningWrongValue, btn);
+                highlightWrongInputOnForm("Quantity ...");
+
             }
         });
     }
@@ -166,12 +166,16 @@ function placeOrder(foodId, quantity) {
             let orderStatus = responseJSON.order.order_status;
             let orderCost = responseJSON.order.total_order_cost;
             let orderedBy = responseJSON.order.ordered_by;
+            // Hide order creation div
+            hideQuantityModal();
             // Show order info
             showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The order <br><br> order ID: ${orderId}<br>order Status: ${orderStatus}<br>order Summary: ${orderInfo}<br>Total cost: Ksh. ${orderCost}<br><br>Ordered by: ${orderedBy}<br></p>`);
         }
         else {
             // Show message
-            showResponseMessage(menuDiv, message);
+            warningWrongValue.innerHTML = message;
+            foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
+            highlightWrongInputOnForm(message);
         }
 
         })

@@ -82,7 +82,6 @@ function addToMenu() {
         }
         else {
             // Show message
-            // showResponseMessage(menuDiv, message);
             warningWrongValue.innerHTML = message;
             foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
             highlightWrongInputOnForm(message);
@@ -121,7 +120,6 @@ function updateMenuItem(foodId) {
         }
         else {
             // Show message
-            // showResponseMessage(menuDiv, message);
             warningWrongValue.innerHTML = message;
             foodItemName.parentNode.insertBefore(warningWrongValue, foodItemName.nextSibling);
             highlightWrongInputOnForm(message);

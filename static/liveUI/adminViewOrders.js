@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     else {
         // Remove close btn on error div
-        errorDiv.lastChild.remove();
+        responseDiv.lastChild.remove();
         showResponseMessage(ordersDiv, `Please <a class="adm-login-link" href="auth/login.html">login as admin here.</a>
         <br><br><a class="adm-login-link" href="/">Homepage</a>`);
         logoutBtn.style.display = "None";
@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Append errorDiv to page
+// Append responseDiv to page
 // Defined in common_funcs.js
-ordersDiv.parentNode.insertBefore(errorDiv, ordersDiv);
+ordersDiv.parentNode.insertBefore(responseDiv, ordersDiv);
 // Hide since it currently is empty
-errorDiv.classList.add("hidden-mode");
+responseDiv.classList.add("hidden-mode");
 
 // Add click listener
 addClickListener(closeBtn);

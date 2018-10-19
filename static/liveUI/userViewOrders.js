@@ -21,9 +21,9 @@ let ordersDiv = document.querySelector("#orders-div");
 addClickListener(closeBtn);
 
 // Append to page
-ordersDiv.parentNode.insertBefore(errorDiv, ordersDiv);
+ordersDiv.parentNode.insertBefore(responseDiv, ordersDiv);
 // Hide since it currently is empty
-errorDiv.classList.add("hidden-mode");
+responseDiv.classList.add("hidden-mode");
 
 // select logout button
 let logoutBtn = document.querySelector("#logout-link");
@@ -33,7 +33,7 @@ addClickListener(logoutBtn);
 // On page load
 document.addEventListener('DOMContentLoaded', () => {
     if(!userToken) {
-        errorDiv.lastChild.remove();
+        responseDiv.lastChild.remove();
         showResponseMessage(ordersDiv, `Please <a class="login-link" href="../auth/login.html">login</a> or <a class="login-link" href="../auth/register.html">register</a>`);
         // Change text in logout link
         logoutBtn.innerHTML = "See Menu";

@@ -231,6 +231,10 @@ let passwordInputs = document.querySelectorAll("input[type=password]");
 let foodItemNameInput = document.querySelector("#new-item-name");
 let foodItemPriceInput = document.querySelector("#new-item-price");
 
+// On place order page
+let quantityInput = document.querySelector("#q-input-number");
+
+
 // Collected in a single list
 let allTheseInputTags = [emailInput, usernameInput, foodItemNameInput, foodItemPriceInput];
 for(let passInput of passwordInputs){
@@ -263,6 +267,11 @@ function highlightWrongInputOnForm(message) {
     // Wrong food item price
     if(message.indexOf("food_item_price") > -1 || message.indexOf("Food item price") > -1){
         foodItemPriceInput.classList.add("wrong-input");
+    }
+
+    // Wrong quantity
+    if(message.indexOf("Quantity") > -1){
+        quantityInput.classList.add("wrong-input");
     }
 
     // Listen for user corrections
