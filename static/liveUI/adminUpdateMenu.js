@@ -28,6 +28,7 @@ const editingForm = document.querySelector('#editing-modal');
 // Collect new food item attributes
 let foodItemName = document.querySelector("#new-item-name");
 let foodItemPrice = document.querySelector("#new-item-price");
+let foodItemImg = document.querySelector("#new-item-img");
 
 
 // On page load
@@ -59,7 +60,8 @@ logoutBtn.addEventListener("click", () => {
 function addToMenu() {
     let data = {
         "food_item_name": foodItemName.value,
-        "food_item_price": +foodItemPrice.value
+        "food_item_price": +foodItemPrice.value,
+        "food_item_img": foodItemImg.value
     };
     // POST menu item
     fetch(`${api_url}/menu`, {
@@ -78,7 +80,7 @@ function addToMenu() {
             // Hide editing div
             hideEditModal();
             // Show message
-            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
+            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}<br> foodItem img: ${food.food_item_img}</p>`);
         }
         else {
             // Show message
@@ -96,7 +98,8 @@ function addToMenu() {
 function updateMenuItem(foodId) {
     let data = {
         "food_item_name": foodItemName.value,
-        "food_item_price": +foodItemPrice.value
+        "food_item_price": +foodItemPrice.value,
+        "food_item_img": foodItemImg.value
     };
     // PUT menu item
     fetch(`${api_url}/menu/${foodId}`, {
@@ -111,11 +114,12 @@ function updateMenuItem(foodId) {
     .then(function(responseJSON) {
         message = responseJSON.message;
         let food = responseJSON.food;
+        console.log(food);
         if(message === "Food item modified succesfully.") {
             // Hide editing div
             hideEditModal();
             // Show message
-            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}</p>`);
+            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}<br> foodItem img: ${food.food_item_img}</p>`);
 
         }
         else {

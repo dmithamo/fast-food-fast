@@ -16,9 +16,11 @@ figure {
     height: 250px;
 }
 
+
 figure>img {
-    width: 100px;
-    height: 100px;
+    width: auto;
+    max-height: 102px;
+    min-height: 102px;
 }
 
 figcaption>button {
