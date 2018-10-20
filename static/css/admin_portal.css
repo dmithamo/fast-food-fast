@@ -309,3 +309,7 @@ div#menu-header {
 #new-item-img{
     margin-bottom: 1em;
 }
+
+#new-item-img:hover{
+    background: none;
+}

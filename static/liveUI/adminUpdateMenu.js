@@ -119,7 +119,7 @@ function updateMenuItem(foodId) {
             // Hide editing div
             hideEditModal();
             // Show message
-            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}<br> foodItem img: ${food.food_item_img}</p>`);
+            showResponseMessage(menuDiv, `${message}<br><br><p class="order-summary">The food Item <br><br> foodItem ID: ${food.food_item_id}<br> foodItem name: ${food.food_item_name}<br>foodItem price: Ksh. ${food.food_item_price}<br> foodItem img: ${food.food_item_img || "Generic image"}</p>`);
 
         }
         else {
@@ -241,10 +241,13 @@ function addBtnCliclListeners(btn) {
             let clickedItemName = clickedMenuItem.querySelector("p.item-name").innerHTML;
             // Price
             let clickedItemPrice = clickedMenuItem.querySelector("p.item-price").innerHTML;
+            // Img
+            let clickedItemImg = document.querySelector("#new-item-img").value;
 
             // Display editing modal with current food item attributes
             document.querySelector("#new-item-name").value = clickedItemName;
             document.querySelector("#new-item-price").value = +(clickedItemPrice.split(" ")[1]);
+            document.querySelector("#new-item-img").value = clickedItemImg;
 
             // Show Update btn and hide Save btn
             saveNewBtn.style.display = "None";

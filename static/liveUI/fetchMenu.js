@@ -54,7 +54,7 @@ function fetchMenu() {
                     // Each figure contains an img
                     let img = document.createElement("img");
                     // Set img to a default img src for starters
-                    img.src = foodImgs[`${foodItem.food_item_img}`];
+                    img.src = foodImgs[`${foodItem.food_item_img}`] || foodImgs["Generic image"];
                     img.alt = "Food Item";
                     
                     // Each figure contains a figcaption
