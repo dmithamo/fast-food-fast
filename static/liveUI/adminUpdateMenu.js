@@ -211,6 +211,8 @@ function addBtnCliclListeners(btn) {
 
             // Reveal editing modal on function call
             showEditModal();
+            // Populate select with image options
+            addImageOptions();
         });
     }
 
@@ -232,6 +234,8 @@ function addBtnCliclListeners(btn) {
     else if(btn.innerHTML === "Modify") {
         btn.addEventListener("click", () => {
             showEditModal();
+            // Populate select with image options
+            addImageOptions();
 
             // Extract foodId, foodName and foodPrice of item whose btn was clicked
             clickedMenuItem = btn.parentNode.parentNode.parentNode;
@@ -242,12 +246,19 @@ function addBtnCliclListeners(btn) {
             // Price
             let clickedItemPrice = clickedMenuItem.querySelector("p.item-price").innerHTML;
             // Img
-            let clickedItemImg = document.querySelector("#new-item-img").value;
+            let clickedItemImg = clickedMenuItem.querySelector("img").getAttribute("alt");
+
+            let imagesSelect = document.querySelector("#new-item-img");
+            // Set current img as the selected one
+            for(let option of imagesSelect){
+                if(option.value === clickedItemImg){
+                    option.setAttribute("selected", "selected");
+                }
+            }
 
             // Display editing modal with current food item attributes
             document.querySelector("#new-item-name").value = clickedItemName;
             document.querySelector("#new-item-price").value = +(clickedItemPrice.split(" ")[1]);
-            document.querySelector("#new-item-img").value = clickedItemImg;
 
             // Show Update btn and hide Save btn
             saveNewBtn.style.display = "None";

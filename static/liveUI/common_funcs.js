@@ -289,3 +289,31 @@ function listenForCorrections() {
         }
     }
 }
+
+
+// Image options
+const foodImgs = {
+    "Generic image": "https://15logo.net/wp-content/uploads/2017/05/fast-food-800x800.jpg",
+    "Pizza": "http://www.a2zlifestyle.com/wp-content/uploads/2013/08/Healthy-and-Delicious-Pizza-at-Home.jpg",
+    "Burger": "http://bk-latam-prod.s3.amazonaws.com/sites/burgerking.com.pe/files/MegaTocino_300x270px_0.png",
+    "Fish": "https://img.aws.livestrongcdn.com/ls-article-image-673/cme/photography.prod.demandstudios.com/b676a889-db55-49ca-b1a1-3ced12ed8f10.jpg",
+    "Soup": "https://skinnyms.com/wp-content/uploads/2012/09/Slow-Cooker-Hearty-Vegetable-and-Bean-Soup-1.jpg",
+    "French fries": "http://theloadedslice.net/image/cache/products/appetizers/french-fries-800x800.png",
+    "Bhajia": "http://vegindianrecipe.com/wp-content/uploads/2012/03/farali-bhajiya-large.jpg",
+    "Sausage rolls": "http://richiemart.com/wp-content/uploads/2016/10/sausage-roll.jpg",
+    "Milk shake": "https://www.americandairy.com/core/fileparse.php/111/urlt/vanilla-milkshake-recipe.jpg",
+    "Coffee": "https://www.simplygreatcoffee.co.uk/shop/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/4/o/4oz_paper_cup_7.jpg",
+};
+
+function addImageOptions() {
+    // Add image options dynamically
+    let imagesSelect = document.querySelector("#new-item-img");
+    for(let image in foodImgs){
+        let option = document.createElement("option");
+        // Assign value and innerHTML
+        option.value = image;
+        option.innerHTML = image;
+        imagesSelect.appendChild(option);
+    }
+}
+
