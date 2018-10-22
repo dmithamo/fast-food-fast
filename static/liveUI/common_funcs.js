@@ -10,7 +10,7 @@ let loginPasswordInput = document.querySelector("#login-password-input");
 
 
 // // Reusable variables
-let message = '';
+let message;
 
 // Create and style a p tag for error message on invalid params
 let warningWrongValue = document.createElement("p");
@@ -317,3 +317,18 @@ function addImageOptions() {
     }
 }
 
+function showLoadingIcon(attachTo) {
+    let loadingIcon = document.createElement("p");
+    loadingIcon.classList.add("loading-icon");
+    loadingIcon.innerHTML = "";
+
+    // Appedn on page
+    attachTo.parentNode.appendChild(loadingIcon);
+    let percentage = 0;
+    setInterval(() => {
+        percentage += 20;
+        if(percentage <= 100){
+            loadingIcon.innerHTML = `loading ... ${percentage}%`;
+        }
+    }, 1000);
+}

@@ -159,3 +159,17 @@ footer {
     color: #D8000C;
     background-color: #FFBABA;
 }
+
+.loading-icon {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    font-size: 3em;
+    font-weight: bold;
+    color: rgb(46, 46, 46);
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+    padding: 2em 0;
+}
