@@ -317,3 +317,15 @@ function addImageOptions() {
     }
 }
 
+function showLoadingIcon(attachTo, message) {
+    let loadingIcon = document.createElement("p");
+    loadingIcon.classList.add("loading-icon");
+    loadingIcon.innerHTML = `<i class="fas fa-spinner"></i>`;
+
+    // Appedn on page
+    attachTo.appendChild(loadingIcon);
+
+    if(!message){
+        loadingIcon.classList.toggle("hidden-mode");
+    }
+}
