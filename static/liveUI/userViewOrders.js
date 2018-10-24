@@ -62,7 +62,7 @@ function fetchOrders() {
         // Analyse the response
         message = responseJSON.message;
         if(message === `No orders yet for user '${loggedInAs}'`) {
-            showMessageIfNoItems(ordersOL, message);
+            showMessageIfNoItems(ordersOL, `You have not yet placed any orders.<br><br><a class="adm-login-link" href="place_order.html">Place Order</a>`);
             // Hide orders header
             document.querySelector("#orders-header").classList.add("hidden-mode");
 

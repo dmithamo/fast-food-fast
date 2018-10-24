@@ -128,8 +128,6 @@ function addClickListener(btn) {
                 
                 // Hide quantity div
                 hideQuantityModal();
-
-                flashMessage(false, "Crunching the numbers ...");
                 setTimeout(() => {
                     location.reload();
                 }, 1000);
@@ -170,7 +168,7 @@ function addClickListener(btn) {
                 }
             }
 
-            flashMessage(true, `Orders successfully placed.<br>Visit <a class="adm-login-link" href="view_orders.html">Order History</a> to track progress<br><br><br>`);
+            flashMessage(true, `Orders successfully placed.<br><br><a class="adm-login-link" href="view_orders.html">Track Progress</a><br><br><br>`);
         });
     }
 
