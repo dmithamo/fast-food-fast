@@ -131,7 +131,10 @@ footer {
 .flash-message {
     position: fixed;
     top: 20%;
-    left: 30%;
+    left: 25%;
+    z-index: 20;
+    background-color: rgb(255, 255, 255);
+    min-height: 70px;
 }
 
 .msg-paragraph {

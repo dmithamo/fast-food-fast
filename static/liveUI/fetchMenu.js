@@ -15,14 +15,10 @@ function fetchMenu() {
         .then(function(responseJSON) {
             message = responseJSON.message;
             if(message === "No food items on the menu yet") {
-                // Hide loadingIcon
-                document.querySelector(".loading-icon").style.display = "None";
                 // Create and style a special paragraph to report that menu is empty
                 showMessageIfNoItems(menuUL, message);
             }
             else {
-                // Hide loadingIcon
-                document.querySelector(".loading-icon").style.display = "None";
                 // Create an li for each item on menu and append li to menuUL
                 let menuItems = responseJSON.menu;
                 menuItems.forEach(foodItem => {
@@ -87,6 +83,5 @@ function fetchMenu() {
 
 // Call function when DOM content is finished loading
 document.addEventListener('DOMContentLoaded', () => {
-    showLoadingIcon(menuDiv);
     fetchMenu();
 });

@@ -94,7 +94,7 @@ function addClickListener(btn) {
 
             // Check if item is already in cart
             if(`order${foodId}` in localStorage){
-                let updateQuantity = confirm("This item is already in your cart. Would you like to the quantity?");
+                let updateQuantity = confirm(`This item is already in your cart. Would you like to update the quantity?`);
                 if(updateQuantity){
                     let theItem = JSON.parse(localStorage[`order${foodId}`]);
                     let currentQ = +theItem["quantity"];
@@ -121,16 +121,22 @@ function addClickListener(btn) {
             let quantityInput = quantityModal.querySelector("#q-input-number");
             let quantity = +quantityInput.value;
             if(quantity){
-                // Make POST request to server, if quantity is > 0
+                // Add item to Cart, if quantity is > 0
                 addToCart(quantity, clickedMenuItem);
-                window.location.replace("place_order.html");
+                
+                // Hide quantity div
+                hideQuantityModal();
+
+                flashMessage(false, false, "Crunching the numbers ...");
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
             else {
                 // Show error
                 warningWrongValue.innerHTML = "Quantity cannot be 0!";
                 quantityInput.parentNode.insertBefore(warningWrongValue, btn);
                 highlightWrongInputOnForm("Quantity ...");
-
             }
         });
     }
@@ -138,7 +144,7 @@ function addClickListener(btn) {
     // Close or Cancel btn
     if(btn.innerHTML === "Close" || btn.value === "Cancel") {
         btn.addEventListener("click", () => {
-            window.location.replace("place_order.html");
+            location.reload();
         });
     }
 
@@ -162,12 +168,7 @@ function addClickListener(btn) {
                 }
             }
 
-            flashMessage(`Orders successfully placed.<br>Visit <a class="adm-login-link" href="view_orders.html">Order History</a> to track progress<br><br><br>`);
-
-            // setTimeout(() => {
-            //     // Reload page
-            //     location.reload();
-            // }, 5000);
+            flashMessage(true, false, `Orders successfully placed.<br>Visit <a class="adm-login-link" href="view_orders.html">Order History</a> to track progress<br><br><br>`);
         });
     }
 }

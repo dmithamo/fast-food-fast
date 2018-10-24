@@ -337,20 +337,53 @@ function showLoadingIcon(attachTo) {
 let inCart = [];
 
 
-function flashMessage(msg) {
+function flashMessage(hideOthers, showConfirmBtn, msg) {
     let messageP = document.createElement("p");
     messageP.id = "flash-message-p";
     messageP.classList.add("msg-paragraph");
     messageP.classList.add("flash-message");
-    messageP.innerHTML = msg;
 
-    // Attachh close btn
-    messageP.appendChild(closeBtn);
+    let spanWithMessage = document.createElement("span");
+    spanWithMessage.id = "flash-span";
+    
+    spanWithMessage.innerHTML = msg;
+    messageP.appendChild(spanWithMessage);
 
     // Append on page
     document.querySelector("body").appendChild(messageP);
-    for(let tag of [footer, section]){
-        tag.style.display = "None";
+
+    if(hideOthers){
+        // Attachh close btn
+        messageP.appendChild(closeBtn);
+        for(let tag of [footer, section]){
+            tag.classList.add("hidden-mode");
+        }
     }
-    
+    else {
+        for(let tag of [footer, section]){
+            tag.classList.remove("hidden-mode");
+        }
+    }
+    if(showConfirmBtn){
+        // Append a `Yes` btn
+        let yesBtn = closeBtn.cloneNode();
+        yesBtn.innerHTML = "Yes";
+        yesBtn.id = "yes-btn";
+        yesBtn.classList.add("confirm-btn-full");
+
+        messageP.appendChild(closeBtn);
+        messageP.appendChild(yesBtn);
+
+        for(let btn of [closeBtn, yesBtn]){
+            // Add click listeners
+            btn.addEventListener("click", () => {
+                if(btn.innerHTML === "Yes"){
+                    return true;
+                }
+                else if(btn.innerHTML === "Close"){
+                    return false;
+                }
+            });
+        }
+    }  
 }
