@@ -40,6 +40,7 @@
             <ul id="in-cart">
                 <!-- Items added dynamically -->
             </ul>
+            <p class="hidden-mode" id="cart-footer"></p>
             <button class="confirm-btn confirm-btn-full confirm-btn-empty" id="confirm-order-btn">Confirm Order</button>
         </div>
 
@@ -48,7 +49,7 @@
     <!-- Quantity modal. Shown on clicking add to cart -->
     <div class="hidden-mode" id="quantity-modal">
         <p>How many <span id="q-food-name"></span> would you like?</p>
-        <input placeholder="0" type="number" max="5" min="1" id="q-input-number"> <br>
+        <input placeholder="0" type="number" max="10" min="1" id="q-input-number"> <br>
         <input class="q-input-btn" id="cancel-q-btn"  type="submit" value="Cancel">
         <input class="q-input-btn" id="add-q-btn"  type="submit" value="Place order">
     </div>

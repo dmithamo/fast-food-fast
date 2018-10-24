@@ -68,7 +68,7 @@ ul#food-items.us-food-items {
 .new-cart-item {
     padding: .5em;
     display: grid;
-    grid-template-columns: .5fr repeat(4, 1fr);
+    grid-template-columns: .7fr repeat(4, 1fr);
     width: 88%;
     margin: auto;
 }
@@ -80,6 +80,18 @@ ul#food-items.us-food-items {
 
 .cart-heading>.cart-span {
     background-color: rgb(241, 241, 241);
+}
+
+#cart-footer {
+    border: 2px solid #081a0c;
+    font-size: 1.2em;
+    font-weight: bolder;
+    padding: 0.7em 1em;
+    border-radius: 2%;
+    width: 60%;
+    margin: auto;
+    color: #0ee043;
+
 }
 
 ul#in-cart {
