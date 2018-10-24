@@ -8,6 +8,8 @@ let loggedInAs = localStorage.loggedInAs;
 
 // Reusable variables
 let quantityModal = document.querySelector("#quantity-modal");
+let deleteIcon = `<i class="fas fa-trash-alt"></i>`;
+
 
 // Add click listener
 addClickListener(closeBtn);
@@ -127,7 +129,7 @@ function addClickListener(btn) {
                 // Hide quantity div
                 hideQuantityModal();
 
-                flashMessage(false, false, "Crunching the numbers ...");
+                flashMessage(false, "Crunching the numbers ...");
                 setTimeout(() => {
                     location.reload();
                 }, 1000);
@@ -168,7 +170,23 @@ function addClickListener(btn) {
                 }
             }
 
-            flashMessage(true, false, `Orders successfully placed.<br>Visit <a class="adm-login-link" href="view_orders.html">Order History</a> to track progress<br><br><br>`);
+            flashMessage(true, `Orders successfully placed.<br>Visit <a class="adm-login-link" href="view_orders.html">Order History</a> to track progress<br><br><br>`);
+        });
+    }
+
+    // Delete btn (from cart)
+    if(btn.innerHTML === deleteIcon){
+        btn.addEventListener("click", () => {
+            // Id the clicked food item
+            let clickedItem = btn.parentNode.parentNode;
+            let foodId = clickedItem.querySelector(".food-id-span").innerHTML.split(" ")[1];
+            // Remove from local storage
+            localStorage.removeItem(`order${foodId}`);
+            // Reload page
+            flashMessage(false, "Removing ...");
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
         });
     }
 }
@@ -283,7 +301,7 @@ function populateCart() {
                 let newOrderLi = document.createElement("li");
                 newOrderLi.classList.add("new-cart-item");
 
-                // Create a span for foodId, name, price, quantity and totalcost
+                // Create a span for foodId, name, price, quantity and totalcost, and deleteIcon
                 let idSpan = document.createElement("span");
                 idSpan.innerHTML = `#00 ${foodId}`;
                 idSpan.classList.add("food-id-span");
@@ -303,7 +321,12 @@ function populateCart() {
                 totalCost += totalPerItem;
                 totalCostSpan.innerHTML = totalPerItem;
 
-                for(let span of [idSpan, nameSpan, priceSpan, quantitySpan, totalCostSpan]){
+                let deleteSpan = document.createElement("span");
+                deleteSpan.id = "delete-from-cart";
+                deleteSpan.innerHTML = deleteIcon;
+                addClickListener(deleteSpan);
+
+                for(let span of [idSpan, nameSpan, priceSpan, quantitySpan, totalCostSpan, deleteSpan]){
                     span.classList.add("cart-span");
                     newOrderLi.appendChild(span);
                 }

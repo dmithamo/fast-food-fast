@@ -134,14 +134,13 @@ footer {
     left: 25%;
     z-index: 20;
     background-color: rgb(255, 255, 255);
-    min-height: 70px;
 }
 
 .msg-paragraph {
     width: 40%;
     border-radius: 5px;
     font-size: 1.2rem;
-    padding: 9rem 3rem;
+    padding: 9rem 5rem;
     margin: 5rem auto;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
     text-align: center;

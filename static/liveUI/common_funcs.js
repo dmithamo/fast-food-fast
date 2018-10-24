@@ -337,7 +337,7 @@ function showLoadingIcon(attachTo) {
 let inCart = [];
 
 
-function flashMessage(hideOthers, showConfirmBtn, msg) {
+function flashMessage(hideOthers, msg) {
     let messageP = document.createElement("p");
     messageP.id = "flash-message-p";
     messageP.classList.add("msg-paragraph");
@@ -363,27 +363,5 @@ function flashMessage(hideOthers, showConfirmBtn, msg) {
         for(let tag of [footer, section]){
             tag.classList.remove("hidden-mode");
         }
-    }
-    if(showConfirmBtn){
-        // Append a `Yes` btn
-        let yesBtn = closeBtn.cloneNode();
-        yesBtn.innerHTML = "Yes";
-        yesBtn.id = "yes-btn";
-        yesBtn.classList.add("confirm-btn-full");
-
-        messageP.appendChild(closeBtn);
-        messageP.appendChild(yesBtn);
-
-        for(let btn of [closeBtn, yesBtn]){
-            // Add click listeners
-            btn.addEventListener("click", () => {
-                if(btn.innerHTML === "Yes"){
-                    return true;
-                }
-                else if(btn.innerHTML === "Close"){
-                    return false;
-                }
-            });
-        }
-    }  
+    } 
 }
