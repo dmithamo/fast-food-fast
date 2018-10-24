@@ -9,6 +9,10 @@ let loginEmailInput = document.querySelector("#login-email-input");
 let loginPasswordInput = document.querySelector("#login-password-input");
 
 
+// Section and footer
+const footer = document.querySelector('footer');
+const section = document.querySelector("section");
+
 // // Reusable variables
 let message;
 
@@ -16,9 +20,6 @@ let message;
 let warningWrongValue = document.createElement("p");
 warningWrongValue.classList.add("p-logins-warning");
 let warningWrongVal = warningWrongValue.cloneNode();
-
-// Select footer
-const footer = document.querySelector('footer');
 
 
 // loginResp
@@ -331,4 +332,36 @@ function showLoadingIcon(attachTo) {
             loadingIcon.innerHTML = `loading ... ${percentage}%`;
         }
     }, 1000);
+}
+
+let inCart = [];
+
+
+function flashMessage(hideOthers, msg) {
+    let messageP = document.createElement("p");
+    messageP.id = "flash-message-p";
+    messageP.classList.add("msg-paragraph");
+    messageP.classList.add("flash-message");
+
+    let spanWithMessage = document.createElement("span");
+    spanWithMessage.id = "flash-span";
+    
+    spanWithMessage.innerHTML = msg;
+    messageP.appendChild(spanWithMessage);
+
+    // Append on page
+    document.querySelector("body").appendChild(messageP);
+
+    if(hideOthers){
+        // Attachh close btn
+        messageP.appendChild(closeBtn);
+        for(let tag of [footer, section]){
+            tag.classList.add("hidden-mode");
+        }
+    }
+    else {
+        for(let tag of [footer, section]){
+            tag.classList.remove("hidden-mode");
+        }
+    } 
 }

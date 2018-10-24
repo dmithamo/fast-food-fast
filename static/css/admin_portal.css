@@ -147,9 +147,17 @@ input.new-modal-input:focus {
 
 
 #confirm-order-btn {
-    display: none;
+    margin-top: 10%;
 }
 
+
+.ordered-item {
+    list-style-type: none;
+    margin-bottom: 2em;
+    font-size: 10px;
+    box-shadow: 0 0 2px 2px rgb(189, 189, 189);
+    color: rgb(160, 160, 160);
+}
 
 .delete-order {
     color: red;
@@ -197,10 +205,6 @@ div#admin-list>h1 {
     margin: 1em auto;
 }
 
-ol#in-cart {
-    list-style: none;
-    padding: 0;
-}
 
 .order-rxn-btns {
     margin: 1em auto;
@@ -234,13 +238,6 @@ ol#in-cart {
     margin: 0 2em;
     font-size: 3em;
     color: rgb(243, 208, 11);
-}
-
-.ordered-item {
-    list-style-type: none;
-    margin-bottom: 2em;
-    font-size: 10px;
-    box-shadow: 0 0 2px 2px rgb(189, 189, 189);
 }
 
 

@@ -13,10 +13,12 @@ function fetchMenu() {
         .then((response)=> response.json())
         // Query json object for specific items
         .then(function(responseJSON) {
+            // Hide loading message
+            document.querySelector("#flash-message-p").style.display = "None";
+            
+            //Anayse the result 
             message = responseJSON.message;
             if(message === "No food items on the menu yet") {
-                // Hide loadingIcon
-                document.querySelector(".loading-icon").style.display = "None";
                 // Create and style a special paragraph to report that menu is empty
                 showMessageIfNoItems(menuUL, message);
             }
@@ -85,6 +87,8 @@ function fetchMenu() {
 
 // Call function when DOM content is finished loading
 document.addEventListener('DOMContentLoaded', () => {
-    showLoadingIcon(menuDiv);
-    fetchMenu();
+    flashMessage(false, "Wait just one ...");
+    setTimeout(() => {
+        fetchMenu();
+    }, 1000); 
 });

@@ -31,12 +31,108 @@ button {
     outline: none;
 }
 
-ul#us-food-items {
+section.user-menu {
+    width: 99%;
+    display: grid;
+    grid-template-columns: 3fr 1.5fr;
+}
+
+.user-menu>#menu-div {
+    width: 95%;
+    margin: 0 auto;
+}
+
+ul#food-items.us-food-items {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 }
 
+#shopping-cart {
+    border-radius: 5px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
+    font-size: 0.8rem;
+    color: rgb(83, 83, 83);
+    margin: 50px 10px;
+    transition: all .3s;
+    border: 1px dotted rgb(167, 163, 163);
+    max-height: 500px;
+}
+
+#shopping-cart:hover {
+    border: none;
+    box-shadow: 0 0 5px 2px rgb(0, 0, 0);
+}
+
+
+.new-cart-item,
+.cart-heading {
+    padding: .5em;
+    display: grid;
+    grid-template-columns: .7fr repeat(5, 1fr);
+    width: 88%;
+    margin: auto;
+    transition:  all .2s;
+}
+
+.new-cart-item:hover {
+    padding: .9em;
+    box-shadow: 0 0 2px 2px rgb(218, 218, 218);
+    font-size: 1.2em;
+    font-weight: bolder;
+}
+
+.cart-heading {
+    font-weight: bold;
+    width: 95%;
+}
+
+.cart-heading>.cart-span {
+    background-color: rgb(241, 241, 241);
+    padding: 10px;
+}
+
+#delete-from-cart {
+    color: red;
+    transition: all .2s;
+}
+
+#delete-from-cart:hover {
+    color: rgb(22, 255, 1);
+    font-size: 1.3em;
+}
+
+
+
+#cart-footer {
+    border-top: 1px dotted #081a0c;
+    border-bottom: 1px dotted #081a0c;
+    font-size: 1.2em;
+    font-weight: bolder;
+    padding: 0.7em 1em;
+    border-radius: 5%;
+    width: 60%;
+    margin: auto;
+    color: #0ee043;
+
+}
+
+ul#in-cart {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-span {
+    text-align: center;
+}
+
+.cart-span:first-child {
+    text-align: start;
+}
+
+.cart-span:last-child {
+    text-align: end;
+}
 
 ol {
     text-align: start;
@@ -58,11 +154,11 @@ ol>li{
 }
 
 
-.order-btn, 
+.order-btn,
 .confirm-btn-full,
 .q-input-btn{
     background-color: rgb(255, 217, 0);
-    width: 80%;
+    width: 70%;
     font-family: 'IBM Plex Sans', sans-serif;
     color: rgb(43, 43, 43);
     padding: 0.6rem;
@@ -102,6 +198,7 @@ ol>li{
     color: rgb(196, 196, 196);
     border: none;
 }
+
 
 #history-cart {
     display: none;

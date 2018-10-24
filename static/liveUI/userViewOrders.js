@@ -6,9 +6,6 @@
 let userToken = localStorage.userToken;
 let loggedInAs = localStorage.loggedInAs;
 
-const section = document.querySelector('section');
-
-
 // Select history link and history Div and menu Div
 let placeOrderLink = document.querySelector("#place-order-link");
 addClickListener(placeOrderLink);
@@ -43,7 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     else {
         // Display logged in person
         document.querySelector("#logged-in-as").innerHTML = `[ ${loggedInAs} ]`;
-        fetchOrders();
+        flashMessage(false, "Wait just one ...");
+        setTimeout(() => {
+            fetchOrders();
+        }, 1000); 
     }
 });
 
@@ -56,9 +56,13 @@ function fetchOrders() {
     })
     .then((response) => response.json())
     .then(function(responseJSON) {
+        // Hide loading message
+        document.querySelector("#flash-message-p").style.display = "None";
+
+        // Analyse the response
         message = responseJSON.message;
         if(message === `No orders yet for user '${loggedInAs}'`) {
-            showMessageIfNoItems(ordersOL, message);
+            showMessageIfNoItems(ordersOL, `You have not yet placed any orders.<br><br><a class="adm-login-link" href="place_order.html">Place Order</a>`);
             // Hide orders header
             document.querySelector("#orders-header").classList.add("hidden-mode");
 

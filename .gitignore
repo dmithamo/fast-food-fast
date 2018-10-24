@@ -8,3 +8,5 @@ instance/
 *.pyc
 .cache/
 .env
+node_modules/
+*.json

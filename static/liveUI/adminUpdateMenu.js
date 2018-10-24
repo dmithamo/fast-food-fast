@@ -3,7 +3,6 @@
 
 
 // Append responseDiv to page
-const section = document.querySelector('section');
 menuDiv.parentNode.insertBefore(responseDiv, menuDiv);
 // Hide since it currently is empty
 responseDiv.classList.add("hidden-mode");
