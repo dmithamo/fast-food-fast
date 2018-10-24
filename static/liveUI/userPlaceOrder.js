@@ -7,8 +7,6 @@ let userToken = localStorage.userToken;
 let loggedInAs = localStorage.loggedInAs;
 
 // Reusable variables
-const section = document.querySelector('section');
-// const footer = document.querySelector('footer');
 let quantityModal = document.querySelector("#quantity-modal");
 
 // Add click listener
@@ -96,7 +94,7 @@ function addClickListener(btn) {
 
             // Check if item is already in cart
             if(`order${foodId}` in localStorage){
-                let updateQuantity = confirm("Already in cart. Update Quantity?");
+                let updateQuantity = confirm("This item is already in your cart. Would you like to the quantity?");
                 if(updateQuantity){
                     let theItem = JSON.parse(localStorage[`order${foodId}`]);
                     let currentQ = +theItem["quantity"];
@@ -163,10 +161,13 @@ function addClickListener(btn) {
                     localStorage.removeItem(item);
                 }
             }
-            setTimeout(() => {
-                // Reload page
-                window.location.replace("place_order.html");
-            }, 1500);
+
+            flashMessage(`Orders successfully placed.<br>Visit <a class="adm-login-link" href="view_orders.html">Order History</a> to track progress<br><br><br>`);
+
+            // setTimeout(() => {
+            //     // Reload page
+            //     location.reload();
+            // }, 5000);
         });
     }
 }
@@ -262,7 +263,7 @@ function populateCart() {
         if(localStorage.hasOwnProperty(item)){
             if(item.slice(0, 5) === "order"){
                 
-                // // Clear cart first
+                // select cart
                 let cart = document.querySelector("#in-cart");
 
                 // Display number of items in cart
@@ -316,9 +317,11 @@ function populateCart() {
         confirmBtn.classList.remove("confirm-btn-empty");
         addClickListener(confirmBtn);
 
-        // Show total
+        // Show all of Cart
+        document.querySelector("#cart-params").classList.remove("hidden-mode");
+
+        // Update total
         let totalDisp = document.querySelector("#cart-footer");
-        totalDisp.classList.remove("hidden-mode");
         totalDisp.innerHTML = `Total Cost : Ksh. ${totalCost}`;
 
     }

@@ -9,6 +9,10 @@ let loginEmailInput = document.querySelector("#login-email-input");
 let loginPasswordInput = document.querySelector("#login-password-input");
 
 
+// Section and footer
+const footer = document.querySelector('footer');
+const section = document.querySelector("section");
+
 // // Reusable variables
 let message;
 
@@ -16,9 +20,6 @@ let message;
 let warningWrongValue = document.createElement("p");
 warningWrongValue.classList.add("p-logins-warning");
 let warningWrongVal = warningWrongValue.cloneNode();
-
-// Select footer
-const footer = document.querySelector('footer');
 
 
 // loginResp
@@ -334,3 +335,22 @@ function showLoadingIcon(attachTo) {
 }
 
 let inCart = [];
+
+
+function flashMessage(msg) {
+    let messageP = document.createElement("p");
+    messageP.id = "flash-message-p";
+    messageP.classList.add("msg-paragraph");
+    messageP.classList.add("flash-message");
+    messageP.innerHTML = msg;
+
+    // Attachh close btn
+    messageP.appendChild(closeBtn);
+
+    // Append on page
+    document.querySelector("body").appendChild(messageP);
+    for(let tag of [footer, section]){
+        tag.style.display = "None";
+    }
+    
+}
