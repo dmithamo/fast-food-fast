@@ -332,3 +332,5 @@ function showLoadingIcon(attachTo) {
         }
     }, 1000);
 }
+
+let inCart = [];

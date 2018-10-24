@@ -21,6 +21,8 @@ function fetchMenu() {
                 showMessageIfNoItems(menuUL, message);
             }
             else {
+                // Hide loadingIcon
+                document.querySelector(".loading-icon").style.display = "None";
                 // Create an li for each item on menu and append li to menuUL
                 let menuItems = responseJSON.menu;
                 menuItems.forEach(foodItem => {
