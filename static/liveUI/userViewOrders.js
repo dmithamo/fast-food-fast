@@ -40,7 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     else {
         // Display logged in person
         document.querySelector("#logged-in-as").innerHTML = `[ ${loggedInAs} ]`;
-        fetchOrders();
+        flashMessage(false, "Wait just one ...");
+        setTimeout(() => {
+            fetchOrders();
+        }, 1000); 
     }
 });
 
@@ -53,6 +56,10 @@ function fetchOrders() {
     })
     .then((response) => response.json())
     .then(function(responseJSON) {
+        // Hide loading message
+        document.querySelector("#flash-message-p").style.display = "None";
+
+        // Analyse the response
         message = responseJSON.message;
         if(message === `No orders yet for user '${loggedInAs}'`) {
             showMessageIfNoItems(ordersOL, message);
