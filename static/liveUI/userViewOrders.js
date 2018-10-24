@@ -6,9 +6,6 @@
 let userToken = localStorage.userToken;
 let loggedInAs = localStorage.loggedInAs;
 
-const section = document.querySelector('section');
-
-
 // Select history link and history Div and menu Div
 let placeOrderLink = document.querySelector("#place-order-link");
 addClickListener(placeOrderLink);

@@ -14,7 +14,6 @@ let ordersDiv = document.querySelector("#orders-div");
 
 // select logout button
 let logoutBtn = document.querySelector("#logout-link");
-const section = document.querySelector('section');
 
 // Remove admin token on logout 
 logoutBtn.addEventListener("click", () => {
