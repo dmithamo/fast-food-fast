@@ -3,7 +3,6 @@ import puppeteer from "puppeteer";
 /* 
     - Module tests that pages are rendered properly, 
         with elements rendered as expected.
-
 */
 
 // Homepage
@@ -12,9 +11,21 @@ describe('/menu - Homepage', () => {
     await page.goto('http://127.0.0.1:5000/')
   });
 
-  it('should display a message on the Homepage', async () => {
+  it('should display a banner on the Homepage', async () => {
     await expect(page).toMatch('Too hungry to go');
   });
+
+  it('should show Login and Register links', async () => {
+      const linksOnPage = await page.evaluate(() => {
+          let loginLink = document.querySelector("#login-link").innerHTML;
+          let registerLink = document.querySelector("#register-link").innerHTML;
+
+          return [loginLink, registerLink];
+      })
+
+      expect(linksOnPage[0]).toBe("Login")
+      expect(linksOnPage[1]).toBe("Register")
+  })
 
   it('should render the menuUL on the Homepage', async () => {
       const menuList = await page.evaluate(() => {
@@ -23,6 +34,19 @@ describe('/menu - Homepage', () => {
       })
       expect(menuList).toBe("UL");
   })
+
+
+  it('should render the footer', async () => {
+      const footerExists = await page.evaluate(() => {
+          let footer = document.querySelector("footer");
+          let footerVanityTag = footer.querySelector("p.designer-link>a").innerHTML;
+          return [footer, footerVanityTag];
+      })
+
+      expect(footerExists[0]).toBeDefined();
+      expect(footerExists[1]).toMatch("dmithamo");
+  });
+
 });
 
 // Login page
