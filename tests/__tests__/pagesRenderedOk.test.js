@@ -10,7 +10,7 @@ import puppeteer from "puppeteer";
 describe('/menu - Homepage', () => {
   beforeAll(async () => {
     await page.goto('http://127.0.0.1:5000/')
-  }, 15000);
+  });
 
   it('should display a message on the Homepage', async () => {
     await expect(page).toMatch('Too hungry to go');
@@ -30,7 +30,7 @@ describe('/auth/login - Login page', () => {
     // Visit login page first
     beforeAll(async () => {
     await page.goto('http://127.0.0.1:5000/auth/login');
-    }, 5000);
+    });
 
     it('should display `Login` atop the Login form', async () => {
     await expect(page).toMatch('Login');
@@ -54,6 +54,18 @@ describe('/auth/login - Login page', () => {
         expect(loginForm[3]).toBeDefined();
   })
 
+  
+  it('should autofocus onto the email input', async () => {
+      const checkFocus = await page.evaluate(() => {
+        let emailInput = document.querySelector("#login-email-input");
+
+        return document.activeElement === emailInput;
+      })
+
+      expect(checkFocus).toBe(true);
+  });
+      
+
 });
 
 // Register page
@@ -61,7 +73,7 @@ describe('/auth/signup - Signup page', () => {
     // Visit register page first
     beforeAll(async () => {
         await page.goto('http://127.0.0.1:5000/auth/register')
-    }, 5000);
+    });
 
     it('should display `Create an Account` atop the Sign up form', async () => {
         await expect(page).toMatch('Create an Account');
@@ -96,7 +108,7 @@ describe('/adm_menu - Admin menu editing page', () => {
     // Visit admin menu page
     beforeAll(async () => {
         await page.goto('http://127.0.0.1:5000/adm_menu')
-    }, 5000);
+    });
 
     // When admin is not logged in    
     it('should display links to the login page and to the Homepage', async () => {
