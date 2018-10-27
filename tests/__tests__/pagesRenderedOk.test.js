@@ -25,6 +25,7 @@ describe('/menu - Homepage', () => {
 
       expect(linksOnPage[0]).toBe("Login")
       expect(linksOnPage[1]).toBe("Register")
+      
   })
 
   it('should render the menuUL on the Homepage', async () => {
