@@ -5,10 +5,11 @@
 // Login page
 describe('/auth/login - Login page functionality', () => {
     // Visit login page first
-    beforeAll(async () => {
+    beforeEach(async () => {     
         await page.goto('http://127.0.0.1:5000/auth/login', {waitUntil: 'domcontentloaded'});
     });
 
+     // Invalid case - user does not exist
     it('should show an error if user does not exist', async () => {
         await page.type('#login-email-input', 'dmithamo');
         await page.type('#login-password-input', 'dmithamo');
@@ -23,4 +24,23 @@ describe('/auth/login - Login page functionality', () => {
         expect(resp).toBe("User not found.");
             
     })
+
+    // Invalid case - wrong password
+    it('should show an error if user enters wrong password', async () => {
+
+        // Using a user I know exists ... for now, pending improvement of this test
+        await page.type('#login-email-input', 'mithamo');
+        await page.type('#login-password-input', 'dmithamo');
+        await page.click('#login-btn');
+
+        await page.waitForSelector('.resp-message');
+
+        const resp = await page.$eval('.resp-message', message => (
+            message.innerHTML
+        ));
+
+        expect(resp).toMatch("Wrong password.");
+            
+    })
+     
 });
