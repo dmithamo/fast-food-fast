@@ -34,17 +34,19 @@ function registerUser() {
             warningWrongLogins.innerHTML = `${message}. Login to continue. Redirecting ...`;
             // Style green for success
             warningWrongLogins.classList.add("msg-success");
+            warningWrongLogins.classList.add("resp-message");
             // Append message to login form
             registerBtn.parentNode.insertBefore(warningWrongLogins, registerBtn);
 
             // Redirect to login page
             setTimeout(() => {
                 window.location.replace("login.html");
-            }, 3000);
+            }, 5000);
 
         }
         else {
             // Add message to warning paragrapgh
+            warningWrongLogins.classList.add("resp-message");
             warningWrongLogins.innerHTML = message;
             // Append message to registration form
             registerBtn.parentNode.insertBefore(warningWrongLogins, registerBtn);
@@ -73,6 +75,7 @@ registerBtn.addEventListener('click', (event) => {
         else {
             event.preventDefault();
             warningWrongLogins.innerHTML = "Passwords do not match!";
+            warningWrongLogins.classList.add('resp-message')
             confirmPasswordInput.parentNode.insertBefore(warningWrongLogins, confirmPasswordInput);
             for(let input of [registerPasswordInput, confirmPasswordInput]) {
                 input.classList.add("wrong-input");
@@ -92,6 +95,7 @@ registerBtn.addEventListener('keypress', (event) => {
             else {
                 event.preventDefault();
                 warningWrongLogins.innerHTML = "Passwords do not match!";
+                warningWrongLogins.classList.add('resp-message')
                 confirmPasswordInput.parentNode.insertBefore(warningWrongLogins, confirmPasswordInput);
             }
         }

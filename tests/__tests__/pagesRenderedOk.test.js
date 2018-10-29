@@ -1,5 +1,3 @@
-import puppeteer from "puppeteer";
-
 /* 
     - Module tests that pages are rendered properly, 
         with elements rendered as expected.
@@ -25,6 +23,7 @@ describe('/menu - Homepage', () => {
 
       expect(linksOnPage[0]).toBe("Login")
       expect(linksOnPage[1]).toBe("Register")
+      expect(linksOnPage[1]).toBeDefined();
       
   })
 
@@ -118,7 +117,7 @@ describe('/auth/signup - Signup page', () => {
         })
 
         expect(registerForm[0]).toBeDefined();
-        expect(registerForm[1]).toMatch("Enter a username");
+        expect(registerForm[1]).toBe("Enter a username");
         expect(registerForm[2]).toBe("Enter an email address");
         expect(registerForm[3]).toBe("Enter a strong password");
         expect(registerForm[4]).toBe("Reenter the password");

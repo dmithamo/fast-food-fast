@@ -74,6 +74,7 @@ function loginUser() {
         else {
             // Add message to warning paragrapgh
             warningWrongLogins.innerHTML = message;
+            warningWrongLogins.classList.add("resp-message")
             // Append message to login form
             loginBtn.parentNode.insertBefore(warningWrongLogins, loginBtn);
             highlightWrongInputOnForm(message);
