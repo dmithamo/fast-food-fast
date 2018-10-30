@@ -344,7 +344,7 @@ function populateCart() {
 
         // Update total
         let totalDisp = document.querySelector("#cart-footer");
-        totalDisp.innerHTML = `Total Cost : Ksh. ${totalCost}`;
+        totalDisp.innerHTML = `Total Cost : Kshs. ${totalCost}`;
 
     }
 

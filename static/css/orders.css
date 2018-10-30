@@ -56,7 +56,7 @@ ul#food-items.us-food-items {
     margin: 50px 10px;
     transition: all .3s;
     border: 1px dotted rgb(167, 163, 163);
-    max-height: 500px;
+    min-height: 500px;
 }
 
 #shopping-cart:hover {
@@ -78,18 +78,23 @@ ul#food-items.us-food-items {
 .new-cart-item:hover {
     padding: .9em;
     box-shadow: 0 0 2px 2px rgb(218, 218, 218);
-    font-size: 1.2em;
+    font-size: 1.02em;
     font-weight: bolder;
 }
 
 .cart-heading {
     font-weight: bold;
     width: 95%;
+    font-size: .9em;
 }
 
 .cart-heading>.cart-span {
     background-color: rgb(241, 241, 241);
     padding: 10px;
+}
+
+.cart-heading>span.cart-span:first-of-type {
+    text-align: center;
 }
 
 #delete-from-cart {
@@ -105,15 +110,14 @@ ul#food-items.us-food-items {
 
 
 #cart-footer {
-    border-top: 1px dotted #081a0c;
-    border-bottom: 1px dotted #081a0c;
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: bolder;
-    padding: 0.7em 1em;
+    padding: 0.5em;
     border-radius: 5%;
-    width: 60%;
+    width: 50%;
     margin: auto;
-    color: #0ee043;
+    color: #03c433;
+    text-decoration: underline;
 
 }
 

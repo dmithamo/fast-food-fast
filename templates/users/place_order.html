@@ -38,7 +38,7 @@
             <p>You have <span id="number-items"> 0 </span> items in your cart</p>
             <div id="cart-params" class="hidden-mode">
 
-                <p class="cart-heading"><span class="cart-span">foodId</span><span class="cart-span">foodName</span><span class="cart-span">foodPrice <br> (Kshs.)</span><span class="cart-span">Quantity <br> (No.)</span><span class="cart-span">totalCost <br> (Kshs.)</span><span class="cart-span">Remove</span></p>
+                <p class="cart-heading"><span class="cart-span">ID</span><span class="cart-span">Name</span><span class="cart-span">Price <br> (Kshs.)</span><span class="cart-span">Quantity <br> (No.)</span><span class="cart-span">Total <br> (Kshs.)</span><span class="cart-span">Remove</span></p>
                 <ul id="in-cart">
                     <!-- Items added dynamically -->
                 </ul>
@@ -53,7 +53,7 @@
     <!-- Quantity modal. Shown on clicking add to cart -->
     <div class="hidden-mode" id="quantity-modal">
         <p>How many <span id="q-food-name"></span> would you like?</p>
-        <input placeholder="0" type="number" max="10" min="1" id="q-input-number"> <br>
+        <input autofocus placeholder="0" type="number" max="10" min="1" id="q-input-number"> <br>
         <input class="q-input-btn" id="cancel-q-btn"  type="submit" value="Cancel">
         <input class="q-input-btn" id="add-q-btn"  type="submit" value="Place order">
     </div>
