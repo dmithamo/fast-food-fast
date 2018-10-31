@@ -51,7 +51,7 @@ function loginAdmin() {
 }
 
 // Login normal user
-function loginUser() {
+function loginUser(endpoint) {
     // collect credentials into an object
     let data = {
         "email": loginEmailInput.value,
@@ -59,7 +59,7 @@ function loginUser() {
     };
 
     // Send POST request to admin login page
-    fetch(`${api_url}/auth/login`, {
+    fetch(`${api_url}/${endpoint}`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -84,6 +84,13 @@ function loginUser() {
             // Redirect to orders page
             window.location.replace("../users/place_order.html");
 
+        }
+        else if(message === "Admin logged in") {
+            // Store admin_token in localStorage
+            localStorage.adminToken = responseJSON.admin.token;
+            localStorage.loggedInSince = responseJSON.admin.logged_in_at;
+            // Redirect to orders page
+            window.location.replace("../orders.html");
         }
         else {
             // Add message to warning paragrapgh
