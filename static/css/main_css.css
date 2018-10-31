@@ -182,3 +182,26 @@ footer {
     width: 100%;
     padding: 2em 0;
 }
+
+.error-message {
+    font-size: 1.5em;
+    padding: 2em;
+    width: 60%;
+    margin: auto;
+}
+.error-message:last-of-type {
+    font-size: 1em;
+}
+
+.error-redirect {
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 50px;
+    color: rgb(17, 0, 255);
+    transition: all .3s;
+}
+
+.error-redirect:hover {
+    color: rgb(30, 255, 0);
+    border: 2px solid black;
+}

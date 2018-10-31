@@ -11,6 +11,13 @@ APP = Flask(__name__)
 
 CORS(APP)
 
+@APP.route('/error_page')
+def serve_errorpage():
+    """
+        Render custom error page
+    """
+    return render_template("error_page.html")
+
 @APP.route('/')
 @APP.route('/menu.html')
 def serve_homepage():
