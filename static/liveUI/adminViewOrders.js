@@ -221,6 +221,7 @@ function fetchOrders() {
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
@@ -236,7 +237,14 @@ function updateOrderStatus(orderId, orderStatus){
             'Authorization': `Bearer ${adminToken}`
         }
     })
-    .then(response => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message !== "Order found.") {
@@ -253,6 +261,7 @@ function updateOrderStatus(orderId, orderStatus){
     })
     .catch(error => {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
@@ -265,13 +274,21 @@ function deleteOrder(orderId) {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then(response => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(responseJSON => {
         let message = responseJSON.message;
         showResponseMessage(ordersDiv, message);
     })
     .catch(error => {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 

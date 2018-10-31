@@ -62,6 +62,7 @@ function registerUser() {
     })
     .catch(function(err) {
         console.log(err);
+        window.location.replace("error_page");
     });
 }
 

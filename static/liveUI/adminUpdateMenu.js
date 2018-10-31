@@ -98,6 +98,7 @@ function addToMenu() {
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
@@ -127,7 +128,6 @@ function updateMenuItem(foodId) {
     .then(function(responseJSON) {
         message = responseJSON.message;
         let food = responseJSON.food;
-        console.log(food);
         if(message === "Food item modified succesfully.") {
             // Hide editing div
             hideEditModal();
@@ -145,6 +145,7 @@ function updateMenuItem(foodId) {
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
@@ -157,13 +158,21 @@ function deleteMenuItem(foodId) {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         showResponseMessage(menuDiv, message);
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 

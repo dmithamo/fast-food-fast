@@ -1,8 +1,8 @@
 'use strict';
 
 // LINK TO HEROKU API
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
-const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
+// const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
+const api_url = "http://127.0.0.1:5000/";
 
 // Login Btn and forms
 let loginBtn = document.querySelector("#login-btn");
@@ -40,7 +40,7 @@ const appendToparent = (element, parent) => {
 
 // If email and password fields have values
 // Call loginUser/loginAdmin when login btn is clicked 
-function addListenersToLoginBtns(funcToCall) {
+function addListenersToLoginBtns() {
     let endpoint = "";
     loginBtn.addEventListener('click', (event) => {
         if(loginEmailInput.value && loginPasswordInput.value) {
@@ -63,15 +63,16 @@ function addListenersToLoginBtns(funcToCall) {
         if(event.keyCode === 13) {
             if(loginEmailInput.value && loginPasswordInput.value) {
                 event.preventDefault();
-            if(loginEmailInput.value === "admintest@admin.com"){
-                // if credentials are admin credentials
-                endpoint = 'login';
-                loginUser(endpoint);
-            }
-            else {
-                // for normal user
-                endpoint = 'auth/login';
-                loginUser(endpoint);
+                if(loginEmailInput.value === "admintest@admin.com"){
+                    // if credentials are admin credentials
+                    endpoint = 'login';
+                    loginUser(endpoint);
+                }
+                else {
+                    // for normal user
+                    endpoint = 'auth/login';
+                    loginUser(endpoint);
+                }
             }
         }
     });

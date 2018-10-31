@@ -192,6 +192,7 @@ function fetchOrders() {
         })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("../error_page");
     });
 }
 

@@ -263,6 +263,7 @@ function placeOrder(foodId, quantity) {
         })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("../error_page");
     });
 }
 
