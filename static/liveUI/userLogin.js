@@ -20,7 +20,14 @@ function loginAdmin() {
         }
 
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         let message = responseJSON.message;
         if(message === "Admin logged in") {
@@ -60,7 +67,14 @@ function loginUser() {
         }
 
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         let message = responseJSON.message;
         if(message === "Login successful.") {

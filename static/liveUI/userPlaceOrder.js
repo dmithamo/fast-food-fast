@@ -239,7 +239,14 @@ function placeOrder(foodId, quantity) {
             "Authorization": `Bearer ${userToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message === "Order posted successfully") {

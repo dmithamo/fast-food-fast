@@ -71,7 +71,14 @@ function addToMenu() {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         let food = responseJSON.food;
@@ -109,7 +116,14 @@ function updateMenuItem(foodId) {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         let food = responseJSON.food;
