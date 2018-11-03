@@ -1,8 +1,7 @@
 'use strict';
 
 // LINK TO HEROKU API
-// const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
-const api_url = "http://127.0.0.1:5000/";
+const api_url = "https://dmithamo-fast-food-fast-api.herokuapp.com/api/v2";
 
 // Login Btn and forms
 let loginBtn = document.querySelector("#login-btn");
