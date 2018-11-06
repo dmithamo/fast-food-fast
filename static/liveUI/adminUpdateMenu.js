@@ -57,8 +57,9 @@ logoutBtn.addEventListener("click", () => {
 
 
 function addToMenu() {
+    let foodName = capitalize(foodItemName.value);
     let data = {
-        "food_item_name": foodItemName.value,
+        "food_item_name": foodName,
         "food_item_price": +foodItemPrice.value,
         "food_item_img": foodItemImg.value
     };
@@ -103,8 +104,9 @@ function addToMenu() {
 }
 
 function updateMenuItem(foodId) {
+    let foodName = capitalize(foodItemName.value);
     let data = {
-        "food_item_name": foodItemName.value,
+        "food_item_name": foodName,
         "food_item_price": +foodItemPrice.value,
         "food_item_img": foodItemImg.value
     };
@@ -337,4 +339,9 @@ function checkParams(funcToCall, arg) {
             funcToCall();
         }
     }
+}
+
+function capitalize(str) {
+    // Capitalize fisrt letter
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
