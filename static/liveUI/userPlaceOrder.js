@@ -191,13 +191,13 @@ function addClickListener(btn) {
 
 function showQuantityModal(clickedMenuItem, quantity=0) {
     // Name of food
-    let foodName = clickedMenuItem.querySelector("p.item-name").innerHTML;
+    let searchTerm = clickedMenuItem.querySelector("p.item-name").innerHTML;
     for(let tag of [section, footer]) {
         tag.classList.add('hidden-mode');
     }
 
     // Append name to quantity modal
-    quantityModal.querySelector("span#q-food-name").innerHTML = ` ${foodName}s`;
+    quantityModal.querySelector("span#q-food-name").innerHTML = ` ${searchTerm}s`;
 
     // Append quantity, if any
     if(quantity){
@@ -271,11 +271,11 @@ function addToCart(quantity, clickedMenuItem) {
     // Extract name, price and id of clickedMenuItem
 
     let foodId = +window.clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
-    let foodName = window.clickedMenuItem.querySelector("p.item-name").innerHTML;
+    let searchTerm = window.clickedMenuItem.querySelector("p.item-name").innerHTML;
     let foodPrice = +window.clickedMenuItem.querySelector("p.item-price").innerHTML.split(" ")[1];
 
     localStorage.setItem(`order${foodId}`, JSON.stringify(
-        {"foodId": `${foodId}`, "foodName": `${foodName}`, "foodPrice": `${foodPrice}`, "quantity": `${quantity}`}
+        {"foodId": `${foodId}`, "searchTerm": `${searchTerm}`, "foodPrice": `${foodPrice}`, "quantity": `${quantity}`}
         ));
 }
 
@@ -299,7 +299,7 @@ function populateCart() {
 
                 // Extract params
                 let foodId = li["foodId"];
-                let foodName = li["foodName"];
+                let searchTerm = li["searchTerm"];
                 let foodPrice = li["foodPrice"];
                 let quantity = li["quantity"];
 
@@ -313,7 +313,7 @@ function populateCart() {
                 idSpan.classList.add("food-id-span");
 
                 let nameSpan = document.createElement("span");
-                nameSpan.innerHTML = foodName;
+                nameSpan.innerHTML = searchTerm;
 
                 let priceSpan = document.createElement("span");
                 priceSpan.innerHTML = +foodPrice;
@@ -353,6 +353,41 @@ function populateCart() {
         // Update total
         let totalDisp = document.querySelector("#cart-footer");
         totalDisp.innerHTML = `Total Cost : Kshs. ${totalCost}`;
+
+    }
+
+}
+
+let searchBar = document.querySelector("#search-input")
+searchBar.addEventListener('keyup', () => {
+    searchFoodItem();
+})
+
+function searchFoodItem(){
+
+    // Query for a meal with agiven name
+    let foodFound = false;
+    let searchTerm = searchBar.value.toLowerCase();
+    // See if name of any of the items on menu matches searchTerm
+    let allFoods = document.querySelectorAll(".item-name");
+    for(let name of allFoods){
+        let parentLi = name.parentNode.parentNode.parentNode;
+        let foodItemName = name.innerHTML.toLowerCase();
+        if(!foodItemName.includes(searchTerm)){
+            parentLi.classList.add("hidden-mode");
+        }
+        if(foodItemName.includes(searchTerm)){
+            parentLi.classList.remove("hidden-mode");
+            foodFound = true;
+        }
+    }
+
+    // Display message if no match
+    let messagePara = document.querySelector("#search-empty");
+    if(!foodFound) {
+        messagePara.innerHTML = "Nothing found! :( Try tweaking the search term a bit";
+    } else {
+        messagePara.innerHTML = "";
 
     }
 

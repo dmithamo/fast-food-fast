@@ -283,3 +283,26 @@ select:hover {
     box-shadow: 0 0 2px 2px rgb(58, 58, 58);
 }
 
+
+
+input#search-input {
+    font-family: 'IBM Plex Sans', sans-serif;
+    border: none;
+    padding: 2%;
+    width: 60%;
+    border-radius: 5px;
+    margin: 3% 0;
+    box-shadow: 0 0 1px 1px rgb(204, 204, 204);
+    transition: all .3s;
+    -moz-transition: all .3s;
+
+}
+::-webkit-input-placeholder {
+    color: rgb(173, 173, 173);
+}
+
+#search-input:focus, 
+#search-input:hover {
+    outline: none;
+    box-shadow: 0 0 3px 3px rgb(204, 204, 204);
+}
