@@ -205,3 +205,13 @@ footer {
     color: rgb(30, 255, 0);
     border: 2px solid black;
 }
+
+.paginate-div {
+    margin: 2em 0;
+}
+
+.paginate-btns {
+    padding: 1em;
+    font-weight: bold;
+    font-size: 1.8em;
+}
