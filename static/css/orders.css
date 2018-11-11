@@ -51,8 +51,8 @@ ul#food-items.us-food-items {
 #shopping-cart {
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
-    font-size: 0.8rem;
-    color: rgb(83, 83, 83);
+    font-size: 0.9rem;
+    color: rgb(0, 0, 0);
     margin: 50px 10px;
     transition: all .3s;
     border: 1px dotted rgb(167, 163, 163);
@@ -103,8 +103,7 @@ ul#food-items.us-food-items {
 }
 
 #delete-from-cart:hover {
-    color: rgb(22, 255, 1);
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
 
 
@@ -113,10 +112,9 @@ ul#food-items.us-food-items {
     font-size: 1.1em;
     font-weight: bolder;
     padding: 0.5em;
-    border-radius: 5%;
     width: 50%;
     margin: auto;
-    color: #03c433;
+    color: #000000;
     text-decoration: underline;
 
 }
@@ -259,7 +257,8 @@ ol>li{
     box-shadow: 0 0 2px 2px rgb(56, 56, 56);
     font-weight: bolder;
     font-size: 0.7em;
-    color: rgb(100, 100, 100);
+    color: rgb(0, 0, 0);
+    background-color: whitesmoke;
 }
 
 select {
