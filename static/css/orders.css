@@ -57,6 +57,7 @@ ul#food-items.us-food-items {
     transition: all .3s;
     border: 1px dotted rgb(167, 163, 163);
     min-height: 500px;
+    background-color: rgba(255, 255, 255, 0.692);
 }
 
 #shopping-cart:hover {

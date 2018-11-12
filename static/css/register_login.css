@@ -25,6 +25,7 @@ form {
     padding: .9%;
     border-radius: 5px;
     box-shadow: 0 0 3px 3px rgb(214, 214, 214);
+    background-color: rgba(245, 245, 245, 0.658);
 }
 
 input {

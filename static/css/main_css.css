@@ -151,6 +151,7 @@ footer {
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
     text-align: center;
     color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.692);
 }
 
 .p-logins-warning {
