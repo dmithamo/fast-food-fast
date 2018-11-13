@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add order btns to each menu item
             addOrderBtns();
 
+
+            // Configure pages
+            paginate()
             // Populate cart with items in cart, if any
             populateCart();
 

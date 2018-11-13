@@ -87,7 +87,7 @@ a:hover, a:active {
 .food-items {
     list-style-type: none;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     width: 90%;
     margin: auto;
 }

@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else {
         // Wait a while for all menu to load
         setTimeout(() => {
+            // Configure pages
+            paginate()
             addAdminBtns();
             for(let btn of pageBtns){
                 addBtnCliclListeners(btn);

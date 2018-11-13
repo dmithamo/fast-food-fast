@@ -1,4 +1,4 @@
-
+// Search
 let searchBar = document.querySelector("#search-input")
 searchBar.addEventListener('keyup', () => {
     searchFoodItem();
@@ -47,4 +47,36 @@ function searchFoodItem(){
 
     }
 
+}
+
+// Paginate
+let itemsPerPage = 6;
+
+function paginate() {
+    // Select all items
+    let allMenuItems = document.querySelectorAll(".food-item");
+    allMenuItems = Array.from(allMenuItems);
+    // Add click listeners to Next, Prev btn
+    let nextBtn = document.querySelector(".next")
+    nextBtn.addEventListener('click', () => {
+        loadNextPage(allMenuItems)
+    })
+    
+    for(let item of allMenuItems){
+        if(allMenuItems.indexOf(item) > itemsPerPage-1){
+            item.classList.add("hidden-mode");
+        }
+    }
+
+}
+
+function loadNextPage(menu){
+    for(let item of menu){
+        if(menu.indexOf(item) <= itemsPerPage-1){
+            item.classList.add("hidden-mode");
+        }
+        else {
+            item.classList.remove("hidden-mode")
+        }
+    }
 }
