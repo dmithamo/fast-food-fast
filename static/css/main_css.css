@@ -80,14 +80,13 @@ a:hover, a:active {
     color: white;
     background-color: rgb(43, 255, 0);
     border: 2px solid black;
-
 }
 
 
 .food-items {
     list-style-type: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     width: 90%;
     margin: auto;
 }
@@ -111,8 +110,6 @@ a:hover, a:active {
     font-size: 1.2rem;
     font-weight: 700;
     color: rgb(39, 39, 39);
-    /* -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: rgba(0, 0, 0, 0.432); */
 }
 
 figure {

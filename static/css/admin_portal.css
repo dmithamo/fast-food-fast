@@ -9,7 +9,6 @@ html {
 
 section>.container{
     display: block;
-    /* width: 70%; */
     margin: auto;
 }
 
@@ -57,7 +56,7 @@ section {
 }
 
 ul#food-items {
-    width: 60%;
+    width: 80%;
     margin: auto;
 }
 

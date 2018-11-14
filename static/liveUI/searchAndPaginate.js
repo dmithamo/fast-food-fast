@@ -50,33 +50,57 @@ function searchFoodItem(){
 }
 
 // Paginate
-let itemsPerPage = 6;
+let itemsPerPage = 3;
+let startAt = 0;
+
 
 function paginate() {
     // Select all items
     let allMenuItems = document.querySelectorAll(".food-item");
     allMenuItems = Array.from(allMenuItems);
-    // Add click listeners to Next, Prev btn
-    let nextBtn = document.querySelector(".next")
+
+    let itemsToShow = allMenuItems.slice(startAt, itemsPerPage);
+    // Original load
+    displaySelectedItems(allMenuItems, itemsToShow);
+
+    // When next is pressed 
+    let nextBtn = document.querySelector(".next");
     nextBtn.addEventListener('click', () => {
-        loadNextPage(allMenuItems)
+        if(startAt+itemsPerPage < allMenuItems.length){
+            startAt += itemsPerPage;
+        }
+        else {
+            startAt = allMenuItems.length - itemsPerPage;
+        }
+
+        itemsToShow = allMenuItems.slice(startAt, startAt+itemsPerPage)
+        displaySelectedItems(allMenuItems, itemsToShow)
     })
     
-    for(let item of allMenuItems){
-        if(allMenuItems.indexOf(item) > itemsPerPage-1){
-            item.classList.add("hidden-mode");
-        }
-    }
 
+    // When prev is pressed 
+    let prevBtn = document.querySelector(".previous");
+    prevBtn.addEventListener('click', () => {
+        if(startAt-itemsPerPage > 0){
+            startAt -= itemsPerPage;
+        }
+        else {
+            startAt = 0;
+        }
+
+        itemsToShow = allMenuItems.slice(startAt, startAt+itemsPerPage)
+        displaySelectedItems(allMenuItems, itemsToShow)
+    })
+    
 }
 
-function loadNextPage(menu){
-    for(let item of menu){
-        if(menu.indexOf(item) <= itemsPerPage-1){
+function displaySelectedItems(parentArray, subArray) {
+    for(let item of parentArray){
+        if(subArray.indexOf(item) < 0){
             item.classList.add("hidden-mode");
         }
         else {
-            item.classList.remove("hidden-mode")
+            item.classList.remove("hidden-mode");
         }
     }
 }
