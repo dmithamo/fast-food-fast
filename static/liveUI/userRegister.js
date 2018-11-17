@@ -27,12 +27,7 @@ function registerUser() {
 
     })
     .then((response)=> {
-        if(response.status < 500){
-            return response.json()
-        }
-        else{
-            location.replace('error_page')
-        }
+        return response.json()
     })
     .then(function(responseJSON) {
         let message = responseJSON.message;
@@ -62,7 +57,6 @@ function registerUser() {
     })
     .catch(function(err) {
         console.log(err);
-        window.location.replace("error_page");
     });
 }
 

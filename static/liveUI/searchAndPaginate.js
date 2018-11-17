@@ -46,12 +46,19 @@ function searchFoodItem(){
         messagePara.innerHTML = "";
 
     }
-
 }
 
 // Paginate
-let itemsPerPage = 3;
+let itemsPerPage = 0;
 let startAt = 0;
+
+// Show different no. of items per page on admin and user pages
+if(document.querySelector(".admin-portal-title")){
+    itemsPerPage = 4;
+}
+else {
+    itemsPerPage = 3;
+}
 
 
 function paginate() {
@@ -68,9 +75,6 @@ function paginate() {
     nextBtn.addEventListener('click', () => {
         if(startAt+itemsPerPage < allMenuItems.length){
             startAt += itemsPerPage;
-        }
-        else {
-            startAt = allMenuItems.length - itemsPerPage;
         }
 
         itemsToShow = allMenuItems.slice(startAt, startAt+itemsPerPage)
