@@ -53,7 +53,7 @@ let itemsPerPage = 0;
 let startAt = 0;
 
 // Show different no. of items per page on admin and user pages
-if(document.querySelector(".admin-portal-title")){
+if(document.querySelector(".admin-portal-title").innerHTML  === "[ Admin Portal ]"){
     itemsPerPage = 4;
 }
 else {
