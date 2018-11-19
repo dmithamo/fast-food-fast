@@ -27,9 +27,18 @@
 
     <section id="menu-cont" class="container user-menu">
         <div id="menu-div">
+            <div id="search">
+                <input id="search-input" type="text" placeholder=" Shopping for something specific? Search for it here ... ">
+                <p id="search-empty"></p>
+            </div>
+
             <ul class="food-items us-food-items" id="food-items">
                 <!-- Items added dynamically -->
             </ul>
+            <div class="paginate-div">
+                <a class="paginate-btns previous"><i class="fas fa-arrow-circle-left"></i></a>
+                <a class="paginate-btns next"><i class="fas fa-arrow-circle-right"></i></a>
+            </div>
         </div>
         
         <!-- Place order adds items here -->
@@ -70,5 +79,6 @@
     <script src="../../static/liveUI/common_funcs.js"></script>
     <script src="../../static/liveUI/fetchMenu.js"></script>
     <script src="../../static/liveUI/userPlaceOrder.js"></script>
+    <script src="../../static/liveUI/searchAndPaginate.js"></script>
 </body>
 </html>

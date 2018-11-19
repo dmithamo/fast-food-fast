@@ -26,7 +26,9 @@ function registerUser() {
         }
 
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        return response.json()
+    })
     .then(function(responseJSON) {
         let message = responseJSON.message;
         if(message === "Registration successful") {

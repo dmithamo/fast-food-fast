@@ -9,7 +9,6 @@ html {
 
 section>.container{
     display: block;
-    width: 70%;
     margin: auto;
 }
 
@@ -154,14 +153,16 @@ input.new-modal-input:focus {
 .ordered-item {
     list-style-type: none;
     margin-bottom: 2em;
-    font-size: 10px;
+    font-size: 12px;
     box-shadow: 0 0 2px 2px rgb(189, 189, 189);
-    color: rgb(160, 160, 160);
+    color: rgb(27, 27, 27);
+    background-color: rgba(255, 255, 255, 0.266);
 }
 
 .delete-order {
     color: red;
 }
+
 
 .mark-complete {
     color: #39aa56;
@@ -207,24 +208,20 @@ div#admin-list>h1 {
 
 
 .order-rxn-btns {
-    margin: 1em auto;
-    width: 30%;
-    border: 1px dashed lightgrey;
+    margin: auto;
+    width: 50%;
     text-align: center;
     background-color: none;
     transition: all .3s;
     -moz-transition: all .3s;
 }
 
-.order-rxn-btns:hover {
-    width: 32%;
-    border: 2px dashed rgb(7, 7, 7);
-}
+
 .order-reactions {
     padding: .5em;
     border-radius: 1%;
     text-align: center;
-    background-color: white;
+    background: none;
     margin: 0 2em;
     font-size: 2em;
     outline: none;
@@ -234,12 +231,14 @@ div#admin-list>h1 {
 }
 
 .order-reactions:hover {
-    padding: .8em;
-    margin: 0 2em;
-    font-size: 3em;
+    font-size: 2.2em;
     color: rgb(77, 243, 11);
 }
 
+
+.delete-order:hover {
+    color: red;
+}
 
 .the-order {
     display: grid;
@@ -290,7 +289,13 @@ div#menu-header {
     padding: 0.6rem;
     width: 16%;
     font-weight: bold;
-    border: 2.2px solid rgb(0, 0, 0);
+    border: 2.5px solid rgb(253, 0, 0);
+    color: red;
+}
+
+#add-new-btn:hover {
+    border: 2.5px solid rgb(72, 255, 0);
+    color: rgb(72, 255, 0);
 }
 
 

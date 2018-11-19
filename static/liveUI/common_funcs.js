@@ -39,17 +39,20 @@ const appendToparent = (element, parent) => {
 
 // If email and password fields have values
 // Call loginUser/loginAdmin when login btn is clicked 
-function addListenersToLoginBtns(funcToCall) {
+function addListenersToLoginBtns() {
+    let endpoint = "";
     loginBtn.addEventListener('click', (event) => {
         if(loginEmailInput.value && loginPasswordInput.value) {
             event.preventDefault();
             if(loginEmailInput.value === "admintest@admin.com"){
                 // if credentials are admin credentials
-                funcToCall[0]();
+                endpoint = 'login';
+                loginUser(endpoint);
             }
-            // funcToCall();
             else {
-                funcToCall[1]();
+                // for normal user
+                endpoint = 'auth/login';
+                loginUser(endpoint);
             }
         }
     });
@@ -61,10 +64,13 @@ function addListenersToLoginBtns(funcToCall) {
                 event.preventDefault();
                 if(loginEmailInput.value === "admintest@admin.com"){
                     // if credentials are admin credentials
-                    funcToCall[0]();
+                    endpoint = 'login';
+                    loginUser(endpoint);
                 }
                 else {
-                    funcToCall[1]();
+                    // for normal user
+                    endpoint = 'auth/login';
+                    loginUser(endpoint);
                 }
             }
         }

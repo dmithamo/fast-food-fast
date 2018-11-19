@@ -11,6 +11,13 @@ APP = Flask(__name__)
 
 CORS(APP)
 
+@APP.route('/error_page')
+def serve_errorpage():
+    """
+        Render custom error page
+    """
+    return render_template("error_page.html")
+
 @APP.route('/')
 @APP.route('/menu.html')
 def serve_homepage():
@@ -29,20 +36,13 @@ def serve_register_page():
 
 @APP.route('/auth/login', methods=['GET','POST'])
 @APP.route('/auth/login.html', methods=['GET','POST'])
+@APP.route('/login', methods=['GET','POST'])
 def serve_admin_login_page():
     """
         Render login page on visiting login url
     """
     return render_template("auth/login.html")
 
-@APP.route('/admin_login', methods=['GET','POST'])
-@APP.route('/admin_login.html', methods=['GET','POST'])
-@APP.route('/login', methods=['GET','POST'])
-def serve_login_page():
-    """
-        Render admin_login page on visiting admin_login url
-    """
-    return render_template("admin_login.html")
 
 @APP.route('/orders')
 @APP.route('/orders.html')

@@ -10,8 +10,14 @@ function fetchMenu() {
     // fetch menu
     fetch(`${api_url}/menu`)
         // Convert response object to json object 
-        .then((response)=> response.json())
-        // Query json object for specific items
+        .then((response)=> {
+            if(response.status < 500){
+                return response.json()
+            }
+            else{
+                location.replace('error_page')
+            }
+        })
         .then(function(responseJSON) {
             // Hide loading message
             document.querySelector("#flash-message-p").style.display = "None";
@@ -82,6 +88,7 @@ function fetchMenu() {
         })
         .catch(function(err) {
             console.log(err);
+            window.location.replace("error_page");
         });
 }
 

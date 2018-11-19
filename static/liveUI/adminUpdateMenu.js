@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else {
         // Wait a while for all menu to load
         setTimeout(() => {
+            // Configure pages
+            paginate()
             addAdminBtns();
             for(let btn of pageBtns){
                 addBtnCliclListeners(btn);
@@ -57,8 +59,9 @@ logoutBtn.addEventListener("click", () => {
 
 
 function addToMenu() {
+    let foodName = capitalize(foodItemName.value);
     let data = {
-        "food_item_name": foodItemName.value,
+        "food_item_name": foodName,
         "food_item_price": +foodItemPrice.value,
         "food_item_img": foodItemImg.value
     };
@@ -71,7 +74,14 @@ function addToMenu() {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         let food = responseJSON.food;
@@ -91,12 +101,14 @@ function addToMenu() {
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
 function updateMenuItem(foodId) {
+    let foodName = capitalize(foodItemName.value);
     let data = {
-        "food_item_name": foodItemName.value,
+        "food_item_name": foodName,
         "food_item_price": +foodItemPrice.value,
         "food_item_img": foodItemImg.value
     };
@@ -109,11 +121,17 @@ function updateMenuItem(foodId) {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         let food = responseJSON.food;
-        console.log(food);
         if(message === "Food item modified succesfully.") {
             // Hide editing div
             hideEditModal();
@@ -131,6 +149,7 @@ function updateMenuItem(foodId) {
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
@@ -143,13 +162,21 @@ function deleteMenuItem(foodId) {
             "Authorization": `Bearer ${adminToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         showResponseMessage(menuDiv, message);
     })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("error_page");
     });
 }
 
@@ -314,4 +341,9 @@ function checkParams(funcToCall, arg) {
             funcToCall();
         }
     }
+}
+
+function capitalize(str) {
+    // Capitalize fisrt letter
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }

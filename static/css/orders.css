@@ -34,7 +34,7 @@ button {
 section.user-menu {
     width: 99%;
     display: grid;
-    grid-template-columns: 3fr 1.5fr;
+    grid-template-columns: 3fr 2fr;
 }
 
 .user-menu>#menu-div {
@@ -45,18 +45,19 @@ section.user-menu {
 ul#food-items.us-food-items {
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 
 #shopping-cart {
     border-radius: 5px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
-    font-size: 0.8rem;
-    color: rgb(83, 83, 83);
+    font-size: 0.9rem;
+    color: rgb(0, 0, 0);
     margin: 50px 10px;
     transition: all .3s;
     border: 1px dotted rgb(167, 163, 163);
     min-height: 500px;
+    background-color: rgba(255, 255, 255, 0.692);
 }
 
 #shopping-cart:hover {
@@ -103,8 +104,7 @@ ul#food-items.us-food-items {
 }
 
 #delete-from-cart:hover {
-    color: rgb(22, 255, 1);
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
 
 
@@ -113,10 +113,9 @@ ul#food-items.us-food-items {
     font-size: 1.1em;
     font-weight: bolder;
     padding: 0.5em;
-    border-radius: 5%;
     width: 50%;
     margin: auto;
-    color: #03c433;
+    color: #000000;
     text-decoration: underline;
 
 }
@@ -259,7 +258,8 @@ ol>li{
     box-shadow: 0 0 2px 2px rgb(56, 56, 56);
     font-weight: bolder;
     font-size: 0.7em;
-    color: rgb(100, 100, 100);
+    color: rgb(0, 0, 0);
+    background-color: whitesmoke;
 }
 
 select {
@@ -283,3 +283,26 @@ select:hover {
     box-shadow: 0 0 2px 2px rgb(58, 58, 58);
 }
 
+
+
+input#search-input {
+    font-family: 'IBM Plex Sans', sans-serif;
+    border: none;
+    padding: 2%;
+    width: 60%;
+    border-radius: 5px;
+    margin: 3% 0;
+    box-shadow: 0 0 1px 1px rgb(204, 204, 204);
+    transition: all .3s;
+    -moz-transition: all .3s;
+
+}
+::-webkit-input-placeholder {
+    color: rgb(173, 173, 173);
+}
+
+#search-input:focus, 
+#search-input:hover {
+    outline: none;
+    box-shadow: 0 0 3px 3px rgb(204, 204, 204);
+}

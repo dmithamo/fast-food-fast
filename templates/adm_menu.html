@@ -26,13 +26,20 @@
     <section id="menu-cont" class="container">
         <div id="menu-div">
             <div id="menu-header">
-                <h1>Menu</h1>
+                <div id="search">
+                    <input id="search-input" type="text" placeholder=" Looking to edit a meal? Search for it here ...">
+                    <p id="search-empty"></p>
+                </div>
                 <button id="add-new-btn">Add Food Item</button>
             </div>
             
             <ul class="food-items" id="food-items">
                 <!-- Items added dynamically -->
             </ul>
+            <div class="paginate-div">
+                <a class="paginate-btns previous"><i class="fas fa-arrow-circle-left"></i></a>
+                <a class="paginate-btns next"><i class="fas fa-arrow-circle-right"></i></a>
+            </div>
         </div>
     </section>
     <div class="hidden-mode" id="editing-modal">
@@ -63,5 +70,6 @@
     <script src="static/liveUI/common_funcs.js"></script>
     <script src="static/liveUI/fetchMenu.js"></script>
     <script src="static/liveUI/adminUpdateMenu.js"></script>
+    <script src="static/liveUI/searchAndPaginate.js"></script>
 </body>
 </html>

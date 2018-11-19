@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add order btns to each menu item
             addOrderBtns();
 
+
+            // Configure pages
+            paginate()
             // Populate cart with items in cart, if any
             populateCart();
 
@@ -191,13 +194,13 @@ function addClickListener(btn) {
 
 function showQuantityModal(clickedMenuItem, quantity=0) {
     // Name of food
-    let foodName = clickedMenuItem.querySelector("p.item-name").innerHTML;
+    let searchTerm = clickedMenuItem.querySelector("p.item-name").innerHTML;
     for(let tag of [section, footer]) {
         tag.classList.add('hidden-mode');
     }
 
     // Append name to quantity modal
-    quantityModal.querySelector("span#q-food-name").innerHTML = ` ${foodName}s`;
+    quantityModal.querySelector("span#q-food-name").innerHTML = ` ${searchTerm}s`;
 
     // Append quantity, if any
     if(quantity){
@@ -239,7 +242,14 @@ function placeOrder(foodId, quantity) {
             "Authorization": `Bearer ${userToken}`
         }
     })
-    .then((response) => response.json())
+    .then((response)=> {
+        if(response.status < 500){
+            return response.json()
+        }
+        else{
+            location.replace('error_page')
+        }
+    })
     .then(function(responseJSON) {
         message = responseJSON.message;
         if(message === "Order posted successfully") {
@@ -256,6 +266,7 @@ function placeOrder(foodId, quantity) {
         })
     .catch(function(error) {
         console.log(error);
+        window.location.replace("../error_page");
     });
 }
 
@@ -263,11 +274,11 @@ function addToCart(quantity, clickedMenuItem) {
     // Extract name, price and id of clickedMenuItem
 
     let foodId = +window.clickedMenuItem.querySelector("p.food-id").innerHTML.split("#")[1];
-    let foodName = window.clickedMenuItem.querySelector("p.item-name").innerHTML;
+    let searchTerm = window.clickedMenuItem.querySelector("p.item-name").innerHTML;
     let foodPrice = +window.clickedMenuItem.querySelector("p.item-price").innerHTML.split(" ")[1];
 
     localStorage.setItem(`order${foodId}`, JSON.stringify(
-        {"foodId": `${foodId}`, "foodName": `${foodName}`, "foodPrice": `${foodPrice}`, "quantity": `${quantity}`}
+        {"foodId": `${foodId}`, "searchTerm": `${searchTerm}`, "foodPrice": `${foodPrice}`, "quantity": `${quantity}`}
         ));
 }
 
@@ -291,7 +302,7 @@ function populateCart() {
 
                 // Extract params
                 let foodId = li["foodId"];
-                let foodName = li["foodName"];
+                let searchTerm = li["searchTerm"];
                 let foodPrice = li["foodPrice"];
                 let quantity = li["quantity"];
 
@@ -305,7 +316,7 @@ function populateCart() {
                 idSpan.classList.add("food-id-span");
 
                 let nameSpan = document.createElement("span");
-                nameSpan.innerHTML = foodName;
+                nameSpan.innerHTML = searchTerm;
 
                 let priceSpan = document.createElement("span");
                 priceSpan.innerHTML = +foodPrice;
